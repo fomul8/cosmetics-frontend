@@ -12,10 +12,16 @@ import StepItem from 'primevue/stepitem';
 import Step from 'primevue/step';
 import StepPanel from 'primevue/steppanel';
 import Card from 'primevue/card';
+import Select from 'primevue/select';
 import { useToast } from 'primevue/usetoast';
 
 import Ingredients  from "../beemulation/ingredients.js";
 import Ai from "../beemulation/ai.js";
+import Composition from "../beemulation/compositions.js";
+import Compositions from "../beemulation/compositions.js";
+
+const ingredients = new Ingredients();
+const compositions = new Compositions();
 
 const generalStats = ref([]);
 const chemicalsGroups = ref([]);
@@ -28,6 +34,7 @@ const analyzationDialog = ref({message: '', status: false});
 const savedRecipi = ref({ingredients: []});
 const stepsArray = ref([]);
 const showAdvancedIngredients = ref(false);
+const presetSelected = ref(null);
 
 const showInfoDialog = (data) => {
   infoDialog.value.data = data;
@@ -85,31 +92,33 @@ const analyzeRecipi = async () => {
   analyzationDialog.value.status = true;
 };
 
-onMounted(() => {
-  // TODO backend emulation
-  const ingredients = new Ingredients();
-  chemicalsGroups.value = ingredients.getGroups();
-  chemicalIngredients.value = ingredients.getIngredients();
-  generalStats.value = ingredients.getGeneralStats();
+const setPreset = () => {
+  console.log(presetSelected.value);
+  compositions.setActivePresetId(presetSelected.value.id);
+  reloadIngredients();
+};
 
+const reloadIngredients = () => {
   chemicalIngredientsWithValues.value = chemicalIngredients.value.map(chemical => {
     return {
       ...chemical,
-      value: 0,
+      value: compositions.getIngredientValueByIngredientId(chemical.id, true),
       color: generateRandomSoftColor()
     }
   });
+  stepsArray.value = [];
   for (let i = 0; i < chemicalsGroups.value.length; i++) {
+    chemicalsGroups.value[i].ingredients = [];
     chemicalIngredientsWithValues.value.forEach(chemical => {
       if (chemical.groupId === chemicalsGroups.value[i].id) {
         chemicalsGroups.value[i].ingredients.push(chemical);
       }
     });
-  //   fill all groups with ingredients for steps
+    //   fill all groups with ingredients for steps
     stepsArray.value.push(chemicalsGroups.value[i]);
     if(chemicalsGroups.value[i].primary && !chemicalsGroups.value[i+1].primary) {
       stepsArray.value.push({
-        id: 8,
+        id: 0,
         label: 'All other ingredients',
         ingredients: [],
         primary: true,
@@ -117,10 +126,23 @@ onMounted(() => {
       });
     }
   }
+};
+
+onMounted(() => {
+  chemicalsGroups.value = ingredients.getGroups();
+  chemicalIngredients.value = ingredients.getIngredients();
+  generalStats.value = ingredients.getGeneralStats();
+  presetSelected.value = compositions.activePreset();
+  reloadIngredients();
 });
 </script>
 
 <template>
+  <div class="row">
+    <div class="col-12">
+      <Select v-model="presetSelected" @change="setPreset" :options="compositions.presets" optionLabel="name" placeholder="Normal" class="w-full md:w-56" />
+    </div>
+  </div>
   <div class="row">
     <div class="col-12">
       <div v-for="stat in generalStats" class="card" style="padding: 0; margin-top: 10px">
