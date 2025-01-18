@@ -26,6 +26,8 @@ const chemicalIngredientsWithValues = ref([]);
 const infoDialog = ref({data: {}, status: false});
 const analyzationDialog = ref({message: '', status: false});
 const savedRecipi = ref({ingredients: []});
+const stepsArray = ref([]);
+const showAdvancedIngredients = ref(false);
 
 const showInfoDialog = (data) => {
   infoDialog.value.data = data;
@@ -103,6 +105,17 @@ onMounted(() => {
         chemicalsGroups.value[i].ingredients.push(chemical);
       }
     });
+  //   fill all groups with ingredients for steps
+    stepsArray.value.push(chemicalsGroups.value[i]);
+    if(chemicalsGroups.value[i].primary && !chemicalsGroups.value[i+1].primary) {
+      stepsArray.value.push({
+        id: 8,
+        label: 'All other ingredients',
+        ingredients: [],
+        primary: true,
+        infoText: 'All other ingredients prepared for you, you can modify whatever you want but be awared that this can affect the final product'
+      });
+    }
   }
 });
 </script>
@@ -110,8 +123,8 @@ onMounted(() => {
 <template>
   <div class="row">
     <div class="col-12">
-      <div class="card" style="padding: 0">
-        <MeterGroup :value="generalStats" labelPosition="start" labelOrientation="vertical" />
+      <div v-for="stat in generalStats" class="card" style="padding: 0; margin-top: 10px">
+        <MeterGroup :value="[stat]" labelPosition="start" labelOrientation="vertical" />
       </div>
     </div>
   </div>
@@ -120,11 +133,10 @@ onMounted(() => {
     <div class="col-12">
 
       <Stepper value="1">
-        <StepItem v-for="group in chemicalsGroups" :key="group.id" :value="group.id">
+        <StepItem v-for="(group, index) in stepsArray" :class="`${!group.primary && !showAdvancedIngredients ? 'd-none' : ''}`" :key="index" :value="index">
           <Step>{{ group.label }}</Step>
           <StepPanel v-slot="{ activateCallback }">
-            <div class="">
-
+            <div class="" v-if="!group.infoText">
               <MeterGroup :value="group.ingredients" labelPosition="start" style="margin-bottom: 20px">
                 <template #label="{ value }">
                   <div class="flex flex-wrap gap-4" style="display: flex; gap: 10px">
@@ -160,19 +172,26 @@ onMounted(() => {
                 </template>
               </MeterGroup>
 
+              <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                <Button v-if="index === 0" label="Back" @click="activateCallback(index - 1)" />
+                <Button v-if="index !== 0 && index !== (stepsArray.length - 1)" label="Next" @click="activateCallback(index + 1)" />
+                <Button v-if="index === stepsArray.length" label="Save" @click="saveRecipi" />
+              </div>
+            </div>
+            <div v-if="group.infoText">
+              <div v-if="group.infoText">{{group.infoText}}</div>
+              <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                <Button label="Advanced" @click="activateCallback(index + 1);showAdvancedIngredients=true" severity="danger"/>
+                <Button label="Use standart" @click="saveRecipi" />
+              </div>
 
-
-
-              <Button v-if="group.id !== 1" label="Back" @click="activateCallback(group.id - 1)" />
-              <Button v-if="group.id !== 6" label="Next" @click="activateCallback(group.id + 1)" />
-              <Button v-if="group.id === 6" label="Save" @click="saveRecipi" />
             </div>
           </StepPanel>
         </StepItem>
 
       </Stepper>
 
-      <div style="display: flex; justify-content: space-between">
+      <div style="display: flex; justify-content: space-between; margin-top: 10px">
         <Button label="Analyze" @click="analyzeRecipi" />
         <Button label="Buy" />
       </div>

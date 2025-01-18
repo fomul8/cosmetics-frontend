@@ -26,10 +26,10 @@ class Ingredients {
 
     setGeneralStats() {
         const generelalStats = [
-            { label: 'натуральность', color: '#34d399', value: 24 },
-            { label: 'Messages', color: '#fbbf24', value: 16 },
-            { label: 'Media', color: '#60a5fa', value: 24 },
-            { label: 'System', color: '#c084fc', value: 12 }
+            { label: 'Greasy, sticky', color: '#34d399', value: 24 },
+            { label: 'Tight and fluid', color: '#fbbf24', value: 16 },
+            { label: 'Life', color: '#60a5fa', value: 24 },
+            { label: 'Sun protection factor(SPF)', color: '#c084fc', value: 12 }
         ];
         this.generelalStats = generelalStats;
     }
@@ -328,12 +328,13 @@ class Ingredients {
      */
     setGroups() {
         const chemicalsGroups = [
-            { label: 'Active ingredients', value: 24, id: 1, ingredients: [] },
-            { label: 'Emollients(Oils)', value: 16, id: 2, ingredients: [] },
-            { label: 'Humectants', value: 24, id: 3, ingredients: [] },
-            { label: 'Emulsifiers', value: 12, id: 4, ingredients: [] },
-            { label: 'Thickeners', value: 12, id: 5, ingredients: [] },
-            { label: 'Improvers', value: 12, id: 6, ingredients: [] },
+            { label: 'Active ingredients', value: 24, id: 1, primary: true,  ingredients: [] },
+            { label: 'Emollients(Oils)', value: 16, id: 2, primary: true, ingredients: [] },
+            { label: 'Preservative', value: 24, id: 7, primary: true, ingredients: [] },
+            { label: 'Humectants', value: 24, id: 3, primary: false, ingredients: [] },
+            { label: 'Emulsifiers', value: 12, id: 4,primary: false, ingredients: [] },
+            { label: 'Thickeners', value: 12, id: 5,primary: false, ingredients: [] },
+            { label: 'Improvers', value: 12, id: 6,primary: false, ingredients: [] },
         ];
         this.chemicalsGroups = chemicalsGroups;
     }
