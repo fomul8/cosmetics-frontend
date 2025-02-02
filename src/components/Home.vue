@@ -9,38 +9,27 @@ const router = useRouter();
 <template>
 <div class="row">
   <div class="col-12">
-    <div class="mix-container">
-      <img src="../assets/potion1.svg" width="50" class="rotate-30-deg" style="position: relative; top: 10svh; left: 30px;">
-      <img src="../assets/potion2.svg" width="70" class="rotate-60-deg" style="position: relative; top: 10%; left: 70%;">
-      <img src="../assets/potion3.svg" width="80" class="rotate-10-deg" style="position: relative; top: 20svh; left: 170px;">
-      <Button @click="router.push('mix')" label="MIX" class="mix-btn" variant="outlined" style="font-weight: 900"/>
+    <h2 style="text-align: center">Make your own cosmetics from best ingredients you want throw away chemical</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="buttons-main">
+      <Button @click="router.push({name: 'mix', params: {id: 1}})" label="Face care" class="mix-btn" variant="outlined" style="font-weight: 900"/>
+      <Button @click="router.push({name: 'mix', params: {id: 2}})" label="Body care" class="mix-btn" variant="outlined" style="font-weight: 900"/>
     </div>
   </div>
 </div>
-  <div class="row" style="margin-top: 40px">
-    <div class="col-12">
-      <h2 style="text-align: center">How it is works?</h2>
-    </div>
-    <div class="col-12">
-      <div class="flex-feature">
-        <div>
-          <span>Mix uniq cosmetic for you </span>
-        </div>
-        <img src="../assets/mix-mix.png" width="140">
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="flex-feature">
-        <img src="../assets/doctor-img.avif" width="140">
-        <div>
-          <span>Doctor video help bla bla bla </span>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <style scoped>
+
+.buttons-main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
 .mix-container {
   height: 30svh;
   width: 100%;
@@ -48,12 +37,7 @@ const router = useRouter();
 }
 
 .mix-btn {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  top: 50%;
-  font-size: 3rem;
-  transform: translate(-50%, -50%);
+  font-size: 2rem;
   width: 70%;
 }
 

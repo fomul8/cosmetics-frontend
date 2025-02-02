@@ -8,7 +8,7 @@ import Consultation from "../components/Consultation.vue";
 const routes = [
     { path: '/', name: 'home', component: Home},
     { path: '/profile', name: 'profile', component: Profile},
-    { path: '/mix', name: 'mix', component: Mix},
+    { path: '/mix/:id', name: 'mix', component: Mix},
     { path: '/consultation', name: 'consultation', component: Consultation},
 ]
 
