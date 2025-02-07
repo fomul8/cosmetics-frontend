@@ -1,13 +1,12 @@
 <script setup>
 import RadioButton from 'primevue/radiobutton';
 import SelectButton from 'primevue/selectbutton';
-import {ref, computed, onMounted, watch} from "vue";
+import {ref, computed, onMounted, watch, defineModel} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
 
-// const props = defineProps(['ingredients']);
 const ingredientsModel = defineModel('ingredients');
 const sortVal = ref('moistaraiser');
 const sortOptions = ['moistaraiser', 'anti-aging', 'wrinse', 'achne'];
@@ -72,7 +71,7 @@ const calculateTotalIndicator = () => {
 </script>
 
 <template>
- <h2>Active ingredients</h2>
+ <h2 style="text-align: center">Active ingredients</h2>
   <div class="row">
     <div class="col-12">
       <h4>Sort by:</h4>
@@ -101,31 +100,5 @@ const calculateTotalIndicator = () => {
 </template>
 
 <style scoped>
-.items-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  justify-content: center;
-  margin: 0 0 20px 0;
-}
 
-.inner-shadow {
-  box-shadow: inset 0 0 10px #ffffff;
-}
-
-.indicator-3-percent-fill {
-  background: linear-gradient(to top, #673ab7 3%, #f8f9fa 33%);
-}
-
-.indicator-33-percent-fill {
-  background: linear-gradient(to top, #673ab7 33%, #f8f9fa 33%);
-}
-
-.indicator-66-percent-fill {
-  background: linear-gradient(to top, #673ab7 66%, #f8f9fa 33%);
-}
-
-.indicator-100-percent-fill {
-  background: linear-gradient(to top, #673ab7 100%, #f8f9fa 33%);
-}
 </style>

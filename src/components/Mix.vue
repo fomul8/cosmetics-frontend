@@ -52,6 +52,7 @@ onMounted(() => {
   chemicalsGroups.value = ingredients.getGroups();
   chemicalIngredients.value = ingredients.getIngredients();
   steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
+  steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
 });
 
 
@@ -59,7 +60,7 @@ onMounted(() => {
 
 <template>
   <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients"></Active>
-  <Oil v-if="steps.oil.on"></Oil>
+  <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on"></Botanical>
   <Improvers v-if="steps.improvers.on"></Improvers>
   <Info v-if="steps.info.on"></Info>
@@ -67,7 +68,7 @@ onMounted(() => {
 
 
   <div class="footer-buttons">
-    <Button label="Back" @click="stepBack" v-if="!steps.active.on"></Button>
+    <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>
     <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>
     <Button label="Checkout" @click="checkout" v-if="steps.review.on"></Button>
   </div>
@@ -76,11 +77,11 @@ onMounted(() => {
 <style scoped>
 .footer-buttons {
   display: flex;
-  gap: 30px;
   justify-content: space-between;
   align-items: center;
   position: absolute;
   bottom: 0;
   padding: 20px 0;
+  width: calc(100% - 40px);
 }
 </style>
