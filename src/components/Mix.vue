@@ -83,8 +83,6 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  bottom: 0;
   padding: 20px 0;
   width: calc(100% - 40px);
 }
