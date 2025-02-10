@@ -5,27 +5,40 @@ import {ref, computed, onMounted, watch, defineModel} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
+import randomColor from '../../helpers/colors';
+import flaskA from '../active-icons/flaskA.vue';
+import flaskB from '../active-icons/flaskB.vue';
+
 const toast = useToast();
+const INGREDIENT_PARTS_ALLOWED = 4;
 
 const ingredientsModel = defineModel('ingredients');
 const sortVal = ref('moistaraiser');
 const sortOptions = ['moistaraiser', 'anti-aging', 'wrinse', 'achne'];
-const totalIndicatorClass = computed(() => {
+const totalIndicatorGradient = computed(() => {
   const total = calculateTotalIndicator();
-  if(total === 0) {
-    return 'indicator-0-percent-fill';
-  } else if(total === 1) {
-    return 'indicator-33-percent-fill';
-  } else if(total === 2) {
-    return 'indicator-66-percent-fill';
-  } else {
-    return 'indicator-100-percent-fill';
+  let gradientCssString = '';
+  const percentEq = 100 / INGREDIENT_PARTS_ALLOWED;
+  let lastPercent = 0;
+  for(let ingredient of ingredientsModel.value) {
+    if(ingredient.relativeValue > 0) {
+      const percent = percentEq * ingredient.relativeValue;
+      gradientCssString += `${ingredient.color} ${lastPercent}%, ${ingredient.color} ${percent + lastPercent}%, `;
+      lastPercent += percent;
+    }
   }
+  if (lastPercent < 100) {
+    gradientCssString += `#fff ${lastPercent}%, #fff 100%, `;
+  }
+  //remove , from the end of string
+  gradientCssString = gradientCssString.slice(0, -2);
+  console.log(gradientCssString);
+  return gradientCssString;
 });
 
 const addValue = (ingredient) => {
   const total = calculateTotalIndicator();
-  if(ingredient.relativeValue === 3 || total === 3) {
+  if(ingredient.relativeValue === INGREDIENT_PARTS_ALLOWED || total === INGREDIENT_PARTS_ALLOWED) {
     toast.add({severity: 'secondary', summary: 'limit', detail: 'Maximum value, decrease something', life: 3000});
     return;
   }
@@ -68,6 +81,16 @@ const calculateTotalIndicator = () => {
   return total;
 }
 
+const countOfSelectedIngredients = computed(() => {
+  let count = 0;
+  for(const ingredient of ingredientsModel.value) {
+    if(ingredient.relativeValue > 0) {
+      count++;
+    }
+  }
+  return count;
+})
+
 </script>
 
 <template>
@@ -84,8 +107,12 @@ const calculateTotalIndicator = () => {
       <div class="items-container" v-for="ingredient in ingredientsModel">
         <div class="flex gap-2" style="align-items: center">
           <i class="pi pi-plus-circle" @click="addValue(ingredient)" style="font-size: 1rem; cursor: pointer"></i>
-          <img v-if="ingredient.relativeValue === 0" src="../../assets/flask2-0.svg" width="40">
-          <img v-if="ingredient.relativeValue !== 0" src="../../assets/flask2-1.svg" width="40">
+          <div v-if="ingredient.relativeValue === 0">
+            <flaskA :color="ingredient.color"/>
+          </div>
+          <div v-if="ingredient.relativeValue !== 0">
+            <flaskB :color="ingredient.color"/>
+          </div>
           <i class="pi pi-minus-circle" @click="removeValue(ingredient)" style="font-size: 1rem; cursor: pointer"></i>
           <div>{{ ingredient.label }}</div>
           <span style="font-size: 8px; color: red;">v part ({{ingredient.relativeValue}})</span>
@@ -93,7 +120,9 @@ const calculateTotalIndicator = () => {
       </div>
     </div>
     <div class="col-3">
-      <div :class="`${totalIndicatorClass } inner-shadow`" style="width: 100%; height: 100%; border: 2px solid #673ab7; border-radius: 5px"></div>
+      <div
+          :class="`inner-shadow`"
+          :style="`width: 100%; height: 100%; border: 2px solid #673ab7; border-radius: 5px; background: linear-gradient(to top, ${totalIndicatorGradient})`"></div>
     </div>
   </div>
   <Toast :baseZIndex="10000"></Toast>

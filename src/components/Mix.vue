@@ -13,7 +13,7 @@ import Shipment from "./mix-steps/Shipment.vue";
 import Submit from "./mix-steps/Submit.vue";
 
 import Ingredients  from "../beemulation/ingredients.js";
-
+import randomColor from '../helpers/colors';
 const ingredients = new Ingredients();
 const route = useRoute();
 
@@ -51,8 +51,12 @@ const checkout = () => {
 onMounted(() => {
   chemicalsGroups.value = ingredients.getGroups();
   chemicalIngredients.value = ingredients.getIngredients();
+  chemicalIngredients.value.forEach(ingredient => {
+    ingredient.color = randomColor();
+  });
   steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
   steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
+
 });
 
 
