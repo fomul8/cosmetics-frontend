@@ -35,7 +35,7 @@ class Ingredients {
                 label: 'Hyaluronic Acid',
                 id: 1,
                 groupId: 1,
-                relativeValue: 1,
+                relativeValue: 0,
                 effects: [
                     { value: 2, label: 'moistaraiser' },
                     { value: 0, label: 'anti-aging' },
@@ -47,7 +47,7 @@ class Ingredients {
                 label: 'Retinoids',
                 id: 2,
                 groupId: 1,
-                relativeValue: 1,
+                relativeValue: 0,
                 effects: [
                     { value: 0, label: 'moistaraiser' },
                     { value: 2, label: 'anti-aging' },
@@ -335,6 +335,14 @@ class Ingredients {
     }
     getGroups() {
         return this.chemicalsGroups;
+    }
+
+    getIngredientsByRecipeId(id, groupId) {
+        const ingredients = this.ingredients.filter(ingredient => ingredient.groupId === groupId);
+        ingredients[id-1].relativeValue = 1;
+        ingredients[id].relativeValue = 1;
+        ingredients[id+1].relativeValue = 1;
+        return ingredients;
     }
 }
 

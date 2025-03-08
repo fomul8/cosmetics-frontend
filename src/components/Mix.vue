@@ -48,6 +48,11 @@ const checkout = () => {
 
 }
 
+const changeBaseRecipe = (id) => {
+  const groupId = 1;
+  steps.value.active.dataIngredients = ingredients.getIngredientsByRecipeId(id, groupId);
+}
+
 onMounted(() => {
   chemicalsGroups.value = ingredients.getGroups();
   chemicalIngredients.value = ingredients.getIngredients();
@@ -63,7 +68,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients"></Active>
+  <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients" @change-base-recipe="changeBaseRecipe"></Active>
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on"></Botanical>
   <Improvers v-if="steps.improvers.on"></Improvers>
@@ -83,7 +88,8 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
   padding: 20px 0;
-  width: calc(100% - 40px);
+  width: 100%;
 }
 </style>
