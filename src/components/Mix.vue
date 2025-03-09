@@ -61,7 +61,7 @@ onMounted(() => {
   });
   steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
   steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
-
+  steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
 });
 
 
@@ -70,7 +70,7 @@ onMounted(() => {
 <template>
   <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients" @change-base-recipe="changeBaseRecipe"></Active>
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
-  <Botanical v-if="steps.botanical.on"></Botanical>
+  <Botanical v-if="steps.botanical.on" v-model:ingredients="steps.botanical.dataIngredients"></Botanical>
   <Improvers v-if="steps.improvers.on"></Improvers>
   <Info v-if="steps.info.on"></Info>
   <Review v-if="steps.review.on"></Review>
