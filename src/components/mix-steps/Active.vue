@@ -162,7 +162,7 @@ const changeBaseRecipe = (id) => {
         <InputGroupAddon>
           <i class="pi pi-map"></i>
         </InputGroupAddon>
-        <Select v-model="sortVal" :options="sortOptions" placeholder="sort by effect" />
+        <Select v-model="sortVal" @change="sortIngredientsByEffects" :options="sortOptions" placeholder="sort by effect" />
       </InputGroup>
     </div>
   </div>
