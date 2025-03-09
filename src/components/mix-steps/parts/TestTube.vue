@@ -6,7 +6,7 @@ import INGREDIENT_PARTS_ALLOWED from '../../../constants/constants.js';
 const ingredientsModel = defineModel('ingredients');
 
 const totalIndicatorGradient = computed(() => {
-  const basicBg = '#cbd5e1';
+  const basicBg = '#e2e8f0';
   let gradientCssString = '';
   const percentEq = 100 / INGREDIENT_PARTS_ALLOWED;
   let lastPercent = 0;
