@@ -2,9 +2,9 @@
 import {ref, computed, onMounted, watch, defineModel, defineEmits} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
-import Carousel from 'primevue/carousel';
-import Dialog from 'primevue/dialog';
-import Divider  from "primevue/divider";
+// import Carousel from 'primevue/carousel';
+// import Dialog from 'primevue/dialog';
+// import Divider  from "primevue/divider";
 import InputGroup from 'primevue/inputgroup';
 import Select from 'primevue/select';
 import InputGroupAddon from 'primevue/inputgroupaddon';
@@ -21,6 +21,7 @@ const INGREDIENT_PARTS_ALLOWED = 4;
 
 const ingredientsModel = defineModel('ingredients');
 const sortVal = ref('');
+const selectedExample = ref({});
 const sortOptions = ['moistaraiser', 'anti-aging', 'wrinse', 'achne'];
 // TODO it is tmp mock
 const recipeVariants = ref([
@@ -30,9 +31,9 @@ const recipeVariants = ref([
 ]);
 
 const  generalPresets = ref([
-  {label: 'Recipes Face care', icon: faceIcon, key: 'face'},
-  {label: 'Recipes Hands care', icon: handsIcon, key: 'hands'},
-  {label: 'Recipes Foot care', icon: footIcon, key: 'foot'},
+  {label: 'Recipes Face care', icon: faceIcon, items: recipeVariants.value, key: 'face'},
+  {label: 'Recipes Hands care', icon: handsIcon, items: recipeVariants.value, key: 'hands'},
+  {label: 'Recipes Foot care', icon: footIcon, items: recipeVariants.value, key: 'foot'},
 ]);
 const responsiveOptions = ref([
   {
@@ -59,22 +60,6 @@ const responsiveOptions = ref([
 
 const dialog = ref({visible: false, sublabel: '', label: ''});
 
-// const addValue = (ingredient) => {
-//   const total = calculateTotalIndicator();
-//   if(ingredient.relativeValue === INGREDIENT_PARTS_ALLOWED || total === INGREDIENT_PARTS_ALLOWED) {
-//     toast.add({severity: 'secondary', summary: 'limit', detail: 'Maximum value, decrease something', life: 3000});
-//     return;
-//   }
-//   ingredient.relativeValue++;
-// }
-//
-// const removeValue = (ingredient) => {
-//   if(ingredient.relativeValue === 0) {
-//     return;
-//   }
-//   ingredient.relativeValue--;
-// }
-
 const sortIngredientsByEffects = () => {
   const sortedIngredientsMax = [];
   const sortedIngredientsMid = [];
@@ -96,14 +81,6 @@ const sortIngredientsByEffects = () => {
   ingredientsModel.value = sortedIngredientsMax.concat(sortedIngredientsMid, sortedIngredientsMin);
 }
 
-// const calculateTotalIndicator = () => {
-//   let total = 0;
-//   for(const ingredient of ingredientsModel.value) {
-//     total += ingredient.relativeValue;
-//   }
-//   return total;
-// }
-
 const countOfSelectedIngredients = computed(() => {
   let count = 0;
   for(const ingredient of ingredientsModel.value) {
@@ -114,21 +91,10 @@ const countOfSelectedIngredients = computed(() => {
   return count;
 });
 
-const getRecipeVariants = () => {
-  return recipeVariantsMock.value;
-}
-
-const choosePresetsDialog = (key) => {
-  dialog.value.visible = true;
-  for(const preset of generalPresets.value) {
-    if(preset.key === key) {
-      dialog.value.sublabel = `You choose ${preset.label} global presets`;
-      dialog.value.label = 'Choose presets';
-    }
-  }
-}
-
 const changeBaseRecipe = (id) => {
+  if(!id) {
+    id = selectedExample.value.id;
+  }
   dialog.value.visible = false;
   for(const recipe of recipeVariants.value) {
     if(recipe.id === id) {
@@ -146,23 +112,26 @@ const changeBaseRecipe = (id) => {
  <h2 style="text-align: center">Active ingredients</h2>
   <div class="row">
     <div class="col-12">
-      <Carousel :value="generalPresets" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions">
-        <template #item="slotProps">
-          <div @click="choosePresetsDialog(slotProps.data.key)">
-            <img :src="slotProps.data.icon" style="width: 70px; height: 70px"/>
-            <div>{{slotProps.data.label}}</div>
-          </div>
-        </template>
-      </Carousel>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
       <InputGroup>
         <InputGroupAddon>
           <i class="pi pi-map"></i>
         </InputGroupAddon>
-        <Select v-model="sortVal" @change="sortIngredientsByEffects" :options="sortOptions" placeholder="sort by effect" />
+        <Select v-model="selectedExample"
+                @change="changeBaseRecipe"
+                :options="generalPresets"
+                optionLabel="label"
+                optionGroupLabel="label"
+                optionGroupChildren="items"
+                placeholder="Examples of formule" class="w-full md:w-56">
+          <template #optiongroup="slotProps">
+            <div class="flex items-center">
+              <img :alt="slotProps.option.label"
+                   :src="slotProps.option.icon"
+                   :class="`mr-2 flag`" style="width: 18px; margin-right: 5px" />
+              <div>{{ slotProps.option.label}}</div>
+            </div>
+          </template>
+        </Select>
       </InputGroup>
     </div>
   </div>
@@ -177,17 +146,6 @@ const changeBaseRecipe = (id) => {
   </div>
 
   <Toast :baseZIndex="10000"></Toast>
-
-  <Dialog v-model:visible="dialog.visible" modal header="Choose presets" :style="{ width: '80rem' }">
-    <span class="text-surface-500 dark:text-surface-400 block mb-8">{{dialog.sublabel}}.</span>
-    <span class="text-surface-500 dark:text-surface-400" >You can use our recipe as a basis and adapt it to your needs.</span>
-    <div class="flex items-center" style="flex-direction: column">
-      <div v-for="item in recipeVariants">
-        <div @click="changeBaseRecipe(item.id)" style="padding: 5px 0; width: 100%;">{{item.label}}</div>
-        <Divider />
-      </div>
-    </div>
-  </Dialog>
 </template>
 
 <style scoped>

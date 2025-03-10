@@ -4,9 +4,6 @@ import Button from "primevue/button";
 </script>
 
 <template>
-
-  <Button @click="" label="Mix" class="mix-btn" variant="outlined" style="font-weight: 900"/>
-
   <p>List of ingredients</p>
   <ul>
     <li>HA</li>

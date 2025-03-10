@@ -79,7 +79,7 @@ onMounted(() => {
   <div class="footer-buttons">
     <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>
     <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>
-    <Button label="Checkout" @click="checkout" v-if="steps.review.on"></Button>
+    <Button label="Mix and checkout" @click="checkout" v-if="steps.review.on"></Button>
   </div>
 </template>
 
