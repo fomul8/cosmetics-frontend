@@ -53,7 +53,7 @@ const totalIndicatorGradient = computed(() => {
 
 .left-rant {
   border-left: 1px solid #673ab7;
-  border-top: 1px solid #673ab7;
+  border-top: 2px solid #673ab7;
   border-bottom: 1px solid #673ab7;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -67,7 +67,7 @@ const totalIndicatorGradient = computed(() => {
 
 .right-rant {
   border-right: 1px solid #673ab7;
-  border-top: 1px solid #673ab7;
+  border-top: 2px solid #673ab7;
   border-bottom: 1px solid #673ab7;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
