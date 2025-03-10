@@ -339,7 +339,7 @@ class Ingredients {
 
     getIngredientsByRecipeId(id, groupId) {
         const ingredients = this.ingredients.filter(ingredient => ingredient.groupId === groupId);
-        ingredients[id-1].relativeValue = 1;
+        ingredients[id-1].relativeValue = 2;
         ingredients[id].relativeValue = 1;
         ingredients[id+1].relativeValue = 1;
         return ingredients;

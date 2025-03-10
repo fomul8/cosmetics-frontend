@@ -91,10 +91,8 @@ const countOfSelectedIngredients = computed(() => {
   return count;
 });
 
-const changeBaseRecipe = (id) => {
-  if(!id) {
-    id = selectedExample.value.id;
-  }
+const changeBaseRecipe = () => {
+  const id = selectedExample.value.id;
   dialog.value.visible = false;
   for(const recipe of recipeVariants.value) {
     if(recipe.id === id) {
