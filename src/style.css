@@ -83,6 +83,10 @@ button:focus-visible {
   display: flex;
 }
 
+.items-center {
+  justify-content: center;
+}
+
 .gap-4 {
   gap: 40px;
 }
@@ -121,4 +125,8 @@ button:focus-visible {
 
 .indicator-100-percent-fill {
   background: linear-gradient(to top, #673ab7 100%, #f8f9fa 33%);
+}
+
+.w-100 {
+  width: 100%;
 }
