@@ -48,7 +48,7 @@ class Ingredients {
      */
     async getIngredients() {
         try {
-            let response = await fetch('/api/ingredients');
+            let response = await fetch('/api/ingredients', {headers: {'Cache-Control': 'no-cache'}});
             if (response.ok) {
                 let chemicalIngredients = await response.json();
                 this.ingredients = chemicalIngredients;
