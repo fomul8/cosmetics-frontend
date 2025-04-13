@@ -53,9 +53,9 @@ const changeBaseRecipe = (id) => {
   steps.value.active.dataIngredients = ingredients.getIngredientsByRecipeId(id, groupId);
 }
 
-onMounted(() => {
+onMounted(async () => {
   chemicalsGroups.value = ingredients.getGroups();
-  chemicalIngredients.value = ingredients.getIngredients();
+  chemicalIngredients.value = await ingredients.getIngredients();
   chemicalIngredients.value.forEach(ingredient => {
     ingredient.color = randomColor();
   });

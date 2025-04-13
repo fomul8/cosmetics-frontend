@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router';
+import {createMemoryHistory, createRouter, createWebHistory} from 'vue-router';
 import App from '../App.vue';
 import Home from '../components/Home.vue';
 import Profile from '../components/Profile.vue';
@@ -8,10 +8,10 @@ import {computed} from "vue";
 import {isAuthenticated, logout} from "../helpers/auth";
 
 const routes = [
-    { path: '/', name: 'home', component: Home},
-    { path: '/profile', name: 'profile', component: Profile, meta: { requiresAuth: true }},
-    { path: '/mix/:id', name: 'mix', component: Mix},
-    { path: '/consultation', name: 'consultation', component: Consultation},
+    {path: '/', name: 'home', component: Home},
+    {path: '/profile', name: 'profile', component: Profile, meta: {requiresAuth: true}},
+    {path: '/mix/:id', name: 'mix', component: Mix},
+    {path: '/consultation', name: 'consultation', component: Consultation},
 ];
 
 const router = createRouter({
@@ -22,11 +22,10 @@ const router = createRouter({
 // Глобальный navigation guard
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuthenticated()) {
-        next({ name: 'home' }); // перенаправляем на главную, если не аутентифицирован
+        next({name: 'home'}); // перенаправляем на главную, если не аутентифицирован
     } else {
         next();
     }
 });
 
-
-export default router
+export default router;
