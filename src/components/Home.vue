@@ -2,6 +2,16 @@
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import 'primeicons/primeicons.css';
 import Button from 'primevue/button';
+import Card from 'primevue/card';
+import Timeline from 'primevue/timeline';
+import { ref } from 'vue';
+
+const events = ref([
+  { status: 'Formulate recipy', sub: 'full controll', icon: 'pi pi-cog', color: '#673AB7' },
+  { status: 'Ordered', sub: 'Select volume', icon: 'pi pi-shopping-cart', color: '#9C27B0'},
+  { status: 'Shipping', sub: 'On your choise', icon: 'pi pi-shopping-cart', color: '#FF9800' },
+  { status: 'Delivered', sub: 'be happy', icon: 'pi pi-check', color: '#607D8B' }
+])
 
 const router = useRouter();
 </script>
@@ -18,6 +28,33 @@ const router = useRouter();
     </div>
   </div>
 </div>
+
+  <div class="row">
+    <Timeline :value="events" align="alternate" class="customized-timeline">
+      <template #marker="slotProps">
+        <span class="timeline-icon" :style="{ backgroundColor: slotProps.item.color }">
+            <i :class="slotProps.item.icon"></i>
+        </span>
+      </template>
+      <template #content="slotProps">
+        <Card class="mt-4">
+          <template #title>
+            {{ slotProps.item.status }}
+          </template>
+          <template #subtitle>
+            {{ slotProps.item.sub }}
+          </template>
+          <template #content>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate
+              neque quas!
+            </p>
+            <Button label="Read more" text></Button>
+          </template>
+        </Card>
+      </template>
+    </Timeline>
+  </div>
 </template>
 
 <style scoped>
@@ -56,5 +93,31 @@ const router = useRouter();
   justify-content: space-between;
   gap: 20px;
   align-items: center;
+}
+
+@media screen and (max-width: 960px) {
+  ::v-deep(.customized-timeline) {
+    .p-timeline-event:nth-child(even) {
+      flex-direction: row !important;
+
+      .p-timeline-event-content {
+        text-align: left;
+      }
+    }
+
+    .p-timeline-event-opposite {
+      flex: 0;
+    }
+  }
+}
+
+.timeline-icon {
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  padding: 0.5rem;
 }
 </style>

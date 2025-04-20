@@ -130,3 +130,13 @@ button:focus-visible {
 .w-100 {
   width: 100%;
 }
+
+.costom-order-timeline .p-timeline-event-opposite {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .p-timeline-event-opposite {
+    display: block !important;
+  }
+}

@@ -1,5 +1,9 @@
 <script setup>
 import Divider from 'primevue/divider';
+import RadioButton from 'primevue/radiobutton';
+import {ref} from "vue";
+
+const selection = ref('1');
 </script>
 
 <template>
@@ -10,12 +14,20 @@ import Divider from 'primevue/divider';
         Any cosmetics contains water and oil, so it is necessary to use emulsifiers. Emulsifiers are necessary for combining water and oil-based ingredients. Natural emulsifiers, like beeswax and lecithin, are less likely to cause irritation than synthetic options.
       </p>
       <div class="flex-table">
-        <div style="text-align: center">Modern,
-        Premium,
-        Emulsifiers
+        <div style="text-align: center">
+          Modern,
+          Premium,
+          Emulsifiers
+          <RadioButton v-model="selection" inputId="ingredient1" name="From plant based" value="1" />
         </div>
-        <div class="section">From plant based</div>
-        <div class="section">I trust you to choose best option</div>
+        <div class="section">
+          From plant based
+          <RadioButton v-model="selection" inputId="ingredient2" name="From plant based" value="2" />
+        </div>
+        <div class="section">
+          I trust you to choose best option
+          <RadioButton v-model="selection" inputId="ingredient3" name="From plant based" value="3" />
+        </div>
       </div>
 
       <Divider />

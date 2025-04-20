@@ -34,6 +34,11 @@ const items = ref([
     icon: 'pi pi-video',
     link: '/consultation'
   },
+  {
+    label: 'Orders',
+    icon: 'pi pi-tags',
+    link: '/orders-history'
+  },
   // {
   //   label: 'Recipes',
   //   icon: 'pi pi-tags',

@@ -55,7 +55,6 @@ const calculateTotalIndicator = () => {
       </div>
       <i class="pi pi-minus-circle" @click="removeValue(ingredient)" style="font-size: 1rem; cursor: pointer"></i>
       <div>{{ ingredient.label }}</div>
-      <span style="font-size: 8px; color: red;">v part ({{ingredient.relativeValue}})</span>
     </div>
   </div>
 
