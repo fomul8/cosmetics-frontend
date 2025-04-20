@@ -19,7 +19,9 @@ const logoutL = async() => {
     isLoggedIn.value = false;
     await router.push('/');
   }
-
+}
+const logoutC = () => {
+  logoutDialog.value.visible = true;
 }
 const items = ref([
   {
@@ -43,7 +45,8 @@ const items = ref([
   {
     label: 'Logout',
     icon: 'pi pi-share-alt',
-    command: logoutL
+    class: 'logout-link',
+    command: logoutC
   }
 ]);
 const loginDialog = ref({
@@ -54,7 +57,10 @@ const registerDialog = ref({
   email: '',
   password: '',
   password_confirmation: '',
-})
+});
+const logoutDialog = ref({
+  visible: false,
+});
 
 
 
@@ -79,25 +85,27 @@ const signIn = async () => {
 
 <template>
   <div class="header-container">
-    <i class="pi pi-align-justify vj-openmob-menu" @click="toggleMenu" style="font-size: 1.5rem; cursor: pointer"></i>
-    <div class="login-container" v-if="!isLoggedIn">
-      <div @click="loginDialog.visible=true">Login</div>
-      <div @click="registerDialog.visible=true">Register</div>
-    </div>
-    <router-link to="/profile" v-if="isLoggedIn" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
+    <div class="container flex-container">
+      <i class="pi pi-align-justify vj-openmob-menu" @click="toggleMenu" style="font-size: 1.5rem; cursor: pointer"></i>
+      <div class="login-container" v-if="!isLoggedIn">
+        <div @click="loginDialog.visible=true">Login</div>
+        <div @click="registerDialog.visible=true">Register</div>
+      </div>
+      <router-link to="/profile" v-if="isLoggedIn" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
 
-    <TieredMenu ref="menu" id="overlay_tmenu" :model="items" popup>
-      <template #item="{ item, props, hasSubmenu }">
-        <router-link v-if="item.link" :to="item.link" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
-          <span :class="item.icon" />
-          <span class="ml-2">{{ item.label }}</span>
-        </router-link>
-        <div v-else @click="item.command" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
-          <span :class="item.icon" />
-          <span class="ml-2">{{ item.label }}</span>
-        </div>
-      </template>
-    </TieredMenu>
+      <TieredMenu ref="menu" id="overlay_tmenu" :model="items" popup>
+        <template #item="{ item, props, hasSubmenu }">
+          <router-link v-if="item.link" :to="item.link" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
+            <span :class="item.icon" />
+            <span class="ml-2">{{ item.label }}</span>
+          </router-link>
+          <div v-else @click="item.command" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
+            <span :class="item.icon" />
+            <span class="ml-2">{{ item.label }}</span>
+          </div>
+        </template>
+      </TieredMenu>
+    </div>
   </div>
 
   <div class="container">
@@ -141,22 +149,34 @@ const signIn = async () => {
       <Button type="button" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerDialog.visible = false"></Button>
     </div>
   </Dialog>
+
+  <!--  logout dialog-->
+  <Dialog v-model:visible="logoutDialog.visible" modal header="Logout" :style="{ width: '25rem' }">
+    <div style="margin-bottom: 30px; text-align: center">Are you realy want to logout?</div>
+
+    <div class="flex items-center gap-4">
+      <Button type="button" label="Cancel" severity="secondary" @click="logoutDialog.visible = false"></Button>
+      <Button type="button" label="Yes" @click="logoutL"></Button>
+    </div>
+  </Dialog>
 </template>
 
 <style scoped>
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
   border-bottom: 1px solid var(--p-primary-500);
   width: 100%;
-  align-items: center;
   position: sticky;
 }
 
 .container {
   padding: 20px;
   max-width: 1280px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .login-container {
@@ -171,6 +191,10 @@ const signIn = async () => {
   align-items: start;
   gap: 3px;
   margin-bottom: 30px;
+}
+
+.logout-link {
+  cursor: pointer;
 }
 
 
