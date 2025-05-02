@@ -46,16 +46,18 @@ const calculateTotalIndicator = () => {
 <template>
   <div class="items-container" v-for="ingredient in ingredientsModel">
     <div class="flex gap-2" style="align-items: center">
-      <i class="pi pi-plus-circle" @click="addValue(ingredient)" style="font-size: 1rem; cursor: pointer"></i>
+
       <div v-if="ingredient.relativeValue === 0">
         <flaskA :color="ingredient.color"/>
       </div>
       <div v-if="ingredient.relativeValue !== 0">
         <flaskB :color="ingredient.color"/>
       </div>
-      <i class="pi pi-minus-circle" @click="removeValue(ingredient)" style="font-size: 1rem; cursor: pointer"></i>
+      <i class="pi pi-plus-circle" @click="addValue(ingredient)" style="font-size: 1rem; cursor: pointer; color: darkgreen"></i>
+      <i class="pi pi-question-circle" style="font-size: 1rem; cursor: pointer; color: goldenrod"></i>
+      <i class="pi pi-minus-circle" @click="removeValue(ingredient)" style="font-size: 1rem; cursor: pointer; color: crimson"></i>
       <div>{{ ingredient.label }}</div>
-      <i class="pi pi-question-circle" style="font-size: 1rem; cursor: pointer"></i>
+
     </div>
   </div>
 
