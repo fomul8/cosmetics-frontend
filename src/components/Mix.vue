@@ -12,6 +12,8 @@ import Review from "./mix-steps/Review.vue";
 import Shipment from "./mix-steps/Shipment.vue";
 import Submit from "./mix-steps/Submit.vue";
 
+import ProgressBar from 'primevue/progressbar';
+
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
 const ingredients = new Ingredients();
@@ -45,7 +47,7 @@ const stepNext = () => {
 }
 
 const checkout = () => {
-
+  console.log(steps.value);
 }
 
 const changeBaseRecipe = (id) => {
@@ -68,6 +70,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <ProgressBar style="display: none" :value="30"> {{ 1 }} of 5 steps </ProgressBar>
   <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients" @change-base-recipe="changeBaseRecipe"></Active>
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on" v-model:ingredients="steps.botanical.dataIngredients"></Botanical>
@@ -91,5 +94,15 @@ onMounted(async () => {
   gap: 20px;
   padding: 20px 0;
   width: 100%;
+}
+@media (max-width: 768px) {
+  .footer-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    z-index: 10;
+  }
 }
 </style>

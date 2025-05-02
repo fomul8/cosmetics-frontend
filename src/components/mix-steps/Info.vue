@@ -44,10 +44,20 @@ const selection = ref('1');
   gap: 20px;
   align-items: center;
 }
-
 .section {
   border-left: 1px solid silver;
-  padding-left: 10px;
+  padding-left: 0;
   text-align: center;
+}
+@media (max-width: 768px) {
+  .flex-table {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .section {
+    border-left: none;
+    padding-left: 10px;
+    text-align: center;
+  }
 }
 </style>

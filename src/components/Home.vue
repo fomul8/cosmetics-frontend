@@ -28,6 +28,12 @@ const router = useRouter();
     </div>
   </div>
 </div>
+<div class="row" style="">
+  <div class="col-6" style="padding: 5px"><Button style="width: 100%">Blank</Button></div>
+  <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Face cream</Button></div>
+  <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Body cream</Button></div>
+  <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Foot care</Button></div>
+</div>
 
   <div class="row">
     <Timeline :value="events" align="alternate" class="customized-timeline">

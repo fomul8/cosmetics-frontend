@@ -8,6 +8,7 @@ import { useToast } from 'primevue/usetoast';
 import InputGroup from 'primevue/inputgroup';
 import Select from 'primevue/select';
 import InputGroupAddon from 'primevue/inputgroupaddon';
+import Button from 'primevue/button';
 
 import faceIcon from '../../assets/bodypart/face-icon.png';
 import handsIcon from '../../assets/bodypart/hands-icon.avif';
@@ -108,6 +109,12 @@ const changeBaseRecipe = () => {
 
 <template>
  <h2 style="text-align: center">Active ingredients</h2>
+  <div class="row" style="">
+    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Blank</Button></div>
+    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Face cream</Button></div>
+    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Body cream</Button></div>
+    <div class="col-6" style="padding: 5px"><Button style="width: 100%">Catalogue</Button></div>
+  </div>
   <div class="row">
     <div class="col-12">
       <InputGroup>
