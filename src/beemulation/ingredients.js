@@ -41,12 +41,303 @@ class Ingredients {
 
 
     /**
+     * TODO in future get from backend
+     * @returns {[]}
+     */
+    mockIngredients() {
+        this.ingredients = [
+            {
+                label: 'Hyaluronic Acid',
+                id: 1,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 2, label: 'moistaraiser' },
+                    { value: 0, label: 'anti-aging' },
+                    { value: 1, label: 'wrinse' },
+                    { value: 1, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Retinoids',
+                id: 2,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 0, label: 'moistaraiser' },
+                    { value: 2, label: 'anti-aging' },
+                    { value: 2, label: 'wrinse' },
+                    { value: 0, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Vitamin C',
+                id: 3,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 1, label: 'moistaraiser' },
+                    { value: 2, label: 'anti-aging' },
+                    { value: 0, label: 'wrinse' },
+                    { value: 0, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Peptides',
+                id: 4,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 0, label: 'moistaraiser' },
+                    { value: 2, label: 'anti-aging' },
+                    { value: 0, label: 'wrinse' },
+                    { value: 0, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Niacinamide',
+                id: 5,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 0, label: 'moistaraiser' },
+                    { value: 2, label: 'anti-aging' },
+                    { value: 1, label: 'wrinse' },
+                    { value: 2, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Ceramides',
+                id: 6,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 1, label: 'moistaraiser' },
+                    { value: 0, label: 'anti-aging' },
+                    { value: 2, label: 'wrinse' },
+                    { value: 0, label: 'achne' }
+                ]
+            },
+            {
+                label: 'AHAs',
+                id: 7,
+                groupId: 1,
+                relativeValue: 0,
+                effects: [
+                    { value: 0, label: 'moistaraiser' },
+                    { value: 1, label: 'anti-aging' },
+                    { value: 2, label: 'wrinse' },
+                    { value: 0, label: 'achne' }
+                ]
+            },
+            {
+                label: 'Jojoba Oil',
+                id: 8,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Squalane',
+                id: 9,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Shea Butter',
+                id: 10,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Rosehip Oil',
+                id: 11,
+                groupId: 2,
+                relativeValue: 3,
+                effects: []
+            },
+            {
+                label: 'Argan Oil',
+                id: 12,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Grapeseed Oil',
+                id: 13,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Avocado Oil',
+                id: 14,
+                groupId: 2,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Glycerin',
+                id: 15,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Hyaluronic Acid',
+                id: 16,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Aloe Vera',
+                id: 17,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Ceramides',
+                id: 18,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Sodium PCA',
+                id: 19,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Butylene',
+                id: 20,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Urea',
+                id: 21,
+                groupId: 3,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Cetearyl Alcohol',
+                id: 22,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Glyceryl Stearate',
+                id: 23,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Polysorbates',
+                id: 24,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Cetearyl Glucoside',
+                id: 25,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Lecithin',
+                id: 26,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'PEG-100',
+                id: 27,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Sorbitan Stearate',
+                id: 28,
+                groupId: 4,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Xanthan Gum',
+                id: 29,
+                groupId: 5,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Carbomers',
+                id: 30,
+                groupId: 5,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Hydroxyethylcellulose',
+                id: 31,
+                groupId: 5,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Cetearyl Alcohol',
+                id: 32,
+                groupId: 5,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Chelating Agents',
+                id: 33,
+                groupId: 6,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'pH Adjusters',
+                id: 34,
+                groupId: 6,
+                relativeValue: 0,
+                effects: []
+            },
+            {
+                label: 'Antioxidants',
+                id: 35,
+                groupId: 6,
+                relativeValue: 0,
+                effects: []
+            }
+        ];
+        return this.ingredients;
+    }
+
+    /**
      * Fetches the list of ingredients from the backend API and updates the local ingredients array.
      *
      * @async
      * @returns {Promise<Array>} A promise that resolves with the fetched ingredients array or an empty array in case of failure.
      */
     async getIngredients() {
+        return Promise.resolve(this.mockIngredients());
         try {
             let response = await fetch('/api/ingredients', {headers: {'Cache-Control': 'no-cache'}});
             if (response.ok) {
@@ -67,11 +358,21 @@ class Ingredients {
         return this.chemicalsGroups;
     }
 
+    /*
+     * TODO this is tmp logic implement with real recepies
+     */
     getIngredientsByRecipeId(id, groupId) {
         const ingredients = this.ingredients.filter(ingredient => ingredient.groupId === groupId);
-        ingredients[id-1].relativeValue = 2;
-        ingredients[id].relativeValue = 1;
-        ingredients[id+1].relativeValue = 1;
+
+        if (!id) {
+            for (let i = 0; i < ingredients.length; i++) {
+                ingredients[i].relativeValue = 0;
+            }
+        } else {
+            ingredients[id-1].relativeValue = 2;
+            ingredients[id].relativeValue = 1;
+            ingredients[id+1].relativeValue = 1;
+        }
         return ingredients;
     }
 }
