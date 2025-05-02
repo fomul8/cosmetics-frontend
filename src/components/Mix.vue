@@ -6,7 +6,7 @@ import Button from 'primevue/button';
 import Active from './mix-steps/Active.vue';
 import Botanical from "./mix-steps/Botanical.vue";
 import Improvers from './mix-steps/Improvers.vue';
-import Info from './mix-steps/Info.vue';
+// import Info from './mix-steps/Info.vue';
 import Oil from './mix-steps/Oil.vue';
 import Review from "./mix-steps/Review.vue";
 import Shipment from "./mix-steps/Shipment.vue";
@@ -27,7 +27,7 @@ const steps = ref({
   oil: {on: false, dataIngredients: [], prev: 'active', next: 'botanical'},
   botanical: {on: false, dataIngredients: [], prev: 'oil', next: 'improvers'},
   improvers: {on: false, dataIngredients: [], prev: 'botanical', next: 'info'},
-  info: {on: false, dataIngredients: [], prev: 'improvers', next: 'review'},
+  // info: {on: false, dataIngredients: [], prev: 'improvers', next: 'review'},
   review: {on: false, dataIngredients: [], prev: 'info', next: null}
 });
 const currentStep = ref('active')
@@ -51,6 +51,7 @@ const checkout = () => {
 }
 
 const changeBaseRecipe = (id) => {
+  console.log(id);
   const groupId = 1;
   steps.value.active.dataIngredients = ingredients.getIngredientsByRecipeId(id, groupId);
 }
@@ -75,7 +76,7 @@ onMounted(async () => {
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on" v-model:ingredients="steps.botanical.dataIngredients"></Botanical>
   <Improvers v-if="steps.improvers.on"></Improvers>
-  <Info v-if="steps.info.on"></Info>
+<!--  <Info v-if="steps.info.on"></Info>-->
   <Review v-if="steps.review.on"></Review>
 
 

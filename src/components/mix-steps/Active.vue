@@ -23,13 +23,18 @@ const INGREDIENT_PARTS_ALLOWED = 4;
 const ingredientsModel = defineModel('ingredients');
 const sortVal = ref('');
 const selectedExample = ref({});
-const sortOptions = ['moistaraiser', 'anti-aging', 'wrinse', 'achne'];
 // TODO it is tmp mock
 const recipeVariants = ref([
   {label: 'Anti age cream', id: 1},
   {label: 'Anti damage cream', id: 2},
   {label: 'vitamin C cream', id: 3},
 ]);
+const presetButtons = ref({
+  blank: {label: 'Blank', active: true, example: null},
+  face: {label: 'Face cream', active: false, example: recipeVariants.value[0]},
+  hands: {label: 'Hands cream', active: false, example: recipeVariants.value[0]},
+  catalogue: {label: 'Full catalogue', active: false, example: null},
+});
 
 const  generalPresets = ref([
   {label: 'Recipes Face care', icon: faceIcon, items: recipeVariants.value, key: 'face'},
@@ -105,17 +110,43 @@ const changeBaseRecipe = () => {
   }
   emit('changeBaseRecipe', id);
 }
+
+const clickPresetButton = (button) => {
+  for(const key in presetButtons.value) {
+    presetButtons.value[key].active = false;
+  }
+  button.active = true;
+  if(button.example) {
+    selectedExample.value = button.example;
+    emit('changeBaseRecipe', button.example.id);
+  } else {
+    selectedExample.value = {};
+    emit('changeBaseRecipe', null);
+  }
+}
 </script>
 
 <template>
  <h2 style="text-align: center">Active ingredients</h2>
   <div class="row" style="">
-    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Blank</Button></div>
-    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Face cream</Button></div>
-    <div class="col-6" style="padding: 5px"><Button style="width: 100%" variant="outlined">Body cream</Button></div>
-    <div class="col-6" style="padding: 5px"><Button style="width: 100%">Catalogue</Button></div>
+    <div class="col-6">
+      <Button @click="clickPresetButton(presetButtons.blank)"
+              style="width: 100%; margin-bottom: 10px"
+              :variant="`${(!presetButtons.blank.active?'outlined':'')}`">{{presetButtons.blank.label}}</Button></div>
+    <div class="col-6">
+      <Button @click="clickPresetButton(presetButtons.face)"
+              style="width: 100%; margin-bottom: 10px"
+              :variant="`${(!presetButtons.face.active?'outlined':'')}`">{{presetButtons.face.label}}</Button></div>
+    <div class="col-6">
+      <Button @click="clickPresetButton(presetButtons.hands)"
+              style="width: 100%; margin-bottom: 10px"
+              :variant="`${(!presetButtons.hands.active?'outlined':'')}`">{{presetButtons.hands.label}}</Button></div>
+    <div class="col-6">
+      <Button @click="clickPresetButton(presetButtons.catalogue)"
+              :variant="`${(!presetButtons.catalogue.active?'outlined':'')}`"
+              style="width: 100%; margin-bottom: 10px">{{presetButtons.catalogue.label}}</Button></div>
   </div>
-  <div class="row">
+  <div class="row" v-if="presetButtons.catalogue.active">
     <div class="col-12">
       <InputGroup>
         <InputGroupAddon>
