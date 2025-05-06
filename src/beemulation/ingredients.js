@@ -45,12 +45,14 @@ class Ingredients {
      * @returns {[]}
      */
     mockIngredients() {
+        const loremipsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
         this.ingredients = [
             {
                 label: 'Hyaluronic Acid',
                 id: 1,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 2, label: 'moistaraiser' },
                     { value: 0, label: 'anti-aging' },
@@ -63,6 +65,7 @@ class Ingredients {
                 id: 2,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 0, label: 'moistaraiser' },
                     { value: 2, label: 'anti-aging' },
@@ -75,6 +78,7 @@ class Ingredients {
                 id: 3,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 1, label: 'moistaraiser' },
                     { value: 2, label: 'anti-aging' },
@@ -87,6 +91,7 @@ class Ingredients {
                 id: 4,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 0, label: 'moistaraiser' },
                     { value: 2, label: 'anti-aging' },
@@ -99,6 +104,7 @@ class Ingredients {
                 id: 5,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 0, label: 'moistaraiser' },
                     { value: 2, label: 'anti-aging' },
@@ -111,6 +117,7 @@ class Ingredients {
                 id: 6,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 1, label: 'moistaraiser' },
                     { value: 0, label: 'anti-aging' },
@@ -123,6 +130,7 @@ class Ingredients {
                 id: 7,
                 groupId: 1,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: [
                     { value: 0, label: 'moistaraiser' },
                     { value: 1, label: 'anti-aging' },
@@ -135,6 +143,7 @@ class Ingredients {
                 id: 8,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -142,6 +151,7 @@ class Ingredients {
                 id: 9,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -149,6 +159,7 @@ class Ingredients {
                 id: 10,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -156,6 +167,7 @@ class Ingredients {
                 id: 11,
                 groupId: 2,
                 relativeValue: 3,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -163,6 +175,7 @@ class Ingredients {
                 id: 12,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -170,6 +183,7 @@ class Ingredients {
                 id: 13,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -177,6 +191,7 @@ class Ingredients {
                 id: 14,
                 groupId: 2,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -184,6 +199,7 @@ class Ingredients {
                 id: 15,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -191,6 +207,7 @@ class Ingredients {
                 id: 16,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -198,6 +215,7 @@ class Ingredients {
                 id: 17,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -205,6 +223,7 @@ class Ingredients {
                 id: 18,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -212,6 +231,7 @@ class Ingredients {
                 id: 19,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -219,6 +239,7 @@ class Ingredients {
                 id: 20,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -226,6 +247,7 @@ class Ingredients {
                 id: 21,
                 groupId: 3,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -233,6 +255,7 @@ class Ingredients {
                 id: 22,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -240,6 +263,7 @@ class Ingredients {
                 id: 23,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -247,6 +271,7 @@ class Ingredients {
                 id: 24,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -254,6 +279,7 @@ class Ingredients {
                 id: 25,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -261,6 +287,7 @@ class Ingredients {
                 id: 26,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -268,6 +295,7 @@ class Ingredients {
                 id: 27,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -275,6 +303,7 @@ class Ingredients {
                 id: 28,
                 groupId: 4,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -282,6 +311,7 @@ class Ingredients {
                 id: 29,
                 groupId: 5,
                 relativeValue: 0,
+                description: loremipsum,
                 effects: []
             },
             {
@@ -360,6 +390,8 @@ class Ingredients {
 
     /*
      * TODO this is tmp logic implement with real recepies
+     *
+     * DEPRECATED
      */
     getIngredientsByRecipeId(id, groupId) {
         const ingredients = this.ingredients.filter(ingredient => ingredient.groupId === groupId);

@@ -16,6 +16,7 @@ import ProgressBar from 'primevue/progressbar';
 
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
+import {Dialog} from "primevue";
 const ingredients = new Ingredients();
 const route = useRoute();
 
@@ -51,9 +52,15 @@ const checkout = () => {
 }
 
 const changeBaseRecipe = (id) => {
-  console.log(id);
+  const presetMok = [[], [5, 3, 4], [2, 3, 4], [1, 2, 3, 4], [3, 5, 6]];
   const groupId = 1;
-  steps.value.active.dataIngredients = ingredients.getIngredientsByRecipeId(id, groupId);
+  for (const ingredient of chemicalIngredients.value) {
+    if (presetMok[id].includes(ingredient.id)) {
+      ingredient.relativeValue = 1;
+    } else {
+      ingredient.relativeValue = 0;
+    }
+  }
 }
 
 onMounted(async () => {

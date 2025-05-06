@@ -28,12 +28,14 @@ const recipeVariants = ref([
   {label: 'Anti age cream', id: 1},
   {label: 'Anti damage cream', id: 2},
   {label: 'vitamin C cream', id: 3},
+  {label: 'vitamin C cream', id: 4},
 ]);
+
 const presetButtons = ref({
-  blank: {label: 'Blank', active: true, example: null},
-  face: {label: 'Face cream', active: false, example: recipeVariants.value[0]},
-  hands: {label: 'Hands cream', active: false, example: recipeVariants.value[0]},
-  catalogue: {label: 'Full catalogue', active: false, example: null},
+  b1: {label: 'Moisturizing/ Hydrating', active: true, example: recipeVariants.value[0]},
+  b2: {label: 'Anti-aging/ anti-wrinkle', active: false, example: recipeVariants.value[1]},
+  b3: {label: 'Acne treatment/ oil control', active: false, example: recipeVariants.value[2]},
+  b4: {label: 'Brightening/ Whitening', active: false, example: recipeVariants.value[3]},
 });
 
 const  generalPresets = ref([
@@ -119,34 +121,36 @@ const clickPresetButton = (button) => {
   if(button.example) {
     selectedExample.value = button.example;
     emit('changeBaseRecipe', button.example.id);
-  } else {
-    selectedExample.value = {};
-    emit('changeBaseRecipe', null);
   }
 }
+
+onMounted(() => {
+  selectedExample.value = recipeVariants.value[0];
+  changeBaseRecipe();
+})
 </script>
 
 <template>
  <h2 style="text-align: center">Active ingredients</h2>
   <div class="row" style="">
     <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.blank)"
+      <Button @click="clickPresetButton(presetButtons.b1)"
               style="width: 100%; margin-bottom: 10px"
-              :variant="`${(!presetButtons.blank.active?'outlined':'')}`">{{presetButtons.blank.label}}</Button></div>
+              :variant="`${(!presetButtons.b1.active?'outlined':'')}`">{{presetButtons.b1.label}}</Button></div>
     <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.face)"
+      <Button @click="clickPresetButton(presetButtons.b2)"
               style="width: 100%; margin-bottom: 10px"
-              :variant="`${(!presetButtons.face.active?'outlined':'')}`">{{presetButtons.face.label}}</Button></div>
+              :variant="`${(!presetButtons.b2.active?'outlined':'')}`">{{presetButtons.b2.label}}</Button></div>
     <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.hands)"
+      <Button @click="clickPresetButton(presetButtons.b3)"
               style="width: 100%; margin-bottom: 10px"
-              :variant="`${(!presetButtons.hands.active?'outlined':'')}`">{{presetButtons.hands.label}}</Button></div>
+              :variant="`${(!presetButtons.b3.active?'outlined':'')}`">{{presetButtons.b3.label}}</Button></div>
     <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.catalogue)"
-              :variant="`${(!presetButtons.catalogue.active?'outlined':'')}`"
-              style="width: 100%; margin-bottom: 10px">{{presetButtons.catalogue.label}}</Button></div>
+      <Button @click="clickPresetButton(presetButtons.b4)"
+              :variant="`${(!presetButtons.b4.active?'outlined':'')}`"
+              style="width: 100%; margin-bottom: 10px">{{presetButtons.b4.label}}</Button></div>
   </div>
-  <div class="row" v-if="presetButtons.catalogue.active">
+  <div class="row" v-if="false">
     <div class="col-12">
       <InputGroup>
         <InputGroupAddon>
