@@ -12,14 +12,6 @@ const ingredientsModel = defineModel('ingredients');
 const toast = useToast();
 const emit = defineEmits(['addValue', 'removeValue']);
 
-// const addValue = (ingredient) => {
-//   emit('addValue', ingredient);
-// };
-//
-// const removeValue = (ingredient) => {
-//   emit('removeValue', ingredient);
-// };
-
 const addValue = (ingredient) => {
   const total = calculateTotalIndicator();
   if(ingredient.relativeValue === INGREDIENT_PARTS_ALLOWED || total === INGREDIENT_PARTS_ALLOWED) {
@@ -72,7 +64,7 @@ const showIngredientInfo = (ingredient) => {
     </div>
   </div>
 
-  <Toast :baseZIndex="10000"></Toast>
+
 
   <!--  ingredient info dialog-->
   <Dialog v-model:visible="ingredientInfoDialog.visible" modal header="Info" :style="{ width: '25rem' }">

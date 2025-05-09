@@ -6,6 +6,7 @@ import {isAuthenticated, logout, signInWithEmailAndPassword} from "./helpers/aut
 import {Dialog} from "primevue";
 import {InputText} from "primevue";
 import Button from 'primevue/button';
+import Toast from "primevue/toast";
 
 const router = useRouter();
 
@@ -164,6 +165,8 @@ const signIn = async () => {
       <Button type="button" label="Yes" @click="logoutL"></Button>
     </div>
   </Dialog>
+
+  <Toast :baseZIndex="10000"></Toast>
 </template>
 
 <style scoped>

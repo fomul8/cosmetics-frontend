@@ -4,7 +4,6 @@ import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 import TestTube from "./parts/TestTube.vue";
 import IngredientFlask from "./parts/IngredientFlask.vue";
-import IngredientFlaskV2 from "./parts/IngredientFlaskV2.vue";
 
 const toast = useToast();
 
@@ -32,7 +31,7 @@ const calculateTotalIndicator = () => {
 
   <div class="row" style="margin-top: 20px">
     <div class="col-9">
-      <IngredientFlaskV2 :ingredients="ingredientsModel" />
+      <IngredientFlask :ingredients="ingredientsModel" />
     </div>
     <div class="col-3">
       <TestTube :ingredients="ingredientsModel"/>

@@ -27,11 +27,16 @@ const steps = ref({
   active: {on: true, dataIngredients: [], prev: null, next: 'oil'},
   oil: {on: false, dataIngredients: [], prev: 'active', next: 'botanical'},
   botanical: {on: false, dataIngredients: [], prev: 'oil', next: 'improvers'},
-  improvers: {on: false, dataIngredients: [], prev: 'botanical', next: 'info'},
+  improvers: {on: false, dataIngredients: [], prev: 'botanical', next: 'review'},
   // info: {on: false, dataIngredients: [], prev: 'improvers', next: 'review'},
-  review: {on: false, dataIngredients: [], prev: 'info', next: null}
+  review: {on: false, dataIngredients: [], prev: 'improvers', next: null}
 });
-const currentStep = ref('active')
+const currentStep = ref('active');
+const presets = ref([{label: 'Default', id: 1, ingredientsVals: [{id: 1, val: 1}]},
+  {label: 'Default', id: 2,ingredientsVals: [{id: 3, val: 2}]},
+  {label: 'Default', id: 3, ingredientsVals: [{id: 2, val: 1}]},
+  {label: 'Default', id: 4, ingredientsVals: [{id: 1, val: 1}] }]
+);
 
 const stepBack = () => {
   const prevStepKey = steps.value[currentStep.value].prev;
@@ -51,19 +56,42 @@ const checkout = () => {
   console.log(steps.value);
 }
 
-const changeBaseRecipe = (id) => {
-  const presetMok = [[], [5, 3, 4], [2, 3, 4], [1, 2, 3, 4], [3, 5, 6]];
-  const groupId = 1;
+const getPresets = async () => {
+  // request to endpoint api/presets
+  try {
+    const response = await fetch('/api/presets', {headers: {'Cache-Control': 'no-cache'}});
+    return await response.json();
+  } catch (e) {
+    // error from server
+  }
+}
+
+const changeBaseRecipe = (recipeId) => {
+  let ingrids = [];
+  let ingridsVals = [];
+  // TODO improve this alg
+  for (const preset of presets.value) {
+    if (preset.id === recipeId) {
+        if (preset.relativeValues) {
+          for (const presetIngredient of preset.relativeValues) {
+            ingrids.push(presetIngredient.id);
+            ingridsVals.push(presetIngredient.fraction);
+          }
+        }
+      break;
+    }
+  }
+  console.log(ingrids);
   for (const ingredient of chemicalIngredients.value) {
-    if (presetMok[id].includes(ingredient.id)) {
-      ingredient.relativeValue = 1;
-    } else {
-      ingredient.relativeValue = 0;
+    ingredient.relativeValue = 0;
+    if (ingrids.includes(ingredient.id)) {
+      ingredient.relativeValue = ingridsVals[ingrids.indexOf(ingredient.id)];
     }
   }
 }
 
 onMounted(async () => {
+  presets.value = await getPresets();
   chemicalsGroups.value = ingredients.getGroups();
   chemicalIngredients.value = await ingredients.getIngredients();
   chemicalIngredients.value.forEach(ingredient => {
@@ -72,6 +100,7 @@ onMounted(async () => {
   steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
   steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
   steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
+  changeBaseRecipe(presets.value[0].id);
 });
 
 
@@ -79,7 +108,11 @@ onMounted(async () => {
 
 <template>
   <ProgressBar style="display: none" :value="30"> {{ 1 }} of 5 steps </ProgressBar>
-  <Active v-if="steps.active.on" v-model:ingredients="steps.active.dataIngredients" @change-base-recipe="changeBaseRecipe"></Active>
+  <Active
+      v-if="steps.active.on"
+      v-model:ingredients="steps.active.dataIngredients"
+      :presets="presets"
+      @change-base-recipe="changeBaseRecipe"></Active>
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on" v-model:ingredients="steps.botanical.dataIngredients"></Botanical>
   <Improvers v-if="steps.improvers.on"></Improvers>
@@ -105,12 +138,10 @@ onMounted(async () => {
 }
 @media (max-width: 768px) {
   .footer-buttons {
-    position: absolute;
+    position: relative;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px;
-    z-index: 10;
   }
 }
 </style>

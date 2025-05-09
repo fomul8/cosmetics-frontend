@@ -2,12 +2,6 @@
 import {ref, computed, onMounted, watch, defineModel, defineEmits} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
-// import Carousel from 'primevue/carousel';
-// import Dialog from 'primevue/dialog';
-// import Divider  from "primevue/divider";
-import InputGroup from 'primevue/inputgroup';
-import Select from 'primevue/select';
-import InputGroupAddon from 'primevue/inputgroupaddon';
 import Button from 'primevue/button';
 
 import faceIcon from '../../assets/bodypart/face-icon.png';
@@ -18,31 +12,43 @@ import IngredientFlask from "./parts/IngredientFlask.vue";
 
 const emit = defineEmits(['changeBaseRecipe']);
 const toast = useToast();
-const INGREDIENT_PARTS_ALLOWED = 4;
 
 const ingredientsModel = defineModel('ingredients');
+const generalPresets = defineModel('presets');
 const sortVal = ref('');
 const selectedExample = ref({});
-// TODO it is tmp mock
-const recipeVariants = ref([
-  {label: 'Anti age cream', id: 1},
-  {label: 'Anti damage cream', id: 2},
-  {label: 'vitamin C cream', id: 3},
-  {label: 'vitamin C cream', id: 4},
-]);
 
 const presetButtons = ref({
-  b1: {label: 'Moisturizing/ Hydrating', active: true, example: recipeVariants.value[0]},
-  b2: {label: 'Anti-aging/ anti-wrinkle', active: false, example: recipeVariants.value[1]},
-  b3: {label: 'Acne treatment/ oil control', active: false, example: recipeVariants.value[2]},
-  b4: {label: 'Brightening/ Whitening', active: false, example: recipeVariants.value[3]},
-});
+  b1: {label: computed(() => {
+    return generalPresets.value[0].label ?? 0
+    }),
+    active: true,
+    recipeId: computed(() => {
+      return generalPresets.value[0].id ?? 0
+    })},
+  b2: {label: computed(() => {
+      return generalPresets.value[1].label ?? 0
+    }),
+    active: false,
+    recipeId: computed(() => {
+      return generalPresets.value[1].id ?? 0
+    })},
+  b3: {label: computed(() => {
+      return generalPresets.value[2].label ?? 0
+    }),
+    active: false,
+    recipeId: computed(() => {
+      return generalPresets.value[2].id ?? 0
+    })},
+  b4: {label: computed(() => {
+      return generalPresets.value[3].label ?? 0
+    }),
+    active: false,
+    recipeId: computed(() => {
+      return generalPresets.value[3].id ?? 0
+    })},
+})
 
-const  generalPresets = ref([
-  {label: 'Recipes Face care', icon: faceIcon, items: recipeVariants.value, key: 'face'},
-  {label: 'Recipes Hands care', icon: handsIcon, items: recipeVariants.value, key: 'hands'},
-  {label: 'Recipes Foot care', icon: footIcon, items: recipeVariants.value, key: 'foot'},
-]);
 const responsiveOptions = ref([
   {
     breakpoint: '1400px',
@@ -99,35 +105,13 @@ const countOfSelectedIngredients = computed(() => {
   return count;
 });
 
-const changeBaseRecipe = () => {
-  const id = selectedExample.value.id;
-  dialog.value.visible = false;
-  for(const recipe of recipeVariants.value) {
-    if(recipe.id === id) {
-      toast.add({severity: 'success', summary: 'Success', detail: `You choose ${recipe.label} as a base recipe`, life: 3000});
-    }
-  }
-  for(const ingredient of ingredientsModel.value) {
-    ingredient.relativeValue = 0;
-  }
-  emit('changeBaseRecipe', id);
-}
-
 const clickPresetButton = (button) => {
   for(const key in presetButtons.value) {
     presetButtons.value[key].active = false;
   }
   button.active = true;
-  if(button.example) {
-    selectedExample.value = button.example;
-    emit('changeBaseRecipe', button.example.id);
-  }
+  emit('changeBaseRecipe', button.recipeId);
 }
-
-onMounted(() => {
-  selectedExample.value = recipeVariants.value[0];
-  changeBaseRecipe();
-})
 </script>
 
 <template>
@@ -150,35 +134,10 @@ onMounted(() => {
               :variant="`${(!presetButtons.b4.active?'outlined':'')}`"
               style="width: 100%; margin-bottom: 10px">{{presetButtons.b4.label}}</Button></div>
   </div>
-  <div class="row" v-if="false">
-    <div class="col-12">
-      <InputGroup>
-        <InputGroupAddon>
-          <i class="pi pi-map"></i>
-        </InputGroupAddon>
-        <Select v-model="selectedExample"
-                @change="changeBaseRecipe"
-                :options="generalPresets"
-                optionLabel="label"
-                optionGroupLabel="label"
-                optionGroupChildren="items"
-                placeholder="Examples of formule" class="w-full md:w-56">
-          <template #optiongroup="slotProps">
-            <div class="flex items-center">
-              <img :alt="slotProps.option.label"
-                   :src="slotProps.option.icon"
-                   :class="`mr-2 flag`" style="width: 18px; margin-right: 5px" />
-              <div>{{ slotProps.option.label}}</div>
-            </div>
-          </template>
-        </Select>
-      </InputGroup>
-    </div>
-  </div>
 
   <div class="row" style="margin-top: 20px">
     <div class="col-9">
-      <IngredientFlask :ingredients="ingredientsModel" />
+      <IngredientFlask v-model:ingredients="ingredientsModel" />
     </div>
     <div class="col-3">
       <TestTube :ingredients="ingredientsModel"/>

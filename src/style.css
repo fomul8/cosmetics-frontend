@@ -139,4 +139,8 @@ button:focus-visible {
   .p-timeline-event-opposite {
     display: block !important;
   }
+
+  .p-toast {
+    right: 0 !important;
+  }
 }

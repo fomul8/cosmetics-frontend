@@ -367,7 +367,7 @@ class Ingredients {
      * @returns {Promise<Array>} A promise that resolves with the fetched ingredients array or an empty array in case of failure.
      */
     async getIngredients() {
-        return Promise.resolve(this.mockIngredients());
+        // return Promise.resolve(this.mockIngredients());
         try {
             let response = await fetch('/api/ingredients', {headers: {'Cache-Control': 'no-cache'}});
             if (response.ok) {
