@@ -52,6 +52,7 @@ const totalIndicatorGradient = computed(() => {
   flex-direction: column;
   justify-content: flex-end;
   position: relative;
+  max-height: 80svh;
 }
 
 .left-rant {
