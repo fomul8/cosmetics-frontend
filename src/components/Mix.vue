@@ -74,20 +74,40 @@ const changeBaseRecipe = (recipeId) => {
     if (preset.id === recipeId) {
         if (preset.relativeValues) {
           for (const presetIngredient of preset.relativeValues) {
-            ingrids.push(presetIngredient.id);
+            ingrids.push(presetIngredient['ingredient_id_id']);
             ingridsVals.push(presetIngredient.fraction);
           }
         }
       break;
     }
   }
-  console.log(ingrids);
   for (const ingredient of chemicalIngredients.value) {
     ingredient.relativeValue = 0;
     if (ingrids.includes(ingredient.id)) {
       ingredient.relativeValue = ingridsVals[ingrids.indexOf(ingredient.id)];
+      ingredient.visible = true;
+    } else {
+      ingredient.visible = false;
     }
   }
+  chemicalIngredients.value.sort(
+      (a, b) => b.relativeValue - a.relativeValue
+  );
+  reloadStepsIngredients();
+}
+
+/*
+ Sort chemicalingredients by .relativeValue
+ */
+const sortIngredientsByRelativeValue = () => {
+
+}
+
+const reloadStepsIngredients = () => {
+  steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
+  steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
+  steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
+  steps.value.improvers.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 4);
 }
 
 onMounted(async () => {
@@ -96,10 +116,9 @@ onMounted(async () => {
   chemicalIngredients.value = await ingredients.getIngredients();
   chemicalIngredients.value.forEach(ingredient => {
     ingredient.color = randomColor();
+    ingredient.visible = false;
   });
-  steps.value.active.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 1);
-  steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
-  steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
+  reloadStepsIngredients();
   changeBaseRecipe(presets.value[0].id);
 });
 
@@ -118,6 +137,7 @@ onMounted(async () => {
   <Improvers v-if="steps.improvers.on"></Improvers>
 <!--  <Info v-if="steps.info.on"></Info>-->
   <Review v-if="steps.review.on"></Review>
+
 
 
   <div class="footer-buttons">

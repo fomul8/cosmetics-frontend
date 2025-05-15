@@ -50,7 +50,7 @@ const showIngredientInfo = (ingredient) => {
 
 <template>
   <div class="items-container" v-for="ingredient in ingredientsModel">
-    <div class="flex gap-2" style="align-items: center">
+    <div v-if="ingredient.visible" class="flex gap-2" style="align-items: center">
       <i class="pi pi-minus-circle" @click="removeValue(ingredient)" style="font-size: 1.3rem; cursor: pointer"></i>
       <div v-if="ingredient.relativeValue === 0">
         <flaskA :color="ingredient.color"/>
