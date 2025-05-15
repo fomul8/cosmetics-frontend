@@ -74,7 +74,7 @@ const changeBaseRecipe = (recipeId) => {
     if (preset.id === recipeId) {
         if (preset.relativeValues) {
           for (const presetIngredient of preset.relativeValues) {
-            ingrids.push(presetIngredient['ingredient_id_id']);
+            ingrids.push(presetIngredient['ingredient_id']);
             ingridsVals.push(presetIngredient.fraction);
           }
         }
@@ -108,6 +108,7 @@ const reloadStepsIngredients = () => {
   steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
   steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
   steps.value.improvers.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 4);
+  console.log(steps.value.active.dataIngredients);
 }
 
 onMounted(async () => {
