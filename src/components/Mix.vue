@@ -108,6 +108,7 @@ const reloadStepsIngredients = () => {
   steps.value.oil.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 2);
   steps.value.botanical.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 3);
   steps.value.improvers.dataIngredients = chemicalIngredients.value.filter(ingredient => ingredient.groupId === 4);
+  steps.value.improvers.selectors = {prs: true, fra: false};
   console.log(steps.value.active.dataIngredients);
 }
 
@@ -135,9 +136,9 @@ onMounted(async () => {
       @change-base-recipe="changeBaseRecipe"></Active>
   <Oil v-if="steps.oil.on" v-model:ingredients="steps.oil.dataIngredients"></Oil>
   <Botanical v-if="steps.botanical.on" v-model:ingredients="steps.botanical.dataIngredients"></Botanical>
-  <Improvers v-if="steps.improvers.on"></Improvers>
+  <Improvers v-if="steps.improvers.on" v-model:selectors="steps.improvers.selectors"></Improvers>
 <!--  <Info v-if="steps.info.on"></Info>-->
-  <Review v-if="steps.review.on"></Review>
+  <Review v-if="steps.review.on" :steps="steps"></Review>
 
 
 

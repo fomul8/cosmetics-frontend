@@ -1,10 +1,9 @@
 <script setup>
 import ToggleSwitch from 'primevue/toggleswitch';
 import Divider from 'primevue/divider';
-import {ref} from "vue";
+import {defineModel, ref} from "vue";
 
-const prs = ref(true);
-const fra = ref(false);
+const selectors = defineModel('selectors');
 
 </script>
 
@@ -16,7 +15,7 @@ const fra = ref(false);
         <h3>
           preservatives
         </h3>
-        <ToggleSwitch v-model="prs" onLabel="Yes" offLabel="No"/>
+        <ToggleSwitch v-model="selectors.prs" offLabel="No"/>
       </div>
       <span style="font-size: 11px; color: gray">While necessary for stability, some preservatives may cause irritation or allergies in sensitive skin. Natural alternatives, like benzyl alcohol and plant extracts, offer gentler options.</span>
       <Divider />
@@ -24,7 +23,7 @@ const fra = ref(false);
         <h3>
           fragrances
         </h3>
-        <ToggleSwitch v-model="fra" onLabel="Yes" offLabel="No"/>
+        <ToggleSwitch v-model="selectors.fra" offLabel="No"/>
       </div>
       <span style="font-size: 11px; color: gray">Fragrances can cause irritation or allergies in sensitive skin. Natural fragrances, like essential oils, are less likely to cause irritation than synthetic options.</span>
       <Divider />
