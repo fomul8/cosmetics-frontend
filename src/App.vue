@@ -40,11 +40,11 @@ const items = ref([
     icon: 'pi pi-tags',
     link: '/orders-history'
   },
-  // {
-  //   label: 'Recipes',
-  //   icon: 'pi pi-tags',
-  //   link: '/recipes'
-  // },
+  {
+    label: 'Cart',
+    icon: 'pi pi-cart',
+    link: '/cart'
+  },
   {
     separator: true
   },

@@ -1,5 +1,5 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {ref, computed, onMounted, nextTick} from "vue";
 // Steps of creating and order
 import Button from 'primevue/button';
@@ -12,16 +12,14 @@ import Review from "./mix-steps/Review.vue";
 import Shipment from "./mix-steps/Shipment.vue";
 import Submit from "./mix-steps/Submit.vue";
 
-import ProgressBar from 'primevue/progressbar';
-
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
 import {Dialog} from "primevue";
 const ingredients = new Ingredients();
-const route = useRoute();
 
 const chemicalsGroups = ref([]);
 const chemicalIngredients = ref([]);
+const router = useRouter();
 
 const steps = ref({
   active: {on: true, dataIngredients: [], prev: null, next: 'oil'},
@@ -52,8 +50,23 @@ const stepNext = () => {
   steps.value[newStepKey].on = true;
 }
 
-const checkout = () => {
-  console.log(steps.value);
+const cart = async () => {
+  //save recep to backend in background
+  let response = await fetch('/api/presets/create', {
+    method: 'POST',
+    headers: {
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(steps.value)
+  });
+  try {
+    let responseB = await response.json();
+  } catch (e) {
+
+  } finally {
+    await router.push('/cart');
+  }
 }
 
 const getPresets = async () => {
@@ -128,7 +141,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ProgressBar style="display: none" :value="30"> {{ 1 }} of 5 steps </ProgressBar>
   <Active
       v-if="steps.active.on"
       v-model:ingredients="steps.active.dataIngredients"
@@ -145,7 +157,7 @@ onMounted(async () => {
   <div class="footer-buttons">
     <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>
     <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>
-    <Button label="Mix and checkout" @click="checkout" v-if="steps.review.on"></Button>
+    <Button label="Add to cart" @click="cart" v-if="steps.review.on" icon="pi pi-cart-arrow-down"></Button>
   </div>
 </template>
 

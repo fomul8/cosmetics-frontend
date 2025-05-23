@@ -5,22 +5,19 @@ import Divider from "primevue/divider";
 const { steps } = defineProps(['steps']);
 import INGREDIENT_PARTS_ALLOWED from "../../constants/constants.js";
 
-const calculateRelativePartsToPercent = (ingredient, allIngredients) => {
-  let totalRelativeParts = 0;
-  for (const item of allIngredients) {
-    totalRelativeParts += item.relativeValue;
-  }
-  const ingredientPercent = (ingredient.relativeValue / totalRelativeParts)*100;
-  return ingredientPercent;
-}
+// const calculateRelativePartsToPercent = (ingredient, allIngredients) => {
+//   let totalRelativeParts = 0;
+//   for (const item of allIngredients) {
+//     totalRelativeParts += item.relativeValue;
+//   }
+//   const ingredientPercent = (ingredient.relativeValue / totalRelativeParts)*100;
+//   return ingredientPercent;
+// }
 
 onMounted(() => {
-  const keys = Object.keys(steps);
-  console.log(123);
 });
 
 onUnmounted(() => {
-  console.log('Review ВЫКЛ');
 });
 </script>
 
@@ -29,21 +26,21 @@ onUnmounted(() => {
   <p><b>Active ingredients:</b></p>
   <div v-for="item in steps.active.dataIngredients">
     <div v-if="item.relativeValue">
-      <span><b>{{item.label}}</b> - {{calculateRelativePartsToPercent(item, steps.active.dataIngredients)}}%</span>
+      <span><b>{{item.label}}</b>  - {{item.relativeValue}} parts</span>
     </div>
   </div>
   <Divider />
   <p><b>Oil ingredients:</b></p>
   <div v-for="item in steps.oil.dataIngredients">
     <div v-if="item.relativeValue">
-      <span><b>{{item.label}}</b> - {{calculateRelativePartsToPercent(item, steps.oil.dataIngredients)}}%</span>
+      <span><b>{{item.label}}</b> - {{item.relativeValue}} parts</span>
     </div>
   </div>
   <Divider />
   <p><b>Botanical ingredients:</b></p>
   <div v-for="item in steps.botanical.dataIngredients">
     <div v-if="item.relativeValue">
-      <span><b>{{item.label}}</b> - {{calculateRelativePartsToPercent(item, steps.botanical.dataIngredients)}}%</span>
+      <span><b>{{item.label}}</b> - {{item.relativeValue}} parts</span>
     </div>
   </div>
   <Divider />
