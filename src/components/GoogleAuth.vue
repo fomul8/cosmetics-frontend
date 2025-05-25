@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router';
-import {onMounted} from "vue";
+import {nextTick, onMounted} from "vue";
 import { googleOauth, isAuthenticated } from "../helpers/auth.js";
 
 const route = useRoute();
@@ -8,6 +8,7 @@ const router = useRouter();
 
 onMounted(async () => {
   const result = await googleOauth(route.query.code);
+  await nextTick();
   await router.push('/');
 })
 </script>
