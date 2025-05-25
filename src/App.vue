@@ -124,7 +124,7 @@ onMounted(async () => {
   // TODO fix this shitly code
   setTimeout(async () => {
     isLoggedIn.value = await isAuthenticated();
-  }, 200)
+  }, 800)
 });
 </script>
 
