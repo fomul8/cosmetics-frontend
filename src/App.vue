@@ -14,7 +14,7 @@ const toast  = useToast();
 const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=972709788953-raekkg2rqgjh4fj1dlk2c7t4bbeddhfe.apps.googleusercontent.com&redirect_uri=http://site4site.xyz/google/callback/&response_type=code&scope=openid%20email%20profile&access_type=offline';
 
 const menu = ref();
-const isLoggedIn = ref(isAuthenticated());
+let isLoggedIn = ref(isAuthenticated());
 const logoutL = async() => {
   const result = await logout();
   console.log(result);
@@ -121,6 +121,10 @@ const registerAttempt = async () => {
     toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
   }
 }
+
+onMounted(() => {
+  isLoggedIn = isAuthenticated();
+})
 </script>
 
 <template>
