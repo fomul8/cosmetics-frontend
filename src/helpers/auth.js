@@ -1,20 +1,59 @@
 import {BACKEND_URL, TEST_PORT} from "./global_constants.js";
 
 const isAuthenticated = () => {
-    const token = localStorage.getItem('jwt');
-    // Можно также добавить валидацию токена
-    return !!token;
+    const token = sessionStorage.getItem('jwt');
+    if (!token) return false;
+    try {
+        const payload = jwt_decode(token);
+        const now = Math.floor(Date.now() / 1000);
+        const inDate =  payload.exp && payload.exp > now;
+        if (!inDate) {
+            return tryRefreshToken();
+        } else {
+            return inDate;
+        }
+    } catch (e) {
+        return false;
+    }
 };
 
+const tryRefreshToken = async () => {
+    //TODO implement refresh in httponly
+    try {
+        const res = await fetch(`/api/token/refresh/`, {
+            method: 'POST',
+            credentials: 'include',
+            body: {'refresh': sessionStorage.getItem('refresh')}
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            sessionStorage.setItem('jwt', data.access);
+            return true;
+        }
+        return false;
+    } catch (err) {
+        console.error('Failed to refresh token:', err);
+        return false;
+    }
+}
+
+
+function jwt_decode(token) {
+    try {
+        const payload = token.split('.')[1];
+        const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+
+        return JSON.parse(decodeURIComponent(escape(decoded)));
+    } catch (e) {
+        console.error('Invalid JWT token', e);
+        return null;
+    }
+}
 
 const signInWithEmailAndPassword = async (email, password) => {
-    console.log(password, email);
-    // For test set alwayes
-    localStorage.setItem('jwt', '100500');
-    return true;
-
     try {
-        const response = await fetch(BACKEND_URL + '/signin', {
+        const response = await fetch('/api/auth/login/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,14 +69,13 @@ const signInWithEmailAndPassword = async (email, password) => {
             throw new Error(errorData.message || 'Login failed');
         }
         const data = await response.json();
-        const token = data.token; // предполагаем, что backend возвращает { token: '...' }
+        const token = data.access;
         if (!token) {
             throw new Error('Token not provided');
         }
-        localStorage.setItem('jwt', token);
-
-        // (опционально) можно декодировать токен:
-        // const userInfo = jwt_decode(token);
+        sessionStorage.setItem('jwt', token);
+        const userInfo = jwt_decode(token);
+        console.log(userInfo);
 
         return true;
     } catch (error) {
@@ -46,13 +84,36 @@ const signInWithEmailAndPassword = async (email, password) => {
     }
 }
 
-const signUpWithEmailAndPassword = async (email, password) => {
-
-}
 
 const logout = async () => {
-    localStorage.removeItem('jwt');
-    return !localStorage.getItem('jwt');
+    sessionStorage.removeItem('jwt');
+    sessionStorage.removeItem('refresh');
+    return !sessionStorage.getItem('jwt');
 };
 
-export { isAuthenticated, signInWithEmailAndPassword, logout, signUpWithEmailAndPassword };
+const signUp = async (email, password1, password2) => {
+    try {
+        const response = await fetch('/api/auth/registration/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password1,
+                password2
+            })
+        });
+        const data = await response.json();
+        if (data.access && data.refresh) {
+            sessionStorage.setItem('jwt', data.access);
+            sessionStorage.setItem('refresh', data.refresh);
+        }
+        return data;
+    } catch (e) {
+        console.log(e);
+        return {};
+    }
+}
+
+export { isAuthenticated, signInWithEmailAndPassword, logout, signUp, tryRefreshToken };

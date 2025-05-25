@@ -2,13 +2,15 @@
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import {ref, computed, onMounted, nextTick} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
-import {isAuthenticated, logout, signInWithEmailAndPassword} from "./helpers/auth.js";
+import {isAuthenticated, logout, signInWithEmailAndPassword, signUp} from "./helpers/auth.js";
 import {Dialog} from "primevue";
 import {InputText} from "primevue";
 import Button from 'primevue/button';
 import Toast from "primevue/toast";
+import {useToast} from "primevue/usetoast";
 
 const router = useRouter();
+const toast  = useToast();
 
 const menu = ref();
 const isLoggedIn = ref(isAuthenticated());
@@ -87,6 +89,33 @@ const signIn = async () => {
   }
 }
 
+const registerAttempt = async () => {
+  if(!(registerDialog.value.password === registerDialog.value.password_confirmation && registerDialog.value.password)) {
+    return;
+  }
+  const attemptResult = await signUp(registerDialog.value.email, registerDialog.value.password, registerDialog.value.password_confirmation);
+  if (attemptResult.access) {
+    registerDialog.value.visible = false;
+    isLoggedIn.value = true;
+    await router.push('/');
+  } else {
+    const errorsFields = Object.keys(attemptResult);
+    let messageTemplate = `<ul style="margin:0; padding-left: 1.2rem">`;
+
+    for (const key of errorsFields) {
+      const messages = Array.isArray(attemptResult[key])
+          ? attemptResult[key]
+          : [attemptResult[key]];
+
+      for (const msg of messages) {
+        messageTemplate += `<li><strong>${msg}</strong></li>`;
+      }
+    }
+
+    messageTemplate += `</ul>`;
+    toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
+  }
+}
 </script>
 
 <template>
@@ -152,7 +181,7 @@ const signIn = async () => {
     </div>
     <div class="flex items-center gap-4">
       <Button type="button" label="Cancel" severity="secondary" @click="registerDialog.visible = false"></Button>
-      <Button type="button" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerDialog.visible = false"></Button>
+      <Button type="button" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerAttempt"></Button>
     </div>
   </Dialog>
 
@@ -167,6 +196,14 @@ const signIn = async () => {
   </Dialog>
 
   <Toast :baseZIndex="10000"></Toast>
+  <Toast group="custom">
+    <template #message="slotProps">
+      <div>
+        <strong>{{ slotProps.message.summary }}</strong>
+        <div v-html="slotProps.message.detail" />
+      </div>
+    </template>
+  </Toast>
 </template>
 
 <style scoped>

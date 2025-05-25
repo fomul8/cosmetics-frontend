@@ -1,3 +1,4 @@
 const INGREDIENT_PARTS_ALLOWED = 5;
 
 export default INGREDIENT_PARTS_ALLOWED;
+
