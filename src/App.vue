@@ -14,11 +14,9 @@ const toast  = useToast();
 const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=972709788953-raekkg2rqgjh4fj1dlk2c7t4bbeddhfe.apps.googleusercontent.com&redirect_uri=http://site4site.xyz/google/callback/&response_type=code&scope=openid%20email%20profile&access_type=offline';
 
 const menu = ref();
-let isLoggedIn = ref(isAuthenticated());
+let isLoggedIn = ref(false);
 const logoutL = async() => {
   const result = await logout();
-  console.log(result);
-  console.log(localStorage.getItem('jwt'));
   if (result) {
     isLoggedIn.value = false;
     await router.push('/');
@@ -122,8 +120,8 @@ const registerAttempt = async () => {
   }
 }
 
-onMounted(() => {
-  isLoggedIn.value = isAuthenticated();
+onMounted(async () => {
+  isLoggedIn.value = await isAuthenticated();
 })
 </script>
 

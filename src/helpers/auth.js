@@ -1,6 +1,6 @@
 import {BACKEND_URL, TEST_PORT} from "./global_constants.js";
 
-const isAuthenticated = () => {
+const isAuthenticated = async () => {
     const token = sessionStorage.getItem('jwt');
     if (!token) return false;
     try {
@@ -9,7 +9,7 @@ const isAuthenticated = () => {
         const inDate =  payload.exp && payload.exp > now;
         console.log(payload.exp);
         if (!inDate) {
-            return tryRefreshToken();
+            return await tryRefreshToken();
         } else {
             return inDate;
         }
