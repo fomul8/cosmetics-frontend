@@ -7,6 +7,7 @@ const isAuthenticated = () => {
         const payload = jwt_decode(token);
         const now = Math.floor(Date.now() / 1000);
         const inDate =  payload.exp && payload.exp > now;
+        console.log(payload.exp);
         if (!inDate) {
             return tryRefreshToken();
         } else {
@@ -23,13 +24,19 @@ const tryRefreshToken = async () => {
         const res = await fetch(`/api/token/refresh/`, {
             method: 'POST',
             credentials: 'include',
-            body: {'refresh': sessionStorage.getItem('refresh')}
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'refresh': sessionStorage.getItem('refresh')})
         });
 
         if (res.ok) {
             const data = await res.json();
             sessionStorage.setItem('jwt', data.access);
             return true;
+        } else {
+            sessionStorage.removeItem('jwt');
+            sessionStorage.removeItem('refresh');
         }
         return false;
     } catch (err) {
@@ -116,4 +123,27 @@ const signUp = async (email, password1, password2) => {
     }
 }
 
-export { isAuthenticated, signInWithEmailAndPassword, logout, signUp, tryRefreshToken };
+const googleOauth = async (code) => {
+    try {
+        const response = await fetch('/api/auth/google/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                code
+            })
+        });
+        const data = await response.json();
+        if (data.access && data.refresh) {
+            sessionStorage.setItem('jwt', data.access);
+            sessionStorage.setItem('refresh', data.refresh);
+        }
+        return data;
+    } catch (e) {
+        console.log(e);
+        return {};
+    }
+}
+
+export { isAuthenticated, signInWithEmailAndPassword, logout, signUp, tryRefreshToken, googleOauth };

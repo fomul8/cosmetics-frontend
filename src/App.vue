@@ -11,6 +11,7 @@ import {useToast} from "primevue/usetoast";
 
 const router = useRouter();
 const toast  = useToast();
+const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=972709788953-raekkg2rqgjh4fj1dlk2c7t4bbeddhfe.apps.googleusercontent.com&redirect_uri=http://site4site.xyz/google/callback/&response_type=code&scope=openid%20email%20profile&access_type=offline';
 
 const menu = ref();
 const isLoggedIn = ref(isAuthenticated());
@@ -89,6 +90,10 @@ const signIn = async () => {
   }
 }
 
+const oauthRedirect = () => {
+  window.location.href = GOOGLE_URL;
+}
+
 const registerAttempt = async () => {
   if(!(registerDialog.value.password === registerDialog.value.password_confirmation && registerDialog.value.password)) {
     return;
@@ -163,6 +168,10 @@ const registerAttempt = async () => {
       <Button type="button" label="Cancel" severity="secondary" @click="loginDialog.visible = false"></Button>
       <Button type="button" label="Sign in" @click="signIn"></Button>
     </div>
+    <div style="padding: 10px; text-align: center; color: gray">OR</div>
+    <div class="flex items-center">
+      <Button type="button" @click="oauthRedirect" label="Google"></Button>
+    </div>
   </Dialog>
 <!--  register dialog-->
   <Dialog v-model:visible="registerDialog.visible" modal header="Login" :style="{ width: '25rem' }">
@@ -182,6 +191,10 @@ const registerAttempt = async () => {
     <div class="flex items-center gap-4">
       <Button type="button" label="Cancel" severity="secondary" @click="registerDialog.visible = false"></Button>
       <Button type="button" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerAttempt"></Button>
+    </div>
+    <div style="padding: 10px; text-align: center; color: gray">OR</div>
+    <div class="flex items-center">
+      <Button type="button" @click="oauthRedirect" label="Google"></Button>
     </div>
   </Dialog>
 

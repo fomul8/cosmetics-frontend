@@ -34,7 +34,7 @@ const orderStatusTagStyle = {
 
 <template>
   <Accordion value="1">
-    <AccordionPanel v-for="order in orders" value="0">
+    <AccordionPanel v-for="order in orders" :value="order">
       <AccordionHeader>
         <div style="display: flex; justify-content: space-between; padding-right: 10px; width: 100%">
           <div>{{ order.date }}</div>

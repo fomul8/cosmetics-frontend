@@ -8,6 +8,7 @@ import OrdersHistory from "../components/OrdersHistory.vue";
 import Cart from "../components/Cart.vue";
 import {computed} from "vue";
 import {isAuthenticated, logout} from "../helpers/auth";
+import GoogleAuth from "../components/GoogleAuth.vue";
 
 const routes = [
     {path: '/', name: 'home', component: Home},
@@ -15,7 +16,8 @@ const routes = [
     {path: '/orders-history', name: 'orders', component: OrdersHistory, meta: {requiresAuth: true}},
     {path: '/mix/:id', name: 'mix', component: Mix},
     {path: '/consultation', name: 'consultation', component: Consultation},
-    {path: '/cart', name: 'cart', component: Cart, meta: {requiresAuth: true}}
+    {path: '/cart', name: 'cart', component: Cart, meta: {requiresAuth: true}},
+    {path: '/google/callback', name: 'google', component: GoogleAuth}
 ];
 
 const router = createRouter({
@@ -24,8 +26,9 @@ const router = createRouter({
 });
 
 // Глобальный navigation guard
-router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && !isAuthenticated()) {
+router.beforeEach(async (to, from, next) => {
+    const auth = await isAuthenticated();
+    if (to.meta.requiresAuth && !auth) {
         next({name: 'home'}); // перенаправляем на главную, если не аутентифицирован
     } else {
         next();
