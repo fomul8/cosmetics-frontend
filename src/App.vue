@@ -122,9 +122,11 @@ const registerAttempt = async () => {
 
 onMounted(async () => {
   isLoggedIn.value = await isAuthenticated();
+  console.log('onmounted', isLoggedIn.value);
 });
 onActivated(async () => {
   isLoggedIn.value = await isAuthenticated();
+  console.log('onmounted', isLoggedIn.value);
 })
 </script>
 
