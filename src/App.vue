@@ -123,7 +123,7 @@ const registerAttempt = async () => {
 }
 
 onMounted(() => {
-  isLoggedIn = isAuthenticated();
+  isLoggedIn.value = isAuthenticated();
 })
 </script>
 
