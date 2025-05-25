@@ -1,4 +1,5 @@
 import {BACKEND_URL, TEST_PORT} from "./global_constants.js";
+import { nextTick } from 'vue';
 
 const isAuthenticated = async () => {
     const token = sessionStorage.getItem('jwt');
@@ -95,6 +96,7 @@ const signInWithEmailAndPassword = async (email, password) => {
 const logout = async () => {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
+    await nextTick();
     return !sessionStorage.getItem('jwt');
 };
 
@@ -115,6 +117,7 @@ const signUp = async (email, password1, password2) => {
         if (data.access && data.refresh) {
             sessionStorage.setItem('jwt', data.access);
             sessionStorage.setItem('refresh', data.refresh);
+            await nextTick();
         }
         return data;
     } catch (e) {
@@ -138,6 +141,7 @@ const googleOauth = async (code) => {
         if (data.access && data.refresh) {
             sessionStorage.setItem('jwt', data.access);
             sessionStorage.setItem('refresh', data.refresh);
+            await nextTick();
         }
         return data;
     } catch (e) {
