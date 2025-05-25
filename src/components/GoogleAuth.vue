@@ -8,7 +8,6 @@ const router = useRouter();
 
 onMounted(async () => {
   const result = await googleOauth(route.query.code);
-  await nextTick();
   await router.push('/');
 })
 </script>

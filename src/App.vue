@@ -121,7 +121,9 @@ const registerAttempt = async () => {
 }
 
 onMounted(async () => {
-  isLoggedIn.value = await isAuthenticated();
+  setTimeout(async () => {
+    isLoggedIn.value = await isAuthenticated();
+  }, 1000)
 });
 </script>
 
