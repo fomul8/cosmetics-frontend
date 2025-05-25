@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from 'vue-router';
-import {ref, computed, onMounted, nextTick} from "vue";
+import {ref, computed, onMounted, nextTick, onActivated} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
 import {isAuthenticated, logout, signInWithEmailAndPassword, signUp} from "./helpers/auth.js";
 import {Dialog} from "primevue";
@@ -121,6 +121,9 @@ const registerAttempt = async () => {
 }
 
 onMounted(async () => {
+  isLoggedIn.value = await isAuthenticated();
+});
+onActivated(async () => {
   isLoggedIn.value = await isAuthenticated();
 })
 </script>
