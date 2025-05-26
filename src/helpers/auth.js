@@ -9,7 +9,6 @@ const isAuthenticated = async () => {
         const payload = jwt_decode(token);
         const now = Math.floor(Date.now() / 1000);
         const inDate =  payload.exp && payload.exp > now;
-        console.log(payload.exp);
         if (!inDate) {
             return await tryRefreshToken();
         } else {
@@ -97,7 +96,7 @@ const signInWithEmailAndPassword = async (email, password) => {
 const logout = async () => {
     sessionStorage.removeItem('jwt');
     sessionStorage.removeItem('refresh');
-    await nextTick();
+    isLoggedInState.logged = false;
     return !sessionStorage.getItem('jwt');
 };
 
