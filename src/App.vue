@@ -15,11 +15,10 @@ const toast  = useToast();
 const GOOGLE_URL = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=972709788953-raekkg2rqgjh4fj1dlk2c7t4bbeddhfe.apps.googleusercontent.com&redirect_uri=http://site4site.xyz/google/callback/&response_type=code&scope=openid%20email%20profile&access_type=offline';
 
 const menu = ref();
-let isLoggedIn = ref(false);
 const logoutL = async() => {
   const result = await logout();
   if (result) {
-    isLoggedIn.value = false;
+    isLoggedInState.logged = false;
     await router.push('/');
   }
 }
@@ -84,7 +83,7 @@ const signIn = async () => {
   const result = await signInWithEmailAndPassword(loginDialog.value.email, loginDialog.value.password);
   if (result) {
     loginDialog.value.visible = false;
-    isLoggedIn.value = true;
+    isLoggedInState.logged = true;
     await router.push('/');
   }
 }
@@ -100,7 +99,7 @@ const registerAttempt = async () => {
   const attemptResult = await signUp(registerDialog.value.email, registerDialog.value.password, registerDialog.value.password_confirmation);
   if (attemptResult.access) {
     registerDialog.value.visible = false;
-    isLoggedIn.value = true;
+    isLoggedInState.logged = true;
     await router.push('/');
   } else {
     const errorsFields = Object.keys(attemptResult);
@@ -121,22 +120,8 @@ const registerAttempt = async () => {
   }
 }
 
-onMounted(async () => {
-  await nextTick();
-  isLoggedIn.value = await isAuthenticated();
-  console.log(isLoggedInState);
-  // // TODO fix this shitly code
-  // setTimeout(async () => {
-  //   isLoggedIn.value = await isAuthenticated();
-  // }, 800)
-});
 onUpdated(async () => {
-  console.log(sessionStorage.getItem('jwt'), 'XXXXXXX')
   console.log(isLoggedInState);
-  // // TODO fix this shitly code
-  // setTimeout(async () => {
-  //   isLoggedIn.value = await isAuthenticated();
-  // }, 800)
 })
 </script>
 
