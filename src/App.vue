@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from 'vue-router';
-import {ref, computed, onMounted, nextTick, onActivated} from "vue";
+import {ref, computed, onMounted, nextTick, onActivated, onUpdated} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
 import {isAuthenticated, logout, signInWithEmailAndPassword, signUp} from "./helpers/auth.js";
 import {Dialog} from "primevue";
@@ -8,6 +8,7 @@ import {InputText} from "primevue";
 import Button from 'primevue/button';
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
+import { isLoggedInState } from "./helpers/store.js";
 
 const router = useRouter();
 const toast  = useToast();
@@ -123,22 +124,31 @@ const registerAttempt = async () => {
 onMounted(async () => {
   await nextTick();
   isLoggedIn.value = await isAuthenticated();
+  console.log(isLoggedInState);
   // // TODO fix this shitly code
   // setTimeout(async () => {
   //   isLoggedIn.value = await isAuthenticated();
   // }, 800)
 });
+onUpdated(async () => {
+  console.log(sessionStorage.getItem('jwt'), 'XXXXXXX')
+  console.log(isLoggedInState);
+  // // TODO fix this shitly code
+  // setTimeout(async () => {
+  //   isLoggedIn.value = await isAuthenticated();
+  // }, 800)
+})
 </script>
 
 <template>
   <div class="header-container">
     <div class="container flex-container">
       <i class="pi pi-align-justify vj-openmob-menu" @click="toggleMenu" style="font-size: 1.5rem; cursor: pointer"></i>
-      <div class="login-container" v-if="!isLoggedIn">
+      <div class="login-container" v-if="!isLoggedInState.logged">
         <div @click="loginDialog.visible=true">Login</div>
         <div @click="registerDialog.visible=true">Register</div>
       </div>
-      <router-link to="/profile" v-if="isLoggedIn" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
+      <router-link to="/profile" v-if="isLoggedInState.logged" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
 
       <TieredMenu ref="menu" id="overlay_tmenu" :model="items" popup>
         <template #item="{ item, props, hasSubmenu }">

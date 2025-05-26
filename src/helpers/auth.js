@@ -1,5 +1,6 @@
 import {BACKEND_URL, TEST_PORT} from "./global_constants.js";
 import { nextTick } from 'vue';
+import { isLoggedInState} from "./store.js";
 
 const isAuthenticated = async () => {
     const token = sessionStorage.getItem('jwt');
@@ -141,6 +142,7 @@ const googleOauth = async (code) => {
         if (data.access && data.refresh) {
             sessionStorage.setItem('jwt', data.access);
             sessionStorage.setItem('refresh', data.refresh);
+            isLoggedInState.logged = true;
             await nextTick();
         }
         return data;
