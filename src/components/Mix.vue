@@ -172,10 +172,11 @@ onMounted(async () => {
 }
 @media (max-width: 768px) {
   .footer-buttons {
-    position: relative;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    padding: 20px;
   }
 }
 </style>
