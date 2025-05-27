@@ -119,7 +119,9 @@ const registerAttempt = async () => {
     toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
   }
 }
-
+onMounted(async () => {
+  isLoggedInState.logged = await isAuthenticated();
+})
 onUpdated(async () => {
   console.log(isLoggedInState);
 })
