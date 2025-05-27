@@ -133,8 +133,8 @@ onUpdated(async () => {
     <div class="container flex-container">
       <i class="pi pi-align-justify vj-openmob-menu" @click="toggleMenu" style="font-size: 1.5rem; cursor: pointer"></i>
       <div class="login-container" v-if="!isLoggedInState.logged">
-        <div @click="loginDialog.visible=true">Login</div>
-        <div @click="registerDialog.visible=true">Register</div>
+        <div @click.stop="loginDialog.visible=true">Login</div>
+        <div @click.stop="registerDialog.visible=true">Register</div>
       </div>
       <router-link to="/profile" v-if="isLoggedInState.logged" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
 
@@ -200,7 +200,7 @@ onUpdated(async () => {
     </div>
     <div class="input-group-flex">
       <FloatLabel variant="on" class="w-100">
-        <InputText v-model="registerDialog.password_confirmation" id="password-r-r" class="w-100" autocomplete="off" />
+        <InputText type="password" v-model="registerDialog.password_confirmation" id="password-r-r" class="w-100" />
         <label for="password-r-r">Password repeat</label>
       </FloatLabel>
     </div>
