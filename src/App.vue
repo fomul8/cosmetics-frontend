@@ -9,6 +9,7 @@ import Button from 'primevue/button';
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
 import { isLoggedInState } from "./helpers/store.js";
+import FloatLabel from 'primevue/floatlabel';
 
 const router = useRouter();
 const toast  = useToast();
@@ -158,47 +159,59 @@ onUpdated(async () => {
 
 
 <!--  login dialog-->
-  <Dialog v-model:visible="loginDialog.visible" modal header="Login" :style="{ width: '25rem' }">
-    <span class="text-surface-500 dark:text-surface-400 block mb-8">Sign in to your account</span>
+  <Dialog v-model:visible="loginDialog.visible" modal header="Sign In" :style="{ width: '25rem' }">
     <div class="input-group-flex">
-      <label for="email" class="font-semibold w-24">Email</label>
-      <InputText type="email" v-model="loginDialog.email" id="email" class="w-100" />
+      <FloatLabel variant="on" class="w-100">
+        <InputText type="email" v-model="loginDialog.email" id="email" class="w-100" />
+        <label for="email">Email</label>
+      </FloatLabel>
     </div>
     <div class="input-group-flex">
-      <label for="password" class="font-semibold w-24">Password</label>
-      <InputText type="password" v-model="loginDialog.password" id="password" class="w-100" />
+      <FloatLabel variant="on" class="w-100">
+        <InputText type="password" v-model="loginDialog.password" id="password" class="w-100" />
+        <label for="password">Password</label>
+      </FloatLabel>
     </div>
-    <div class="flex gap-2" style="justify-content: center">
-      <Button type="button" label="Cancel" severity="secondary" @click="loginDialog.visible = false"></Button>
-      <Button type="button" label="Sign in" @click="signIn"></Button>
+
+    <div class="flex items-center" style="flex-direction: column; gap: 30px">
+      <Button type="button" style="width: 100%" label="Sign In" @click="signIn"></Button>
+      <div style="color: gray">Dont have account?
+        <i
+            @click="loginDialog.visible = false; registerDialog.visible = true;"
+            style="color: darkblue">Sign Un</i></div>
+      <div style="padding: 10px; text-align: center; color: gray">OR</div>
+      <Button type="button" @click="oauthRedirect" label="Sign Ip with Google" icon="pi pi-google" variant="outlined"></Button>
     </div>
-    <div style="padding: 10px; text-align: center; color: gray">OR</div>
-    <div class="flex items-center">
-      <Button type="button" @click="oauthRedirect" label="Google"></Button>
-    </div>
+
   </Dialog>
 <!--  register dialog-->
-  <Dialog v-model:visible="registerDialog.visible" modal header="Login" :style="{ width: '25rem' }">
-    <span style="margin-bottom: 30px">Sign up</span>
+  <Dialog v-model:visible="registerDialog.visible" modal header="Sign up" :style="{ width: '25rem' }">
     <div class="input-group-flex">
-      <label for="email-r" class="font-semibold w-24">Email</label>
-      <InputText type="email" v-model="registerDialog.email" id="email-r" class="w-100" autocomplete="off" />
-    </div>
-    <div class="input-group-flex">
-      <label for="password-r" class="font-semibold w-24">Password</label>
-      <InputText v-model="registerDialog.password"  id="password-r" class="w-100" autocomplete="off" />
+      <FloatLabel variant="on" class="w-100">
+        <InputText type="email" v-model="registerDialog.email" id="email-r" class="w-100" autocomplete="off" />
+        <label for="email-r">Email</label>
+      </FloatLabel>
     </div>
     <div class="input-group-flex">
-      <label for="password-r-r" class="font-semibold w-24">repeat password</label>
-      <InputText v-model="registerDialog.password_confirmation" id="password-r-r" class="w-100" autocomplete="off" />
+      <FloatLabel variant="on" class="w-100">
+        <InputText type="password" v-model="registerDialog.password" id="password-r" class="w-100" autocomplete="off" />
+        <label for="password-r">Password</label>
+      </FloatLabel>
     </div>
-    <div class="flex items-center gap-4">
-      <Button type="button" label="Cancel" severity="secondary" @click="registerDialog.visible = false"></Button>
-      <Button type="button" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerAttempt"></Button>
+    <div class="input-group-flex">
+      <FloatLabel variant="on" class="w-100">
+        <InputText v-model="registerDialog.password_confirmation" id="password-r-r" class="w-100" autocomplete="off" />
+        <label for="password-r-r">Password repeat</label>
+      </FloatLabel>
     </div>
-    <div style="padding: 10px; text-align: center; color: gray">OR</div>
-    <div class="flex items-center">
-      <Button type="button" @click="oauthRedirect" label="Google"></Button>
+    <div class="flex items-center" style="flex-direction: column; gap: 30px">
+      <Button type="button" style="width: 100%" :disabled="!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)" label="Sign up" @click="registerAttempt"></Button>
+      <div style="color: gray">Already have account?
+        <i
+            @click="registerDialog.visible = false; loginDialog.visible = true;"
+            style="color: darkblue">Sign In</i></div>
+      <div style="padding: 10px; text-align: center; color: gray">OR</div>
+      <Button type="button" @click="oauthRedirect" label="Sign Up with Google" icon="pi pi-google" variant="outlined"></Button>
     </div>
   </Dialog>
 
@@ -253,6 +266,7 @@ onUpdated(async () => {
   align-items: start;
   gap: 3px;
   margin-bottom: 30px;
+  padding: 5px 0;
 }
 
 .logout-link {

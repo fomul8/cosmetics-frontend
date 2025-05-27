@@ -22,7 +22,7 @@ const isAuthenticated = async () => {
 const tryRefreshToken = async () => {
     //TODO implement refresh in httponly
     try {
-        const res = await fetch(`/api/auth/token/refresh/`, {
+        const res = await fetch(`/api/token/refresh/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
