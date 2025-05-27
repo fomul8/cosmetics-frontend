@@ -166,7 +166,7 @@ onUpdated(async () => {
       <label for="password" class="font-semibold w-24">Password</label>
       <InputText type="password" v-model="loginDialog.password" id="password" class="w-100" />
     </div>
-    <div class="flex justify-end gap-2">
+    <div class="flex gap-2" style="justify-content: center">
       <Button type="button" label="Cancel" severity="secondary" @click="loginDialog.visible = false"></Button>
       <Button type="button" label="Sign in" @click="signIn"></Button>
     </div>
