@@ -19,12 +19,23 @@ const volumes = ref(
     ]
 );
 const selectedVolume = ref({name: '50ml', code: '50', price: 45});
-const deliveryCompanys = ref({
-  ups: true,
-  dhl: false,
-  uspost: false,
-  usforce: false
-});
+
+const shipmentMethod = ref({
+  low: {
+    active: true,
+    basePrice: 15
+  },
+  normal: {
+    active: false,
+    basePrice: 20
+  },
+  fast: {
+    active: false,
+    basePrice: 23
+  }
+})
+const shipmentPrice = ref(15);
+
 const priceTotal = computed(() => {
   return selectedVolume.value.price * qtyVal.value;
 })
@@ -47,14 +58,13 @@ const animationShakeElement = () => {
 
 }
 
-const changeDeliveryCompany = (companyKey) => {
-  const keys = Object.keys(deliveryCompanys.value)
-  for (let key of keys) {
-    deliveryCompanys.value[key] = false;
-  }
-  deliveryCompanys.value[companyKey] = true;
+const changeShipment = (key) => {
+  shipmentMethod.value.low.active = false;
+  shipmentMethod.value.normal.active = false;
+  shipmentMethod.value.fast.active = false;
 
-  console.log(deliveryCompanys.value);
+  shipmentMethod.value[key].active = true;
+  shipmentPrice.value = shipmentMethod.value[key].basePrice;
 }
 </script>
 
@@ -90,17 +100,32 @@ const changeDeliveryCompany = (companyKey) => {
     <div class="col-3"><p style="font-size: 1.4rem; font-weight: bold">$ {{priceTotal}}</p></div>
   </div>
   <Divider/>
-  <div style="font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right">Total with delivery: ${{priceWithDeliveryAndTax}}</div>
+  <div style="width: 100%; text-align: right">
+    <h3>Order summary:</h3>
+    <p>Subtotal: ${{(selectedVolume.price * 0.2)+selectedVolume.price + shipmentPrice}}</p>
+    <p>Sales tax: ${{(selectedVolume.price * 0.2)}}</p>
+    <p>Shipment: ${{shipmentPrice}}</p>
+  </div>
 
   <DeliveryAddress/>
 
-  <div style="display: flex; gap: 10px; margin: 40px 0 0 0">
-    <DeliveryCard @click="changeDeliveryCompany('ups')" :active="deliveryCompanys.ups" :company="`ups`"></DeliveryCard>
-    <DeliveryCard @click="changeDeliveryCompany('dhl')" :active="deliveryCompanys.dhl" :company="`dhl`"></DeliveryCard>
-    <DeliveryCard @click="changeDeliveryCompany('uspost')" :active="deliveryCompanys.uspost" :company="`us-post`"></DeliveryCard>
-    <DeliveryCard @click="changeDeliveryCompany('usforce')" :active="deliveryCompanys.usforce" :company="`us-space-force`"></DeliveryCard>
+  <div style="display: flex; gap: 10px; margin: 40px 0 0 0; flex-direction: column;">
+    <div class="shipment-block" @click="changeShipment('low')">
+      <i :class="`pi pi-circle-fill ${shipmentMethod.low.active ? 'active-color' : ''}`"></i>
+      <div style="width: 60%">Cheap - 10 days</div>
+      <div>${{shipmentMethod.low.basePrice}}</div>
+    </div>
+    <div class="shipment-block" @click="changeShipment('normal')">
+      <i :class="`pi pi-circle-fill ${shipmentMethod.normal.active ? 'active-color' : ''}`"></i>
+      <div style="width: 60%">Fast - 5 days</div>
+      <div>${{shipmentMethod.normal.basePrice}}</div>
+    </div>
+    <div class="shipment-block" @click="changeShipment('fast')">
+      <i :class="`pi pi-circle-fill ${shipmentMethod.fast.active ? 'active-color' : ''}`"></i>
+      <div style="width: 60%">Express - 3 days</div>
+      <div>${{shipmentMethod.fast.basePrice}}</div>
+    </div>
   </div>
-  <div style="font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; margin-top: 30px">Delivery: $30</div>
 
   <h3 style="margin-top: 50px">Add to order</h3>
   <div class="row" style="margin-bottom: 60px">
@@ -115,6 +140,34 @@ const changeDeliveryCompany = (companyKey) => {
 </template>
 
 <style scoped>
+.shipment-block {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 1px 21px 0 rgba(0,0,0,0.1);
+}
+
+.active-mark {
+  position: absolute;
+  top:0;
+  right: 0;
+  border-bottom-left-radius: 80%;
+  border-top-right-radius: 6px;
+  background-color: #71ce8f;
+  width: auto;
+  padding: 8px 10px 8px 12px;
+  color: white;
+  font-weight: bold;
+}
+
+.active-color {
+  color: #673ab7;
+}
 
 .buttons-container {
   display: flex;
