@@ -7,10 +7,11 @@ import Timeline from 'primevue/timeline';
 import { ref } from 'vue';
 
 const events = ref([
-  { status: 'Formulate recipy', sub: 'full controll', icon: 'pi pi-cog', color: '#673AB7' },
-  { status: 'Ordered', sub: 'Select volume', icon: 'pi pi-shopping-cart', color: '#9C27B0'},
-  { status: 'Shipping', sub: 'On your choise', icon: 'pi pi-shopping-cart', color: '#FF9800' },
-  { status: 'Delivered', sub: 'be happy', icon: 'pi pi-check', color: '#607D8B' }
+  { status: 'Formulate your dream recipe', sub: 'full controll', content: 'Choose the best ingredients to solve your problem. A wide range of active substances, oils, and botanicals are available.', icon: 'pi pi-cog', color: '#673AB7' },
+  { status: 'Place an order.', sub: '', content: 'Review your final formula, determine the size of the jar, and place your order.', icon: 'pi pi-shopping-cart', color: '#9C27B0'},
+  { status: 'Start of hyper-individualized manufacturing.', sub: '', content: 'A robotic system under the control of a specialist completes the unique cream according to your formula in a day.', icon: 'pi pi-shopping-cart', color: '#FF9800' },
+  { status: 'Shipment', sub: '', content: 'Free shipment is available', icon: 'pi pi-check', color: '#607D8B' },
+  { status: 'Feedback', sub: '', content: 'Share your impressions and wishes with us. Leave a review and get a bonus.', icon: 'pi pi-check', color: '#607D8B' }
 ])
 
 const router = useRouter();
@@ -46,8 +47,7 @@ const router = useRouter();
           </template>
           <template #content>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate
-              neque quas!
+              {{slotProps.item.content}}
             </p>
             <Button label="Read more" text></Button>
           </template>
