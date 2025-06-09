@@ -54,7 +54,6 @@ const router = useRouter();
             <p>
               {{slotProps.item.content}}
             </p>
-            <Button label="Read more" text></Button>
           </template>
         </Card>
       </template>
