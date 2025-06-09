@@ -7,7 +7,7 @@ import Timeline from 'primevue/timeline';
 import { ref } from 'vue';
 
 const events = ref([
-  { status: 'Formulate your dream recipe', sub: 'full controll', content: 'Choose the best ingredients to solve your problem. A wide range of active substances, oils, and botanicals are available.', icon: 'pi pi-cog', color: '#673AB7' },
+  { status: 'Formulate your dream recipe', sub: '', content: 'Choose the best ingredients to solve your problem. A wide range of active substances, oils, and botanicals are available.', icon: 'pi pi-cog', color: '#673AB7' },
   { status: 'Place an order.', sub: '', content: 'Review your final formula, determine the size of the jar, and place your order.', icon: 'pi pi-shopping-cart', color: '#9C27B0'},
   { status: 'Start of hyper-individualized manufacturing.', sub: '', content: 'A robotic system under the control of a specialist completes the unique cream according to your formula in a day.', icon: 'pi pi-shopping-cart', color: '#FF9800' },
   { status: 'Shipment', sub: '', content: 'Free shipment is available', icon: 'pi pi-check', color: '#607D8B' },
@@ -29,6 +29,11 @@ const router = useRouter();
     </div>
   </div>
 </div>
+  <div class="row">
+    <div class="col-12" style="text-align: center">
+      <h3>How it works:</h3>
+    </div>
+  </div>
 
   <div class="row">
     <Timeline :value="events" align="alternate" class="customized-timeline">
