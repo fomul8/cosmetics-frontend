@@ -1,16 +1,18 @@
 <script setup>
 
-import {computed, ref} from "vue";
+import {computed, ref, onMounted} from "vue";
+import {useRoute} from 'vue-router';
 import Divider from "primevue/divider";
 import Select from 'primevue/select';
 import RecpItem from "./parts/RecpItem.vue";
-import DeliveryCard from "./parts/DeliveryCard.vue"
 import Button from "primevue/button";
+import { apiFetch } from "../helpers/api.js";
 
-import DeliveryAddress from "./parts/DeliveryAddress.vue";
+const route = useRoute()
 
 const qtyVal = ref(1);
 const qtyVal2 = ref(1);
+const cartItems = ref([]);
 
 const volumes = ref(
     [
@@ -54,6 +56,15 @@ const decreaseVal = (key=false) => {
   }
 }
 
+onMounted(async () => {
+  if (route.query.new) {
+    await apiFetch(`/cart-items/?u-recipe-id=${route.query.new}`, {
+      method: 'POST',
+    });
+  }
+  cartItems.value = await apiFetch('/cart-items');
+});
+
 </script>
 
 <template>
@@ -64,7 +75,7 @@ const decreaseVal = (key=false) => {
 <div class="row">
   <div class="col-12 col-md-5">
     <!--  Item 1-->
-    <div class="row">
+    <div class="row" v-for="item in cartItems">
       <div class="col-2">
         <div style="height: 100%; display: flex; align-items: center;">
           <i class="pi pi-box" style="font-size: 1.4rem"></i>
@@ -72,7 +83,7 @@ const decreaseVal = (key=false) => {
       </div>
 
       <div class="col-7">
-        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>Super recip name</b></span>
+        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>{{item.id}}</b></span>
         <div style="display: flex;flex-direction: column; gap: 20px">
           <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
             <span>Volume</span>
@@ -82,43 +93,14 @@ const decreaseVal = (key=false) => {
             <span>Qty:</span>
             <div style="display: flex; justify-content: space-around; align-items: baseline; gap: 20px">
               <i class="pi pi-minus-circle" @click="decreaseVal" style="font-size: 1.3rem; cursor: pointer"></i>
-              <div>{{ qtyVal }}</div>
+              <div>{{ item.quantity }}</div>
               <i class="pi pi-plus-circle" @click="addVal" style="font-size: 1.3rem; cursor: pointer"></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-3"><p style="font-size: 1.4rem; font-weight: bold">$ {{priceTotal}}</p></div>
-    </div>
-    <Divider/>
-    <!--  Item 2-->
-    <div class="row">
-      <div class="col-2">
-        <div style="height: 100%; display: flex; align-items: center;">
-          <i class="pi pi-box" style="font-size: 1.4rem"></i>
-        </div>
-      </div>
-
-      <div class="col-7">
-        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>Super item 2</b></span>
-        <div style="display: flex;flex-direction: column; gap: 20px">
-          <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
-            <span>Volume</span>
-            <Select v-model="selectedVolume2" size="small" :options="volumes" optionLabel="name" placeholder="" class="w-full md:w-56" />
-          </div>
-          <div style="display: flex; overflow: hidden; align-items: baseline;  justify-content: space-between;">
-            <span>Qty:</span>
-            <div style="display: flex; justify-content: space-around; align-items: baseline; gap: 20px">
-              <i class="pi pi-minus-circle" @click="decreaseVal(2)" style="font-size: 1.3rem; cursor: pointer"></i>
-              <div>{{ qtyVal2 }}</div>
-              <i class="pi pi-plus-circle" @click="addVal(2)" style="font-size: 1.3rem; cursor: pointer"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-3"><p style="font-size: 1.4rem; font-weight: bold">$ {{priceTotal2}}</p></div>
+      <div class="col-3"><p style="font-size: 1.4rem; font-weight: bold">$ {{item.price}}</p></div>
     </div>
     <Divider/>
   </div>

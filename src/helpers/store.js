@@ -1,5 +1,5 @@
 // import { defineStore } from 'pinia';
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 //
 // const authStore = defineStore('auth', {
 //     state: () => ({
@@ -11,5 +11,15 @@ import {reactive} from "vue";
 // });
 
 const isLoggedInState = reactive({logged: false});
+const loginDialog = reactive({visible: false, email: '', password: ''});
+const registerDialog = reactive({
+    visible: false,
+    email: '',
+    password: '',
+    password_confirmation: '',
+});
+const logoutDialog = reactive({
+    visible: false,
+});
 
-export {isLoggedInState};
+export {isLoggedInState, logoutDialog, registerDialog, loginDialog};

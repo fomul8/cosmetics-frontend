@@ -48,3 +48,5 @@ function logoutAndRedirect() {
     sessionStorage.removeItem('refresh');
     window.location.href = '/';
 }
+
+export { apiFetch }

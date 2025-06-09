@@ -82,9 +82,9 @@ const signInWithEmailAndPassword = async (email, password) => {
             throw new Error('Token not provided');
         }
         sessionStorage.setItem('jwt', token);
+        sessionStorage.setItem('refresh', data.refresh);
         const userInfo = jwt_decode(token);
         console.log(userInfo);
-
         return true;
     } catch (error) {
         console.error('Login error:', error.message);

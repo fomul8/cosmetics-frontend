@@ -8,7 +8,7 @@ import {InputText} from "primevue";
 import Button from 'primevue/button';
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
-import { isLoggedInState } from "./helpers/store.js";
+import { isLoggedInState, logoutDialog, registerDialog, loginDialog } from "./helpers/store.js";
 import FloatLabel from 'primevue/floatlabel';
 
 const router = useRouter();
@@ -20,11 +20,12 @@ const logoutL = async() => {
   const result = await logout();
   if (result) {
     isLoggedInState.logged = false;
+    logoutDialog.visible = false;
     await router.push('/');
   }
 }
 const logoutC = () => {
-  logoutDialog.value.visible = true;
+  logoutDialog.visible = true;
 }
 const items = ref([
   {
@@ -57,35 +58,20 @@ const items = ref([
     command: logoutC
   }
 ]);
-const loginDialog = ref({
-  visible: false,
-});
-const registerDialog = ref({
-  visible: false,
-  email: '',
-  password: '',
-  password_confirmation: '',
-});
-const logoutDialog = ref({
-  visible: false,
-});
-
-
 
 const toggleMenu = (event) => {
   menu.value.toggle(event);
 };
 
 const signIn = async () => {
-  if (!loginDialog.value.password || !loginDialog.value.email) {
+  if (!loginDialog.password || !loginDialog.email) {
     return false;
   }
 
-  const result = await signInWithEmailAndPassword(loginDialog.value.email, loginDialog.value.password);
+  const result = await signInWithEmailAndPassword(loginDialog.email, loginDialog.password);
   if (result) {
-    loginDialog.value.visible = false;
+    loginDialog.visible = false;
     isLoggedInState.logged = true;
-    await router.push('/');
   }
 }
 
@@ -94,14 +80,13 @@ const oauthRedirect = () => {
 }
 
 const registerAttempt = async () => {
-  if(!(registerDialog.value.password === registerDialog.value.password_confirmation && registerDialog.value.password)) {
+  if(!(registerDialog.password === registerDialog.password_confirmation && registerDialog.password)) {
     return;
   }
-  const attemptResult = await signUp(registerDialog.value.email, registerDialog.value.password, registerDialog.value.password_confirmation);
+  const attemptResult = await signUp(registerDialog.email, registerDialog.password, registerDialog.password_confirmation);
   if (attemptResult.access) {
-    registerDialog.value.visible = false;
+    registerDialog.visible = false;
     isLoggedInState.logged = true;
-    await router.push('/');
   } else {
     const errorsFields = Object.keys(attemptResult);
     let messageTemplate = `<ul style="margin:0; padding-left: 1.2rem">`;

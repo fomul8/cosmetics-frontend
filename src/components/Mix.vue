@@ -1,6 +1,7 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router';
 import {ref, computed, onMounted, nextTick} from "vue";
+import {registerDialog, loginDialog } from "../helpers/store.js";
 // Steps of creating and order
 import Button from 'primevue/button';
 import Active from './mix-steps/Active.vue';
@@ -9,17 +10,18 @@ import Improvers from './mix-steps/Improvers.vue';
 // import Info from './mix-steps/Info.vue';
 import Oil from './mix-steps/Oil.vue';
 import Review from "./mix-steps/Review.vue";
-import Shipment from "./mix-steps/Shipment.vue";
-import Submit from "./mix-steps/Submit.vue";
+import { useToast } from 'primevue/usetoast';
+import { apiFetch } from '../helpers/api.js'
+import {isAuthenticated} from "../helpers/auth.js";
 
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
-import {Dialog} from "primevue";
 const ingredients = new Ingredients();
 
 const chemicalsGroups = ref([]);
 const chemicalIngredients = ref([]);
 const router = useRouter();
+const toast = useToast();
 
 const steps = ref({
   active: {on: true, dataIngredients: [], prev: null, next: 'oil'},
@@ -51,21 +53,19 @@ const stepNext = () => {
 }
 
 const cart = async () => {
-  //save recep to backend in background
-  let response = await fetch('/api/presets/create', {
-    method: 'POST',
-    headers: {
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(steps.value)
-  });
+  if (!await isAuthenticated()) {
+    loginDialog.visible = true;
+    return;
+  }
   try {
-    let responseB = await response.json();
+    const response = await apiFetch('/recipes/', {method: 'POST', body: JSON.stringify(steps.value)});
+    if (response.id) {
+      await router.push(`/cart?new=${response.id}`)
+    }
   } catch (e) {
-
+    toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: 'Internal error', life: 5000});
   } finally {
-    await router.push('/cart');
+    toast.add({severity: 'secondary', summary: 'Added', group: 'custom', detail: 'New recepi', life: 3000});
   }
 }
 
