@@ -69,9 +69,11 @@ const signIn = async () => {
   }
 
   const result = await signInWithEmailAndPassword(loginDialog.email, loginDialog.password);
-  if (result) {
+  if (result.ok) {
     loginDialog.visible = false;
     isLoggedInState.logged = true;
+  } else {
+    showErrors(result.errors);
   }
 }
 
@@ -88,23 +90,28 @@ const registerAttempt = async () => {
     registerDialog.visible = false;
     isLoggedInState.logged = true;
   } else {
-    const errorsFields = Object.keys(attemptResult);
-    let messageTemplate = `<ul style="margin:0; padding-left: 1.2rem">`;
-
-    for (const key of errorsFields) {
-      const messages = Array.isArray(attemptResult[key])
-          ? attemptResult[key]
-          : [attemptResult[key]];
-
-      for (const msg of messages) {
-        messageTemplate += `<li><strong>${msg}</strong></li>`;
-      }
-    }
-
-    messageTemplate += `</ul>`;
-    toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
+    showErrors(attemptResult);
   }
 }
+
+const showErrors = attemptResult => {
+  const errorsFields = Object.keys(attemptResult);
+  let messageTemplate = `<ul style="margin:0; padding-left: 1.2rem">`;
+
+  for (const key of errorsFields) {
+    const messages = Array.isArray(attemptResult[key])
+        ? attemptResult[key]
+        : [attemptResult[key]];
+
+    for (const msg of messages) {
+      messageTemplate += `<li><strong>${msg}</strong></li>`;
+    }
+  }
+
+  messageTemplate += `</ul>`;
+  toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
+}
+
 onMounted(async () => {
   isLoggedInState.logged = await isAuthenticated();
 })

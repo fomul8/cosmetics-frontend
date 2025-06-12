@@ -60,6 +60,7 @@ function jwt_decode(token) {
 }
 
 const signInWithEmailAndPassword = async (email, password) => {
+    const responsePrepared = {ok: false, errors: {}};
     try {
         const response = await fetch('/api/auth/login/', {
             method: 'POST',
@@ -74,7 +75,8 @@ const signInWithEmailAndPassword = async (email, password) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Login failed');
+            responsePrepared.errors = errorData;
+            return responsePrepared
         }
         const data = await response.json();
         const token = data.access;
@@ -84,11 +86,11 @@ const signInWithEmailAndPassword = async (email, password) => {
         sessionStorage.setItem('jwt', token);
         sessionStorage.setItem('refresh', data.refresh);
         const userInfo = jwt_decode(token);
-        console.log(userInfo);
-        return true;
+        responsePrepared.ok = true;
+        return responsePrepared;
     } catch (error) {
-        console.error('Login error:', error.message);
-        return false;
+        console.log('Login error:', error.message);
+        return responsePrepared;
     }
 }
 
