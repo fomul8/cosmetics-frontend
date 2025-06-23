@@ -5,31 +5,20 @@ import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
 import Timeline from 'primevue/timeline';
 import Tag from 'primevue/tag';
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import {apiFetch} from "../helpers/api.js";
 
-const orders = ref([
-  {date: '2025-03-24', status: 'Pending', total: '$120.00', events: [
-      {name: 'created', status: 'Created', date: '2025-03-24'},
-      {name: 'paid', status: 'Paid', date: '2025-03-24'},
-      {name: 'shipped', status: 'Shipped', date: '2025-03-24'},
-    ]},
-  {date: '2025-03-23', status: 'Processing', total: '$70.00',  events: [
-      {name: 'created', status: 'Created', date: '2025-03-24'},
-      {name: 'paid', status: 'Paid', date: '2025-03-24'},
-      {name: 'shipped', status: 'Shipped', date: '2025-03-24'},
-    ]},
-  {date: '2025-03-23', status: 'Delivered', total: '$270.00',  events: [
-      {name: 'created', status: 'Created', date: '2025-03-24'},
-      {name: 'paid', status: 'Paid', date: '2025-03-24'},
-      {name: 'shipped', status: 'Shipped', date: '2025-03-24'},
-    ]},
-])
+const orders = ref([]);
 
 const orderStatusTagStyle = {
-  'Pending': 'secondary',
-  'Processing': 'secondary',
-  'Delivered': 'success',
+  'pending': 'secondary',
+  'processing': 'secondary',
+  'delivered': 'success',
 };
+
+onMounted(async () => {
+  orders.value = await apiFetch('/orders/');
+})
 </script>
 
 <template>
@@ -37,15 +26,15 @@ const orderStatusTagStyle = {
     <AccordionPanel v-for="order in orders" :value="order">
       <AccordionHeader>
         <div style="display: flex; justify-content: space-between; padding-right: 10px; width: 100%">
-          <div>{{ order.date }}</div>
+          <div>{{ order.created_at }}</div>
           <div><Tag :severity="`${orderStatusTagStyle[order.status]}`" :value="order.status"></Tag></div>
           <div>{{order.total}}</div>
         </div>
       </AccordionHeader>
       <AccordionContent>
-        <Timeline :value="order.events" align="left" class="costom-order-timeline">
+        <Timeline :value="order.history" align="left" class="costom-order-timeline">
           <template #content="slotProps">
-            {{ slotProps.item.status }} - {{ slotProps.item.date }}
+            {{ slotProps.item.status_to }} - {{ slotProps.item.created_at }}
           </template>
         </Timeline>
       </AccordionContent>
