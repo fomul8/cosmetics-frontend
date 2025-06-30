@@ -25,7 +25,7 @@ const router = useRouter();
       <img src="../assets/potion1.svg" width="50" class="rotate-30-deg" style="position: relative; top: 10svh; left: 30px;">
       <img src="../assets/potion2.svg" width="70" class="rotate-60-deg" style="position: relative; top: 10%; left: 70%;">
       <img src="../assets/potion3.svg" width="80" class="rotate-10-deg" style="position: relative; top: 20svh; left: 170px;">
-      <Button @click="router.push({name: 'mix', params: {id: 1}})" label="MIX" class="mix-btn" variant="outlined" style="font-weight: 900"/>
+      <Button @click="router.push({name: 'mix', params: {id: 1}})" label="MIX" class="mix-btn spring-button" variant="outlined" style="font-weight: 900"/>
     </div>
   </div>
 </div>
@@ -78,7 +78,15 @@ const router = useRouter();
 .mix-btn {
   font-size: 2rem;
   width: 100%;
+
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px) saturate(186%);
+  -webkit-backdrop-filter: blur(8px) saturate(186%);
+  background-color: rgba(170, 60, 200, 0.1);
+
 }
+
+
 
 .rotate-30-deg {
   transform: rotate(30deg);
