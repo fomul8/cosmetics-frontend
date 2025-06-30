@@ -178,12 +178,12 @@ button:focus-visible {
 
 .spring-button {
   animation: none;
-  transition: transform 0.05s ease !important;
+  transition: transform 0.06s ease !important;
 }
 
 .spring-button:active {
   transform: scale(1.2);
-  animation: springBack 0.4s ease-out;
+  animation: springBack 0.6s ease-out;
 }
 
 @keyframes springBack {
