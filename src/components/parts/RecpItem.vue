@@ -19,10 +19,15 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid silver;
   border-radius: 6px;
   padding: 20px;
-  box-shadow: 0 1px 21px 0 rgba(0,0,0,0.1);
+
+  box-shadow: 0px -2px 22px 0px rgba(255,255,255,0.75) inset;
+
+  backdrop-filter: blur(8px) saturate(186%);
+  -webkit-backdrop-filter: blur(8px) saturate(186%);
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(209, 213, 219, 0.3);
 }
 
 .r-item-card__plus-btn {

@@ -156,7 +156,7 @@ onUpdated(async () => {
 
 
 <!--  login dialog-->
-  <Dialog v-model:visible="loginDialog.visible" modal header="Sign In" :style="{ width: '25rem' }">
+  <Dialog v-model:visible="loginDialog.visible" modal class="glass-dialog" header="Sign In" :style="{ width: '25rem' }">
     <div class="input-group-flex">
       <FloatLabel variant="on" class="w-100">
         <InputText type="email" v-model="loginDialog.email" id="email" class="w-100" />
@@ -182,7 +182,7 @@ onUpdated(async () => {
 
   </Dialog>
 <!--  register dialog-->
-  <Dialog v-model:visible="registerDialog.visible" modal header="Sign up" :style="{ width: '25rem' }">
+  <Dialog v-model:visible="registerDialog.visible" class="glass-dialog" modal header="Sign up" :style="{ width: '25rem' }">
     <div class="input-group-flex">
       <FloatLabel variant="on" class="w-100">
         <InputText type="email" v-model="registerDialog.email" id="email-r" class="w-100" autocomplete="off" />
@@ -213,7 +213,7 @@ onUpdated(async () => {
   </Dialog>
 
   <!--  logout dialog-->
-  <Dialog v-model:visible="logoutDialog.visible" modal header="Logout" :style="{ width: '25rem' }">
+  <Dialog v-model:visible="logoutDialog.visible" modal class="glass-dialog" header="Logout" :style="{ width: '25rem' }">
     <div style="margin-bottom: 30px; text-align: center">Are you realy want to logout?</div>
 
     <div class="flex items-center gap-4">

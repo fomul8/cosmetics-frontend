@@ -138,6 +138,10 @@ onMounted(async () => {
   padding: 20px;
   left: 0;
   width: 100%;
-  background-color: white;
+
+  backdrop-filter: blur(8px) saturate(186%);
+  -webkit-backdrop-filter: blur(8px) saturate(186%);
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(209, 213, 219, 0.3);
 }
 </style>
