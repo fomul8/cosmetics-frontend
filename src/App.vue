@@ -44,6 +44,11 @@ const items = ref([
     link: '/orders-history'
   },
   {
+    label: 'Recipes',
+    icon: 'pi pi-tags',
+    link: '/recipes'
+  },
+  {
     label: 'Cart',
     icon: 'pi pi-cart',
     link: '/cart'
@@ -124,25 +129,25 @@ onUpdated(async () => {
   <div class="header-container">
     <div class="container flex-container">
       <i class="pi pi-align-justify vj-openmob-menu" @click="toggleMenu" style="font-size: 1.5rem; cursor: pointer"></i>
+      <span style="font-weight: bold; font-size: 1.2rem">FORMUL<span style="color: crimson">8</span></span>
       <div class="login-container" v-if="!isLoggedInState.logged">
         <div @click.stop="loginDialog.visible=true">Login</div>
         <div @click.stop="registerDialog.visible=true">Register</div>
       </div>
       <router-link to="/profile" v-if="isLoggedInState.logged" ><span class="pi pi-user" style="font-size: 1.5rem; cursor: pointer;"></span></router-link>
-
-      <TieredMenu ref="menu" id="overlay_tmenu" :model="items" popup>
-        <template #item="{ item, props, hasSubmenu }">
-          <router-link v-if="item.link" :to="item.link" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
-            <span :class="item.icon" />
-            <span class="ml-2">{{ item.label }}</span>
-          </router-link>
-          <div v-else @click="item.command" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
-            <span :class="item.icon" />
-            <span class="ml-2">{{ item.label }}</span>
-          </div>
-        </template>
-      </TieredMenu>
     </div>
+    <TieredMenu ref="menu" id="overlay_tmenu" :model="items" popup>
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link v-if="item.link" :to="item.link" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
+          <span :class="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </router-link>
+        <div v-else @click="item.command" style="padding: 10px; display: flex; justify-content: flex-start; align-items: baseline; gap: 10px;">
+          <span :class="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+        </div>
+      </template>
+    </TieredMenu>
   </div>
 
   <div class="container">
@@ -230,9 +235,15 @@ onUpdated(async () => {
 
 <style scoped>
 .header-container {
-  border-bottom: 1px solid var(--p-primary-500);
+  box-shadow: 0 10px 24px 0px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px) saturate(186%);
+  -webkit-backdrop-filter: blur(8px) saturate(186%);
+  background-color: rgba(170, 60, 200, 0.4);
+  border: 1px solid rgba(209, 213, 219, 0.3);
   width: 100%;
   position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
 .container {

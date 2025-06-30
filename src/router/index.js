@@ -6,6 +6,7 @@ import Mix from '../components/Mix.vue';
 import Consultation from "../components/Consultation.vue";
 import OrdersHistory from "../components/OrdersHistory.vue";
 import Cart from "../components/Cart.vue";
+import Recipes from "../components/Recipes.vue";
 import {computed} from "vue";
 import {isAuthenticated, logout} from "../helpers/auth";
 import GoogleAuth from "../components/GoogleAuth.vue";
@@ -17,6 +18,7 @@ const routes = [
     {path: '/mix/:id', name: 'mix', component: Mix},
     {path: '/consultation', name: 'consultation', component: Consultation},
     {path: '/cart', name: 'cart', component: Cart, meta: {requiresAuth: true}},
+    {path: '/recipes', name: 'recipes', component: Recipes, meta: {requiresAuth: true}},
     {path: '/google/callback', name: 'google', component: GoogleAuth}
 ];
 

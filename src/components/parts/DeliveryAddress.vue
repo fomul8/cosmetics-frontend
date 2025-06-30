@@ -139,6 +139,7 @@ const newAddress = ref({
   border-radius: 6px;
   padding: 20px;
   box-shadow: 0 1px 21px 0 rgba(0,0,0,0.1);
+  background-color: white;
 }
 
 .new-addr-row {

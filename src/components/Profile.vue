@@ -21,7 +21,7 @@ const scoreValue = 43;
 <div class="row">
 <!--  User base info-->
   <div class="col-12 col-md-3 mb-on-s">
-    <Card>
+    <Card class="glass-card">
       <template #title>Info</template>
       <template #content>
         <p class="m-0">
@@ -37,7 +37,7 @@ const scoreValue = 43;
   </div>
 
   <div class="col-12 col-md-9 mb-on-s">
-    <Card style="position: relative">
+    <Card style="position: relative" class="glass-card">
       <template #title>Security</template>
       <template #content>
         <p class="m-0">

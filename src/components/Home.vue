@@ -43,7 +43,7 @@ const router = useRouter();
         </span>
       </template>
       <template #content="slotProps">
-        <Card class="mt-4">
+        <Card class="mt-4 glass-card">
           <template #title>
             {{ slotProps.item.status }}
           </template>
