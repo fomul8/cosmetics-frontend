@@ -125,14 +125,17 @@ const clickPresetButton = (button) => {
     <div class="col-6">
       <Button @click="clickPresetButton(presetButtons.b2)"
               style="width: 100%; margin-bottom: 10px"
+              class="spring-button"
               :variant="`${(!presetButtons.b2.active?'outlined':'')}`">{{presetButtons.b2.label}}</Button></div>
     <div class="col-6">
       <Button @click="clickPresetButton(presetButtons.b3)"
               style="width: 100%; margin-bottom: 10px"
+              class="spring-button"
               :variant="`${(!presetButtons.b3.active?'outlined':'')}`">{{presetButtons.b3.label}}</Button></div>
     <div class="col-6">
       <Button @click="clickPresetButton(presetButtons.b4)"
               :variant="`${(!presetButtons.b4.active?'outlined':'')}`"
+              class="spring-button"
               style="width: 100%; margin-bottom: 10px">{{presetButtons.b4.label}}</Button></div>
   </div>
 
