@@ -130,7 +130,7 @@ const {text} = defineProps(['text'])
   color: white;
   z-index: 10;
   border-radius:10px;
-  background:rgba(170, 60, 200, 0.4);
+  background:rgba(170, 60, 200, 0.6);
   box-shadow:0 0 0 2px rgba(255,255,255,.2),0 16px 32px rgba(0,0,0,.12);
   backdrop-filter: url(#frosted);
   -webkit-backdrop-filter: url(#frosted);
