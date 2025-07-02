@@ -13,6 +13,7 @@ import Review from "./mix-steps/Review.vue";
 import { useToast } from 'primevue/usetoast';
 import { apiFetch } from '../helpers/api.js'
 import {isAuthenticated} from "../helpers/auth.js";
+import GlassBtn from "./elements/GlassBtn.vue";
 
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
@@ -155,9 +156,12 @@ onMounted(async () => {
 
 
   <div class="footer-buttons">
-    <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>
-    <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>
-    <Button label="Add to cart" @click="cart" v-if="steps.review.on" icon="pi pi-cart-arrow-down"></Button>
+<!--    <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>-->
+<!--    <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>-->
+<!--    <Button label="Add to cart" @click="cart" v-if="steps.review.on" icon="pi pi-cart-arrow-down"></Button>-->
+    <GlassBtn text="Back" @click="stepBack" v-if="!steps.active.on"/>
+    <GlassBtn text="Next" @click="stepNext" v-if="!steps.review.on"/>
+    <GlassBtn text="Add to cart" @click="stepNext" v-if="steps.review.on"/>
   </div>
 </template>
 

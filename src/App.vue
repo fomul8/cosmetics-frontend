@@ -231,6 +231,102 @@ onUpdated(async () => {
       </div>
     </template>
   </Toast>
+
+  <svg width="0" height="0">
+    <filter id="frosted"
+            x="-20%" y="-20%"
+            width="140%" height="140%"
+            filterUnits="objectBoundingBox"
+            filterRes="300 300"
+            primitiveUnits="objectBoundingBox">
+      <!-- 1) Низкочастотный шум -->
+      <feTurbulence type="fractalNoise"
+                    baseFrequency="0.01 0.01"
+                    numOctaves="1"
+                    seed="1"
+                    result="noise"/>
+      <!-- 2) Размываем шум, чтобы сделать волны плавными -->
+      <feGaussianBlur in="noise"
+                      stdDeviation="1.2"
+                      result="smoothNoise"/>
+      <!-- 3) Смещаем исходное изображение по «гладкому» шуму -->
+      <feDisplacementMap id="disp"
+                         in="SourceGraphic"
+                         in2="smoothNoise"
+                         scale="20"
+                         xChannelSelector="R"
+                         yChannelSelector="G"
+                         result="displaced"/>
+      <!-- 4) Размываем уже искажённое изображение, чтобы края волн были мягкими -->
+      <feGaussianBlur in="displaced"
+                      stdDeviation="0.01"
+                      result="final"/>
+      <!-- 5) Обрезаем до формы оригинала -->
+      <feComposite in="final" in2="SourceGraphic" operator="in"/>
+      <!-- 6) Анимация усиления эффекта при hover -->
+      <animate xlink:href="#disp"
+               attributeName="scale"
+               from="20" to="40"
+               dur="0.3s"
+               begin="frosted-box.mouseover"
+               fill="freeze"/>
+      <animate xlink:href="#disp"
+               attributeName="scale"
+               from="40" to="20"
+               dur="0.3s"
+               begin="frosted-box.mouseout"
+               fill="freeze"/>
+    </filter>
+  </svg>
+
+
+
+  <svg width="0" height="0">
+    <filter id="frosted2"
+            x="-20%" y="-20%"
+            width="140%" height="140%"
+            filterUnits="objectBoundingBox"
+            filterRes="300 300"
+            primitiveUnits="objectBoundingBox">
+      <!-- 1) Низкочастотный шум -->
+      <feTurbulence type="fractalNoise"
+                    baseFrequency="0.01 0.01"
+                    numOctaves="1"
+                    seed="1"
+                    result="noise"/>
+      <!-- 2) Размываем шум, чтобы сделать волны плавными -->
+      <feGaussianBlur in="noise"
+                      stdDeviation="1.2"
+                      result="smoothNoise"/>
+      <!-- 3) Смещаем исходное изображение по «гладкому» шуму -->
+      <feDisplacementMap id="disp"
+                         in="SourceGraphic"
+                         in2="smoothNoise"
+                         scale="20"
+                         xChannelSelector="R"
+                         yChannelSelector="G"
+                         result="displaced"/>
+      <!-- 4) Размываем уже искажённое изображение, чтобы края волн были мягкими -->
+      <feGaussianBlur in="displaced"
+                      stdDeviation="0.01"
+                      result="final"/>
+      <!-- 5) Обрезаем до формы оригинала -->
+      <feComposite in="final" in2="SourceGraphic" operator="in"/>
+      <!-- 6) Анимация усиления эффекта при hover -->
+      <animate xlink:href="#disp"
+               attributeName="scale"
+               from="20" to="40"
+               dur="0.3s"
+               begin="frosted-box.mouseover"
+               fill="freeze"/>
+      <animate xlink:href="#disp"
+               attributeName="scale"
+               from="40" to="20"
+               dur="0.3s"
+               begin="frosted-box.mouseout"
+               fill="freeze"/>
+    </filter>
+  </svg>
 </template>
 
 <style scoped>
@@ -244,6 +340,12 @@ onUpdated(async () => {
   position: sticky;
   top: 0;
   z-index: 5;
+}
+
+.header-container-glass {
+  box-shadow:0 0 0 2px rgba(255,255,255,.6),0 16px 32px rgba(0,0,0,.12);
+  backdrop-filter: url(#frosted2);
+  -webkit-backdrop-filter: url(#frosted2);
 }
 
 .container {
