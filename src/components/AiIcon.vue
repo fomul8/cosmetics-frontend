@@ -19,9 +19,7 @@
 
 <style scoped>
 .glass-ai{
-  position:fixed;
   z-index: 5;
-  inset:80% 10% auto 70%;
   width:80px;
   height:80px;
   border-radius:50%;

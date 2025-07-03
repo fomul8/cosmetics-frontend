@@ -48,6 +48,10 @@ const presets = ref([{label: 'Default', id: 1, ingredientsVals: [{id: 1, val: 1}
 );
 
 const stepBack = () => {
+  if (steps.value.active.on) {
+    router.push('/');
+    return;
+  }
   const prevStepKey = steps.value[currentStep.value].prev;
   steps.value[currentStep.value].on = false;
   currentStep.value = prevStepKey;
@@ -179,11 +183,11 @@ onMounted(async () => {
 <!--    <Button label="Back" @click="stepBack" variant="outlined" v-if="!steps.active.on"></Button>-->
 <!--    <Button label="Next" @click="stepNext" v-if="!steps.review.on" ></Button>-->
 <!--    <Button label="Add to cart" @click="cart" v-if="steps.review.on" icon="pi pi-cart-arrow-down"></Button>-->
-    <GlassBtn text="Back" @click="stepBack" v-if="!steps.active.on"/>
+    <GlassBtn text="Back" @click="stepBack"/>
+    <div @click="aiAnalyz"><AiIcon /></div>
     <GlassBtn text="Next" @click="stepNext" v-if="!steps.review.on"/>
     <GlassBtn text="Add to cart" @click="stepNext" v-if="steps.review.on"/>
   </div>
-  <div @click="aiAnalyz"><AiIcon /></div>
 
 
   <Dialog v-model:visible="aiAnalizDialog.visible" modal class="glass-dialog" header="Ai analyz" :style="{ width: '25rem' }">
