@@ -1,7 +1,7 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router';
 import {ref, computed, onMounted, nextTick} from "vue";
-import {registerDialog, loginDialog } from "../helpers/store.js";
+import {registerDialog, loginDialog} from "../helpers/store.js";
 // Steps of creating and order
 import Button from 'primevue/button';
 import Active from './mix-steps/Active.vue';
@@ -14,9 +14,12 @@ import { useToast } from 'primevue/usetoast';
 import { apiFetch } from '../helpers/api.js'
 import {isAuthenticated} from "../helpers/auth.js";
 import GlassBtn from "./elements/GlassBtn.vue";
+import AiIcon from "./AiIcon.vue";
+import Skeleton from 'primevue/skeleton';
 
 import Ingredients  from "../beemulation/ingredients.js";
 import randomColor from '../helpers/colors';
+import {Dialog} from "primevue";
 const ingredients = new Ingredients();
 
 const chemicalsGroups = ref([]);
@@ -33,6 +36,11 @@ const steps = ref({
   review: {on: false, dataIngredients: [], prev: 'improvers', next: null}
 });
 const currentStep = ref('active');
+const aiAnalizDialog = ref({
+  visible: false,
+  processing: false,
+  message: ''
+})
 const presets = ref([{label: 'Default', id: 1, ingredientsVals: [{id: 1, val: 1}]},
   {label: 'Default', id: 2,ingredientsVals: [{id: 3, val: 2}]},
   {label: 'Default', id: 3, ingredientsVals: [{id: 2, val: 1}]},
@@ -126,6 +134,18 @@ const reloadStepsIngredients = () => {
   console.log(steps.value.active.dataIngredients);
 }
 
+const aiAnalyz = async () => {
+  aiAnalizDialog.value.message = ''
+  aiAnalizDialog.value.visible = true;
+  aiAnalizDialog.value.processing = true;
+
+  const analyzedData = await apiFetch('/assistant', {method: 'POST', body: JSON.stringify(steps.value)});
+  if (analyzedData.description) {
+    aiAnalizDialog.value.message = analyzedData.description;
+    aiAnalizDialog.value.processing = false;
+  }
+}
+
 onMounted(async () => {
   presets.value = await getPresets();
   chemicalsGroups.value = ingredients.getGroups();
@@ -163,6 +183,24 @@ onMounted(async () => {
     <GlassBtn text="Next" @click="stepNext" v-if="!steps.review.on"/>
     <GlassBtn text="Add to cart" @click="stepNext" v-if="steps.review.on"/>
   </div>
+  <div @click="aiAnalyz"><AiIcon /></div>
+
+
+  <Dialog v-model:visible="aiAnalizDialog.visible" modal class="glass-dialog" header="Ai analyz" :style="{ width: '25rem' }">
+
+    <div v-if="aiAnalizDialog.processing" style="margin-bottom: 30px">
+      <div style="margin-bottom: 30px; text-align: center">AI analyzing you recipt</div>
+      <Skeleton width="10rem" class="mb-2"></Skeleton>
+      <Skeleton width="5rem" class="mb-2"></Skeleton>
+      <Skeleton height="2rem" class="mb-2"></Skeleton>
+      <Skeleton width="10rem" height="4rem"></Skeleton>
+    </div>
+    <div v-if="aiAnalizDialog.message">{{aiAnalizDialog.message}}</div>
+
+    <div class="flex items-center gap-4">
+      <Button type="button" label="Ok" severity="secondary" @click="aiAnalizDialog.visible = false"></Button>
+    </div>
+  </Dialog>
 </template>
 
 <style scoped>

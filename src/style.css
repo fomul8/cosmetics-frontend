@@ -196,3 +196,8 @@ button:focus-visible {
     transform: scale(1);
   }
 }
+
+#overlay_tmenu a {
+  color: #1a1a1a;
+}
+

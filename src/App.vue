@@ -50,7 +50,7 @@ const items = ref([
   },
   {
     label: 'Cart',
-    icon: 'pi pi-cart',
+    icon: 'pi pi-cart-plus',
     link: '/cart'
   },
   {

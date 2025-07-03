@@ -72,6 +72,9 @@ const newAddress = ref({
       <div style="z-index: 10">N.Y manhettan 1 apt 1010 road 1.</div>
       <div style="z-index: 10">ZIP 222222</div>
       <div class="map-icon-box"></div>
+      <div class="edit-corner-btn">
+        <i class="pi pi-cog"></i>
+      </div>
     </div>
     <div class="delivery-card" @click="newAddress.visible = !newAddress.visible" style="justify-content: center">
       <i class="pi pi-plus" v-if="!newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
@@ -157,5 +160,19 @@ const newAddress = ref({
   background: url("/map.png");
   background-size: cover;
   box-shadow: 84px -6px 26px 30px rgba(255,255,255,0.85) inset;
+}
+
+.edit-corner-btn {
+  position: absolute;
+  top:0;
+  right: 0;
+  border-bottom-left-radius: 80%;
+  border-top-right-radius: 6px;
+  background-color: #daabe7;
+  width: auto;
+  padding: 8px 10px 8px 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>

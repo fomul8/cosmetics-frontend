@@ -82,6 +82,7 @@ const scoreValue = 43;
   padding: 8px 10px 8px 12px;
   color: white;
   font-weight: bold;
+  cursor: pointer;
 }
 
 </style>
