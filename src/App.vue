@@ -365,15 +365,6 @@ onUpdated(async () => {
   cursor: pointer;
 }
 
-.input-group-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 3px;
-  margin-bottom: 30px;
-  padding: 5px 0;
-}
-
 .logout-link {
   cursor: pointer;
 }

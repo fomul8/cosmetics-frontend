@@ -176,6 +176,11 @@ onMounted(async () => {
   <Improvers v-if="steps.improvers.on" v-model:selectors="steps.improvers.selectors"></Improvers>
 <!--  <Info v-if="steps.info.on"></Info>-->
   <Review v-if="steps.review.on" :steps="steps"></Review>
+  <div class="row">
+    <div class="col-12">
+      <div style="width: 100%; height: 80px"></div>
+    </div>
+  </div>
 
 
 

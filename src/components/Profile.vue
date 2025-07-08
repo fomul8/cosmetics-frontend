@@ -6,8 +6,75 @@ import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Select from 'primevue/select';
 import InputGroupAddon from 'primevue/inputgroupaddon';
+import {apiFetch} from "../helpers/api.js";
+
 
 import DeliveryAddress from "./parts/DeliveryAddress.vue";
+import {onMounted, ref} from "vue";
+import Button from "primevue/button";
+import {Dialog} from "primevue";
+import FloatLabel from "primevue/floatlabel";
+import {useToast} from "primevue/usetoast";
+import Toast from "primevue/toast";
+const toast  = useToast();
+
+const userObject = ref({});
+const changePasswordDialog = ref({
+  visible: false,
+  password: '',
+  passwordRepeat: ''
+})
+const editInfoDialog = ref({
+  visible: false,
+})
+
+const changePass =  async() => {
+  if (!changePasswordDialog.value.password || !changePasswordDialog.value.passwordRepeat) {
+    return false;
+  }
+  let result;
+
+  try {
+    result = await apiFetch('/auth/password/change/', {
+      method: 'POST',
+      body: {
+        'new_password1': changePasswordDialog.value.password,
+        'new_password2': changePasswordDialog.value.passwordRepeat
+      }
+    });
+    if (result.ok) {
+      changePasswordDialog.value.visible = false;
+      toast.add({severity: 'secondary', summary: 'Changed', detail: 'You changed your password', life: 5000});
+    } else {
+      showErrors(result.errors);
+    }
+  } catch (e) {
+    showErrors(e);
+  }
+}
+
+//TODO refactor replace to module for global use
+const showErrors = attemptResult => {
+  const errorsFields = Object.keys(attemptResult);
+  let messageTemplate = `<ul style="margin:0; padding-left: 1.2rem">`;
+
+  for (const key of errorsFields) {
+    const messages = Array.isArray(attemptResult[key])
+        ? attemptResult[key]
+        : [attemptResult[key]];
+
+    for (const msg of messages) {
+      messageTemplate += `<li><strong>${msg}</strong></li>`;
+    }
+  }
+
+  messageTemplate += `</ul>`;
+  toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
+}
+
+onMounted(async () => {
+  userObject.value = await apiFetch('/users/me/');
+})
 
 const scoreValue = 43;
 </script>
@@ -28,8 +95,9 @@ const scoreValue = 43;
           Account created: 24.3.2025
         </p>
         <p>
-          ID #12345
+          ID #{{userObject.id}}
         </p>
+        <p>Login: {{userObject.login ?? '---'}}</p>
         <p>Science score:</p>
         <ProgressBar :value="scoreValue"></ProgressBar>
       </template>
@@ -41,12 +109,12 @@ const scoreValue = 43;
       <template #title>Security</template>
       <template #content>
         <p class="m-0">
-          Email: usertest@gmail.com
+          Email: {{userObject.email}}
         </p>
         <p>
           Password: *********
         </p>
-        <div class="edit-corner-btn">
+        <div class="edit-corner-btn" @click="changePasswordDialog.visible = true;">
           <i class="pi pi-cog"></i>
         </div>
       </template>
@@ -57,6 +125,37 @@ const scoreValue = 43;
     <div class="col-12 col-md-3"></div>
     <DeliveryAddress/>
   </div>
+
+  <!--  change password dialog-->
+  <Dialog v-model:visible="changePasswordDialog.visible" modal class="glass-dialog" header="Change password" :style="{ width: '25rem' }">
+    <div class="input-group-flex">
+      <FloatLabel variant="on" class="w-100">
+        <InputText v-model="changePasswordDialog.password" id="password" class="w-100" />
+        <label for="password">Password</label>
+      </FloatLabel>
+    </div>
+    <div class="input-group-flex">
+      <FloatLabel variant="on" class="w-100">
+        <InputText v-model="changePasswordDialog.passwordRepeat" id="password-repeat" class="w-100" />
+        <label for="password-repeat">Repeat Password</label>
+      </FloatLabel>
+    </div>
+
+    <div class="flex items-center" style="flex-direction: column; gap: 30px">
+      <Button type="button" style="width: 100%" label="Change" @click="changePass"></Button>
+    </div>
+
+  </Dialog>
+
+  <Toast :baseZIndex="10000"></Toast>
+  <Toast group="custom">
+    <template #message="slotProps">
+      <div>
+        <strong>{{ slotProps.message.summary }}</strong>
+        <div v-html="slotProps.message.detail" />
+      </div>
+    </template>
+  </Toast>
 </template>
 
 <style scoped>

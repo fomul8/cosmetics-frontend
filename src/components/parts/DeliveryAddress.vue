@@ -1,10 +1,12 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import Select from 'primevue/select';
 import Button from "primevue/button";
 import {InputText} from "primevue";
 import {Message} from "primevue";
+import {apiFetch} from "../../helpers/api.js";
 
+const adresses = ref([]);
 const states = [
   { name: 'Alabama', code: 'AL' },
   { name: 'Alaska', code: 'AK' },
@@ -62,21 +64,43 @@ const states = [
 const newAddress = ref({
   visible: false,
 })
+
+const currentAddressModification = ref({});
+
+const editAddress = address => {
+  currentAddressModification.value = address;
+  newAddress.value.visible = true;
+}
+
+const openNewAddress = () => {
+  if (newAddress.value.visible) {
+    newAddress.value.visible = false;
+    return;
+  }
+  currentAddressModification.value = {};
+  newAddress.value.visible = true;
+}
+
+onMounted(async () => {
+  adresses.value = await apiFetch('/users/delivery');
+
+})
 </script>
 
 <template>
   <h3 style="margin-top: 50px">Delivery:</h3>
   <div style="display: flex; gap: 10px; align-items: stretch;">
-    <div class="delivery-card">
+    <div v-for="address in adresses" class="delivery-card">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b>home</b></div>
-      <div style="z-index: 10">N.Y manhettan 1 apt 1010 road 1.</div>
-      <div style="z-index: 10">ZIP 222222</div>
+      <div style="z-index: 10">{{address.city}} {{address.address_string}}</div>
+      <div style="z-index: 10">ZIP {{address.post_code}}</div>
       <div class="map-icon-box"></div>
-      <div class="edit-corner-btn">
+      <div class="edit-corner-btn" @click="editAddress(address)">
         <i class="pi pi-cog"></i>
       </div>
     </div>
-    <div class="delivery-card" @click="newAddress.visible = !newAddress.visible" style="justify-content: center">
+
+    <div class="delivery-card" @click="openNewAddress" style="justify-content: center">
       <i class="pi pi-plus" v-if="!newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
       <i class="pi pi-minus" v-if="newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
     </div>
@@ -85,11 +109,11 @@ const newAddress = ref({
     <p>New delivery address</p>
     <div class="new-addr-row">
       <label for="first-name">First Name</label>
-      <InputText id="first-name" v-model="value" aria-describedby="username-help" />
+      <InputText id="first-name" v-model="currentAddressModification['first_name']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="last-name">Last Name</label>
-      <InputText id="last-name" v-model="value" aria-describedby="username-help" />
+      <InputText id="last-name" v-model="currentAddressModification['last_name']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="company">Company</label>
@@ -115,11 +139,11 @@ const newAddress = ref({
     </div>
     <div class="new-addr-row">
       <label for="zip">ZIP code</label>
-      <InputText id="zip" v-model="value" aria-describedby="username-help" />
+      <InputText id="zip" v-model="currentAddressModification['post_code']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="phone">Phone number</label>
-      <InputText id="phone" v-model="value" aria-describedby="username-help" />
+      <InputText id="phone" v-model="currentAddressModification['phone_number']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="instructions">Delivery Instructions</label>
