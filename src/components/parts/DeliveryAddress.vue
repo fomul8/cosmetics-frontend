@@ -1,12 +1,13 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, defineEmits, onMounted, ref} from "vue";
 import Select from 'primevue/select';
 import Button from "primevue/button";
 import {InputText} from "primevue";
 import {Message} from "primevue";
 import {apiFetch} from "../../helpers/api.js";
+const emit = defineEmits(['saveAddress']);
 
-const adresses = ref([]);
+const addresses = ref([]);
 const states = [
   { name: 'Alabama', code: 'AL' },
   { name: 'Alaska', code: 'AK' },
@@ -65,7 +66,18 @@ const newAddress = ref({
   visible: false,
 })
 
-const currentAddressModification = ref({});
+const currentAddressModification = ref({
+  id: null,
+  'first_name': "",
+  'last_name': "",
+  'company_name': "",
+  'address_string_1': "",
+  'address_string_2': "",
+  'city': "",
+  'post_code': '',
+  'phone_number': '',
+  'delivery_instructions': ''
+});
 
 const editAddress = address => {
   currentAddressModification.value = address;
@@ -80,9 +92,12 @@ const openNewAddress = () => {
   currentAddressModification.value = {};
   newAddress.value.visible = true;
 }
+const saveAddress = () => {
+  emit('saveAddress', currentAddressModification.value);
+}
 
 onMounted(async () => {
-  adresses.value = await apiFetch('/users/delivery');
+  addresses.value = await apiFetch('/users/delivery');
 
 })
 </script>
@@ -90,12 +105,22 @@ onMounted(async () => {
 <template>
   <h3 style="margin-top: 50px">Delivery:</h3>
   <div style="display: flex; gap: 10px; align-items: stretch;">
-    <div v-for="address in adresses" class="delivery-card">
+    <div v-for="address in addresses" class="delivery-card">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b>home</b></div>
       <div style="z-index: 10">{{address.city}} {{address.address_string}}</div>
       <div style="z-index: 10">ZIP {{address.post_code}}</div>
       <div class="map-icon-box"></div>
       <div class="edit-corner-btn" @click="editAddress(address)">
+        <i class="pi pi-cog"></i>
+      </div>
+    </div>
+
+    <div  class="delivery-card">
+      <div style="z-index: 10"><i class="pi pi-home"></i> <b></b></div>
+      <div style="z-index: 10">No saved addresses yet</div>
+      <div style="z-index: 10"></div>
+      <div class="map-icon-box" style="filter: grayscale(100%) brightness(70%);"></div>
+      <div class="edit-corner-btn" @click="openNewAddress">
         <i class="pi pi-cog"></i>
       </div>
     </div>
@@ -106,7 +131,8 @@ onMounted(async () => {
     </div>
   </div>
   <div class="delivery-card" v-if="newAddress.visible" style="margin-top: 30px;">
-    <p>New delivery address</p>
+    <p v-if="!currentAddressModification.id">New delivery address</p>
+    <p v-if="currentAddressModification.id">Edit delivery address</p>
     <div class="new-addr-row">
       <label for="first-name">First Name</label>
       <InputText id="first-name" v-model="currentAddressModification['first_name']" aria-describedby="username-help" />
@@ -117,25 +143,21 @@ onMounted(async () => {
     </div>
     <div class="new-addr-row">
       <label for="company">Company</label>
-      <InputText id="company" v-model="value" aria-describedby="username-help" />
+      <InputText id="company" v-model="currentAddressModification['company_name']" aria-describedby="username-help" />
       <Message size="small" severity="secondary" variant="simple">Optional</Message>
     </div>
     <div class="new-addr-row">
       <label for="addr-1">Address Line 1</label>
-      <InputText id="addr-1" v-model="value" aria-describedby="username-help" />
+      <InputText id="addr-1" v-model="currentAddressModification['address_string_1']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="addr-2">Address Line 2</label>
-      <InputText id="addr-2" v-model="value" aria-describedby="username-help" />
+      <InputText id="addr-2" v-model="currentAddressModification['address_string_2']" aria-describedby="username-help" />
       <Message size="small" severity="secondary" variant="simple">Optional</Message>
     </div>
     <div class="new-addr-row">
       <label for="city">City</label>
-      <InputText id="city" v-model="value" aria-describedby="username-help" />
-    </div>
-    <div class="new-addr-row">
-      <label for="state">State</label>
-      <Select :options="states" optionLabel="name" placeholder="Select a state"></Select>
+      <InputText id="city" v-model="currentAddressModification['city']" aria-describedby="username-help" />
     </div>
     <div class="new-addr-row">
       <label for="zip">ZIP code</label>
@@ -147,11 +169,11 @@ onMounted(async () => {
     </div>
     <div class="new-addr-row">
       <label for="instructions">Delivery Instructions</label>
-      <InputText id="instructions" v-model="value" aria-describedby="username-help" />
+      <InputText id="instructions" v-model="currentAddressModification['delivery_instructions']" aria-describedby="username-help" />
       <Message size="small" severity="secondary" variant="simple">Optional</Message>
     </div>
     <div style="display: flex; justify-content: center; padding: 20px">
-      <Button label="Save" style="width: 100%" severity="outlined"></Button>
+      <Button @click="saveAddress" label="Save" style="width: 100%" severity="outlined"></Button>
     </div>
   </div>
 </template>
@@ -167,6 +189,7 @@ onMounted(async () => {
   padding: 20px;
   box-shadow: 0 1px 21px 0 rgba(0,0,0,0.1);
   background-color: white;
+  overflow: hidden;
 }
 
 .new-addr-row {

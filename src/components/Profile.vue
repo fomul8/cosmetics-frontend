@@ -72,6 +72,21 @@ const showErrors = attemptResult => {
   toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
 }
 
+const saveAddress = async addressObject => {
+  addressObject['country_id'] = 1;
+  try {
+    const result = await apiFetch('/users/delivery/', {
+      method: addressObject.id ? 'PATCH' : 'POST',
+      body: addressObject
+    });
+    if (result.ok) {
+      toast.add({severity: 'secondary', summary: 'Success', detail: 'Address saved!', life: 5000});
+    }
+  } catch (e) {
+    showErrors(e);
+  }
+}
+
 onMounted(async () => {
   userObject.value = await apiFetch('/users/me/');
 })
@@ -123,7 +138,7 @@ const scoreValue = 43;
 </div>
   <div class="row">
     <div class="col-12 col-md-3"></div>
-    <DeliveryAddress/>
+    <DeliveryAddress @saveAddress="saveAddress" />
   </div>
 
   <!--  change password dialog-->
