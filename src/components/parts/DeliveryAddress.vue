@@ -56,6 +56,7 @@ const deleteAddress = async () => {
       addresses.value.splice(idx, 1);
     }
     currentAddressModification.value = {};
+    newAddress.value.visible = false;
   }
 }
 
