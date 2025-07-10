@@ -16,7 +16,9 @@ import {Dialog} from "primevue";
 import FloatLabel from "primevue/floatlabel";
 import {useToast} from "primevue/usetoast";
 import Toast from "primevue/toast";
+import {useRouter} from "vue-router";
 const toast  = useToast();
+const router = useRouter();
 
 const userObject = ref({});
 const changePasswordDialog = ref({
@@ -81,6 +83,7 @@ const saveAddress = async addressObject => {
     });
     if (result.ok) {
       toast.add({severity: 'secondary', summary: 'Success', detail: 'Address saved!', life: 5000});
+      await router.push('/profile');
     }
   } catch (e) {
     showErrors(e);

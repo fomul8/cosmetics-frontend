@@ -9,6 +9,7 @@ import handsIcon from '../../assets/bodypart/hands-icon.avif';
 import footIcon from '../../assets/bodypart/foot-icon.jpg';
 import TestTube from './parts/TestTube.vue';
 import IngredientFlask from "./parts/IngredientFlask.vue";
+import IngredientBar from './parts/ingredientBar.vue';
 
 const emit = defineEmits(['changeBaseRecipe']);
 const toast = useToast();
@@ -141,7 +142,8 @@ const clickPresetButton = (button) => {
 
   <div class="row" style="margin-top: 20px">
     <div class="col-9">
-      <IngredientFlask v-model:ingredients="ingredientsModel" />
+<!--      <IngredientFlask v-model:ingredients="ingredientsModel" />-->
+      <IngredientBar v-model:ingredients="ingredientsModel" />
     </div>
     <div class="col-3">
       <TestTube :ingredients="ingredientsModel"/>
