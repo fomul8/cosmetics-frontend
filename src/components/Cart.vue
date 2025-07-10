@@ -9,18 +9,10 @@ import Button from "primevue/button";
 import { apiFetch } from "../helpers/api.js";
 
 const route = useRoute()
-
-const qtyVal = ref(1);
-const qtyVal2 = ref(1);
 const cartItems = ref([]);
 const suggestRecipes = ref([]);
 
 const volumes = ref([]);
-const totalPrice = computed(() => {
-
-})
-
-const shipmentPrice = ref(15);
 
 const priceTotal = computed(() => {
   return cartItems.value.reduce( (accumulator, currentValue) => accumulator + currentValue.total_price, 0)
@@ -57,6 +49,22 @@ const updateVolumes = item => {
   })
 }
 
+const deleteItem = async (item) => {
+  console.log(item);
+  const idx = cartItems.value.findIndex(obj => obj.id === item.id);
+  if (idx !== -1) {
+    cartItems.value.splice(idx, 1);
+  }
+
+  try {
+    await apiFetch(`/cart-items/item/${item.id}/`, {
+      method: 'DELETE',
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 onMounted(async () => {
   if (route.query.new) {
     await apiFetch(`/cart-items/?u-recipe-id=${route.query.new}`, {
@@ -78,15 +86,9 @@ onMounted(async () => {
 
 <div class="row">
   <div class="col-12 col-md-5">
-    <!--  Item 1-->
+    <!--  Items -->
     <div class="row" v-for="item in cartItems">
-      <div class="col-2">
-        <div style="height: 100%; display: flex; align-items: center;">
-          <i class="pi pi-box" style="font-size: 1.4rem"></i>
-        </div>
-      </div>
-
-      <div class="col-7">
+      <div class="col-8">
         <span style="color: #aa3cc8; margin-bottom: 10px;"><b>{{item.id}}</b></span>
         <div style="display: flex;flex-direction: column; gap: 20px">
           <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
@@ -104,7 +106,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="col-3"><p style="font-size: 1.1rem; font-weight: bold">$ {{item.item_price}}/per can</p></div>
+      <div class="col-4">
+        <p style="font-size: 1.1rem; font-weight: bold">$ {{item.item_price}}/per can</p>
+        <p><i class="pi pi-trash" style="color: #ff6b5f" @click="deleteItem(item)"></i></p>
+      </div>
       <Divider/>
     </div>
 
