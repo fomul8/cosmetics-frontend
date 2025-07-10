@@ -87,6 +87,19 @@ const saveAddress = async addressObject => {
   }
 }
 
+const deleteAddress = async addressObject => {
+  try {
+    const result = await apiFetch(`/users/delivery/${addressObject.id}/`, {
+      method: 'DELETE'
+    });
+    if (result.ok) {
+      toast.add({severity: 'secondary', summary: 'Success', detail: 'Address deleted!', life: 5000});
+    }
+  } catch (e) {
+    showErrors(e);
+  }
+}
+
 onMounted(async () => {
   userObject.value = await apiFetch('/users/me/');
 })
@@ -138,7 +151,7 @@ const scoreValue = 43;
 </div>
   <div class="row">
     <div class="col-12 col-md-3"></div>
-    <DeliveryAddress @saveAddress="saveAddress" />
+    <DeliveryAddress @saveAddress="saveAddress" @deleteAddress="deleteAddress" />
   </div>
 
   <!--  change password dialog-->

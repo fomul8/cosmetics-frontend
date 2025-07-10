@@ -5,62 +5,9 @@ import Button from "primevue/button";
 import {InputText} from "primevue";
 import {Message} from "primevue";
 import {apiFetch} from "../../helpers/api.js";
-const emit = defineEmits(['saveAddress']);
+const emit = defineEmits(['saveAddress', 'deleteAddress']);
 
 const addresses = ref([]);
-const states = [
-  { name: 'Alabama', code: 'AL' },
-  { name: 'Alaska', code: 'AK' },
-  { name: 'Arizona', code: 'AZ' },
-  { name: 'Arkansas', code: 'AR' },
-  { name: 'California', code: 'CA' },
-  { name: 'Colorado', code: 'CO' },
-  { name: 'Connecticut', code: 'CT' },
-  { name: 'Delaware', code: 'DE' },
-  { name: 'District of Columbia', code: 'DC' },
-  { name: 'Florida', code: 'FL' },
-  { name: 'Georgia', code: 'GA' },
-  { name: 'Hawaii', code: 'HI' },
-  { name: 'Idaho', code: 'ID' },
-  { name: 'Illinois', code: 'IL' },
-  { name: 'Indiana', code: 'IN' },
-  { name: 'Iowa', code: 'IA' },
-  { name: 'Kansas', code: 'KS' },
-  { name: 'Kentucky', code: 'KY' },
-  { name: 'Louisiana', code: 'LA' },
-  { name: 'Maine', code: 'ME' },
-  { name: 'Maryland', code: 'MD' },
-  { name: 'Massachusetts', code: 'MA' },
-  { name: 'Michigan', code: 'MI' },
-  { name: 'Minnesota', code: 'MN' },
-  { name: 'Mississippi', code: 'MS' },
-  { name: 'Missouri', code: 'MO' },
-  { name: 'Montana', code: 'MT' },
-  { name: 'Nebraska', code: 'NE' },
-  { name: 'Nevada', code: 'NV' },
-  { name: 'New Hampshire', code: 'NH' },
-  { name: 'New Jersey', code: 'NJ' },
-  { name: 'New Mexico', code: 'NM' },
-  { name: 'New York', code: 'NY' },
-  { name: 'North Carolina', code: 'NC' },
-  { name: 'North Dakota', code: 'ND' },
-  { name: 'Ohio', code: 'OH' },
-  { name: 'Oklahoma', code: 'OK' },
-  { name: 'Oregon', code: 'OR' },
-  { name: 'Pennsylvania', code: 'PA' },
-  { name: 'Rhode Island', code: 'RI' },
-  { name: 'South Carolina', code: 'SC' },
-  { name: 'South Dakota', code: 'SD' },
-  { name: 'Tennessee', code: 'TN' },
-  { name: 'Texas', code: 'TX' },
-  { name: 'Utah', code: 'UT' },
-  { name: 'Vermont', code: 'VT' },
-  { name: 'Virginia', code: 'VA' },
-  { name: 'Washington', code: 'WA' },
-  { name: 'West Virginia', code: 'WV' },
-  { name: 'Wisconsin', code: 'WI' },
-  { name: 'Wyoming', code: 'WY' }
-];
 
 const newAddress = ref({
   visible: false,
@@ -80,6 +27,11 @@ const currentAddressModification = ref({
 });
 
 const editAddress = address => {
+  if (currentAddressModification.value.id === address.id) {
+    currentAddressModification.value = {};
+    newAddress.value.visible = false;
+    return;
+  }
   currentAddressModification.value = address;
   newAddress.value.visible = true;
 }
@@ -96,6 +48,17 @@ const saveAddress = () => {
   emit('saveAddress', currentAddressModification.value);
 }
 
+const deleteAddress = async () => {
+  if (window.confirm("Are you sure you want to delete this address?")) {
+    emit('deleteAddress', currentAddressModification.value);
+    const idx = addresses.value.findIndex(obj => obj.id === currentAddressModification.value.id);
+    if (idx !== -1) {
+      addresses.value.splice(idx, 1);
+    }
+    currentAddressModification.value = {};
+  }
+}
+
 onMounted(async () => {
   addresses.value = await apiFetch('/users/delivery');
 
@@ -104,8 +67,8 @@ onMounted(async () => {
 
 <template>
   <h3 style="margin-top: 50px">Delivery:</h3>
-  <div style="display: flex; gap: 10px; align-items: stretch;">
-    <div v-for="address in addresses" class="delivery-card">
+  <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap">
+    <div v-for="address in addresses" class="delivery-card" style="min-width: 180px">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b>home</b></div>
       <div style="z-index: 10">{{address.city}} {{address.address_string}}</div>
       <div style="z-index: 10">ZIP {{address.post_code}}</div>
@@ -115,7 +78,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div  class="delivery-card">
+    <div v-if="!addresses.length"  class="delivery-card">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b></b></div>
       <div style="z-index: 10">No saved addresses yet</div>
       <div style="z-index: 10"></div>
@@ -125,7 +88,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="delivery-card" @click="openNewAddress" style="justify-content: center">
+    <div v-if="addresses.length < 2" class="delivery-card" @click="openNewAddress" style="justify-content: center">
       <i class="pi pi-plus" v-if="!newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
       <i class="pi pi-minus" v-if="newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
     </div>
@@ -133,6 +96,9 @@ onMounted(async () => {
   <div class="delivery-card" v-if="newAddress.visible" style="margin-top: 30px;">
     <p v-if="!currentAddressModification.id">New delivery address</p>
     <p v-if="currentAddressModification.id">Edit delivery address</p>
+    <div class="edit-corner-btn edit-corner-btn--danger" v-if="currentAddressModification.id" @click="deleteAddress">
+      <i class="pi pi-trash"></i>
+    </div>
     <div class="new-addr-row">
       <label for="first-name">First Name</label>
       <InputText id="first-name" v-model="currentAddressModification['first_name']" aria-describedby="username-help" />
@@ -221,5 +187,9 @@ onMounted(async () => {
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+
+.edit-corner-btn--danger {
+  background-color: #ff6b5f;
 }
 </style>

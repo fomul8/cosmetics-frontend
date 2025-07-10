@@ -13,47 +13,48 @@ const route = useRoute()
 const qtyVal = ref(1);
 const qtyVal2 = ref(1);
 const cartItems = ref([]);
+const suggestRecipes = ref([]);
 
-const volumes = ref(
-    [
-      { name: '50ml', code: '50', price: 45 },
-      { name: '100ml', code: '100', price: 80 },
-      { name: '150ml', code: '150', price: 120 },
-    ]
-);
-const selectedVolume = ref({name: '50ml', code: '50', price: 45});
-const selectedVolume2 = ref({name: '50ml', code: '50', price: 45});
+const volumes = ref([]);
+const totalPrice = computed(() => {
+
+})
 
 const shipmentPrice = ref(15);
 
 const priceTotal = computed(() => {
-  return (selectedVolume.value.price * qtyVal.value);
-});
-const priceTotal2 = computed(() => {
-  return selectedVolume2.value.price * qtyVal2.value;
+  return cartItems.value.reduce( (accumulator, currentValue) => accumulator + currentValue.total_price, 0)
 });
 
 
-const addVal = (key=false) => {
-  if (key) {
-    qtyVal2.value += 1;
-  } else {
-    qtyVal.value += 1;
+const addVal = (qtyVal) => {
+  console.log(qtyVal);
+  if (qtyVal.quantity  < 10) {
+    qtyVal.quantity  += 1;
+    qtyVal['total_price'] = qtyVal.quantity * qtyVal['item_price'];
   }
-
 }
 
-const decreaseVal = (key=false) => {
-
-  if (key) {
-    if (qtyVal2.value >=2) {
-      qtyVal2.value = qtyVal2.value - 1;
-    }
-  } else {
-    if (qtyVal.value >=2) {
-      qtyVal.value = qtyVal.value - 1;
-    }
+const decreaseVal = (qtyVal) => {
+  if (qtyVal.quantity  >=2) {
+    qtyVal.quantity  = qtyVal.quantity  - 1;
+    qtyVal['total_price'] = qtyVal.quantity * qtyVal['item_price'];
   }
+}
+
+const addSuggestion = async suggest => {
+  console.log(suggest);
+  await apiFetch(`/cart-items/?u-recipe-id=${suggest.id}`, {
+    method: 'POST',
+  });
+  cartItems.value = await apiFetch('/cart-items/');
+}
+
+const updateVolumes = item => {
+  cartItems.value.forEach(itemF => {
+    itemF.item_price = itemF.pack_volume.price;
+    itemF.total_price = itemF.item_price * itemF.quantity;
+  })
 }
 
 onMounted(async () => {
@@ -62,7 +63,10 @@ onMounted(async () => {
       method: 'POST',
     });
   }
-  cartItems.value = await apiFetch('/cart-items');
+  cartItems.value = await apiFetch('/cart-items/');
+  volumes.value = await apiFetch('/pack-volumes/');
+  suggestRecipes.value = await apiFetch('/suggestions');
+
 });
 
 </script>
@@ -87,29 +91,29 @@ onMounted(async () => {
         <div style="display: flex;flex-direction: column; gap: 20px">
           <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
             <span>Volume</span>
-            <Select v-model="selectedVolume" size="small" :options="volumes" optionLabel="name" placeholder="" class="w-full md:w-56" />
+            <Select @change="updateVolumes(item)" v-model="item['pack_volume']" size="small" :options="volumes" optionLabel="label" placeholder="pack vol" class="w-full md:w-56" />
           </div>
           <div style="display: flex; overflow: hidden; align-items: baseline;  justify-content: space-between;">
             <span>Qty:</span>
             <div style="display: flex; justify-content: space-around; align-items: baseline; gap: 20px">
-              <i class="pi pi-minus-circle" @click="decreaseVal" style="font-size: 1.3rem; cursor: pointer"></i>
+              <i class="pi pi-minus-circle" @click="decreaseVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
               <div>{{ item.quantity }}</div>
-              <i class="pi pi-plus-circle" @click="addVal" style="font-size: 1.3rem; cursor: pointer"></i>
+              <i class="pi pi-plus-circle" @click="addVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-3"><p style="font-size: 1.4rem; font-weight: bold">$ {{item.price}}</p></div>
+      <div class="col-3"><p style="font-size: 1.1rem; font-weight: bold">$ {{item.item_price}}/per can</p></div>
+      <Divider/>
     </div>
-    <Divider/>
+
   </div>
   <div class="col-12 col-md-7">
     <div style="width: 100%; text-align: right">
       <h3>Order summary:</h3>
-      <p>Subtotal: ${{(selectedVolume.price * 0.2)+selectedVolume.price + shipmentPrice}}</p>
-      <p>Sales tax: ${{selectedVolume.price * 0.2}}</p>
-      <p>Shipment: ${{shipmentPrice}}</p>
+      <p>Subtotal: ${{priceTotal}}</p>
+      <p>Sales tax: ${{priceTotal * 0.19}}</p>
     </div>
   </div>
 </div>
@@ -117,8 +121,7 @@ onMounted(async () => {
 
   <h3 style="margin-top: 50px">Add to order</h3>
   <div class="row" style="margin-bottom: 60px">
-    <div class="col-6 col-md-2"><recp-item/></div>
-    <div class="col-6 col-md-2"><recp-item/></div>
+    <div v-for="suggest in suggestRecipes" class="col-6 col-md-2"><recp-item @add-suggestion="addSuggestion" :suggest="suggest"/></div>
   </div>
 
   <div class="buttons-container">
