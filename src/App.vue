@@ -34,13 +34,18 @@ const items = ref([
     link: '/'
   },
   {
+    label: 'make formula',
+    icon: 'pi pi-palette',
+    link: '/mix/1'
+  },
+  {
     label: 'Consultations',
     icon: 'pi pi-video',
     link: '/consultation'
   },
   {
     label: 'Orders',
-    icon: 'pi pi-tags',
+    icon: 'pi pi-history',
     link: '/orders-history'
   },
   {

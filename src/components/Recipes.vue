@@ -15,7 +15,7 @@ onMounted(async () => {
 </script>
 
 <template>
-<h1>Recipes</h1>
+<h3>Recipes</h3>
   <Accordion value="1">
     <AccordionPanel v-for="item in recipes" :value="item">
       <AccordionHeader>
@@ -33,6 +33,9 @@ onMounted(async () => {
       </AccordionContent>
     </AccordionPanel>
   </Accordion>
+  <div v-if="recipes.length === 0">
+    <p style="text-align: center; font-size: 1.2rem">Ops, you dont have created recipes yet</p>
+  </div>
 </template>
 
 <style scoped>

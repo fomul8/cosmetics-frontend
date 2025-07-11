@@ -39,6 +39,10 @@ onMounted(async () => {
         </Timeline>
       </AccordionContent>
     </AccordionPanel>
+
+    <div v-if="orders.length === 0">
+      <p style="text-align: center; font-size: 1.2rem">Ops, you dont have orders yet</p>
+    </div>
   </Accordion>
 </template>
 

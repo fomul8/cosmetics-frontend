@@ -1,14 +1,15 @@
 <script setup>
 
 import {computed, ref, onMounted} from "vue";
-import {useRoute} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import Divider from "primevue/divider";
 import Select from 'primevue/select';
 import RecpItem from "./parts/RecpItem.vue";
 import Button from "primevue/button";
 import { apiFetch } from "../helpers/api.js";
 
-const route = useRoute()
+const route = useRoute();
+const router = useRouter();
 const cartItems = ref([]);
 const suggestRecipes = ref([]);
 
@@ -35,10 +36,17 @@ const decreaseVal = (qtyVal) => {
 }
 
 const addSuggestion = async suggest => {
-  console.log(suggest);
-  await apiFetch(`/cart-items/?u-recipe-id=${suggest.id}`, {
-    method: 'POST',
-  });
+  if (suggest.source === 'user') {
+    await apiFetch(`/cart-items/?u-recipe-id=${suggest.id}`, {
+      method: 'POST',
+    });
+  } else {
+    //presets/<int:standard_id>/copy
+    await apiFetch(`/presets/${suggest.id}/copy`, {
+      method: 'POST',
+    });
+  }
+
   cartItems.value = await apiFetch('/cart-items/');
 }
 
@@ -130,7 +138,7 @@ onMounted(async () => {
   </div>
 
   <div class="buttons-container">
-    <Button label="Continue shopping" variant="outlined"></Button>
+    <Button label="Create more" @click="router.push('mix/1')" variant="outlined"></Button>
     <Button label="Checkout"></Button>
   </div>
 </template>
