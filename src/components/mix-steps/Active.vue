@@ -119,7 +119,7 @@ const clickPresetButton = (button) => {
  <h3 style="text-align: center; margin-top: 0">Active ingredients</h3>
   <div class="row" style="">
     <div class="col-12">
-      <Carousel :value="presetButtons" :numVisible="2" :numScroll="3" :responsiveOptions="responsiveOptions" :showNavigators="false" :autoplayInterval="1500">
+      <Carousel :value="presetButtons" :numVisible="2" :numScroll="3" :responsiveOptions="responsiveOptions" :showIndicators="false" :autoplayInterval="1500">
         <template #item="slotProps">
           <Button @click="clickPresetButton(slotProps.data)"
                   class="spring-button carousel-item-btn"
