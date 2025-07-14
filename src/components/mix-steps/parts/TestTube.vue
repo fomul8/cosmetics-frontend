@@ -43,7 +43,7 @@ const totalIndicatorGradient = computed(() => {
   max-width: 60px;
   min-height: 400px;
   float: right;
-  height: 100%;
+  height: 50svh;
   border: 1px solid #673ab7;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -51,8 +51,14 @@ const totalIndicatorGradient = computed(() => {
   gap: 15px;
   flex-direction: column;
   justify-content: flex-end;
-  position: relative;
-  max-height: 80svh;
+  position: sticky;
+  top: 90px;
+}
+
+@media (min-width: 768px) {
+  .flacon-total-indicator {
+    max-height: 700px;
+  }
 }
 
 .left-rant {

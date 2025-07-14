@@ -3,6 +3,7 @@ import {ref, computed, onMounted, watch, defineModel, defineEmits} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 import Button from 'primevue/button';
+import Carousel from 'primevue/carousel';
 
 import faceIcon from '../../assets/bodypart/face-icon.png';
 import handsIcon from '../../assets/bodypart/hands-icon.avif';
@@ -17,38 +18,37 @@ const toast = useToast();
 const ingredientsModel = defineModel('ingredients');
 const generalPresets = defineModel('presets');
 const sortVal = ref('');
-const selectedExample = ref({});
 
-const presetButtons = ref({
-  b1: {label: computed(() => {
-    return generalPresets.value[0].label ?? 0
+const presetButtons = ref([
+  {label: computed(() => {
+      return generalPresets.value[0].label ?? 0
     }),
     active: true,
     recipeId: computed(() => {
       return generalPresets.value[0].id ?? 0
     })},
-  b2: {label: computed(() => {
+  {label: computed(() => {
       return generalPresets.value[1].label ?? 0
     }),
     active: false,
     recipeId: computed(() => {
       return generalPresets.value[1].id ?? 0
     })},
-  b3: {label: computed(() => {
+  {label: computed(() => {
       return generalPresets.value[2].label ?? 0
     }),
     active: false,
     recipeId: computed(() => {
       return generalPresets.value[2].id ?? 0
     })},
-  b4: {label: computed(() => {
+  {label: computed(() => {
       return generalPresets.value[3].label ?? 0
     }),
     active: false,
     recipeId: computed(() => {
       return generalPresets.value[3].id ?? 0
     })},
-})
+])
 
 const responsiveOptions = ref([
   {
@@ -116,28 +116,19 @@ const clickPresetButton = (button) => {
 </script>
 
 <template>
- <h2 style="text-align: center">Active ingredients</h2>
+ <h3 style="text-align: center; margin-top: 0">Active ingredients</h3>
   <div class="row" style="">
-    <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.b1)"
-              style="width: 100%; margin-bottom: 10px"
-              class="spring-button"
-              :variant="`${(!presetButtons.b1.active?'outlined':'')}`">{{presetButtons.b1.label}}</Button></div>
-    <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.b2)"
-              style="width: 100%; margin-bottom: 10px"
-              class="spring-button"
-              :variant="`${(!presetButtons.b2.active?'outlined':'')}`">{{presetButtons.b2.label}}</Button></div>
-    <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.b3)"
-              style="width: 100%; margin-bottom: 10px"
-              class="spring-button"
-              :variant="`${(!presetButtons.b3.active?'outlined':'')}`">{{presetButtons.b3.label}}</Button></div>
-    <div class="col-6">
-      <Button @click="clickPresetButton(presetButtons.b4)"
-              :variant="`${(!presetButtons.b4.active?'outlined':'')}`"
-              class="spring-button"
-              style="width: 100%; margin-bottom: 10px">{{presetButtons.b4.label}}</Button></div>
+    <div class="col-12">
+      <Carousel :value="presetButtons" :numVisible="2" :numScroll="3" :responsiveOptions="responsiveOptions" :showNavigators="false" :autoplayInterval="1500">
+        <template #item="slotProps">
+          <Button @click="clickPresetButton(slotProps.data)"
+                  class="spring-button carousel-item-btn"
+                  :variant="`${(!slotProps.data.active?'outlined':'')}`">{{slotProps.data.label}}</Button>
+        </template>
+      </Carousel>
+    </div>
+
+
   </div>
 
   <div class="row" style="margin-top: 20px">
@@ -154,4 +145,9 @@ const clickPresetButton = (button) => {
 </template>
 
 <style scoped>
+.carousel-item-btn {
+  line-height: 1.5em;
+  min-height: calc(2 * 1.5em);
+  width: 90%;
+}
 </style>
