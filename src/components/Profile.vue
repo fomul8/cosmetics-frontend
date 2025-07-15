@@ -77,7 +77,7 @@ const showErrors = attemptResult => {
 const saveAddress = async addressObject => {
   addressObject['country_id'] = 1;
   try {
-    const result = await apiFetch('/users/delivery/', {
+    const result = await apiFetch(`/users/delivery/${addressObject.id ? addressObject.id + '/' : ''}`, {
       method: addressObject.id ? 'PATCH' : 'POST',
       body: addressObject
     }, true);

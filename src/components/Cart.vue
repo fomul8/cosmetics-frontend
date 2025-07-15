@@ -42,9 +42,14 @@ const addSuggestion = async suggest => {
     });
   } else {
     //presets/<int:standard_id>/copy
-    await apiFetch(`/presets/${suggest.id}/copy`, {
+    const result = await apiFetch(`/presets/${suggest.id}/copy`, {
       method: 'POST',
     });
+    if (result.id) {
+      await apiFetch(`/cart-items/?u-recipe-id=${result.id}`, {
+        method: 'POST',
+      });
+    }
   }
 
   cartItems.value = await apiFetch('/cart-items/');
