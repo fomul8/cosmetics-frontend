@@ -43,7 +43,7 @@ const changePass =  async() => {
         'new_password1': changePasswordDialog.value.password,
         'new_password2': changePasswordDialog.value.passwordRepeat
       }
-    });
+    }, true);
     if (result.ok) {
       changePasswordDialog.value.visible = false;
       toast.add({severity: 'secondary', summary: 'Changed', detail: 'You changed your password', life: 5000});
@@ -80,7 +80,7 @@ const saveAddress = async addressObject => {
     const result = await apiFetch('/users/delivery/', {
       method: addressObject.id ? 'PATCH' : 'POST',
       body: addressObject
-    });
+    }, true);
     if (result.ok) {
       toast.add({severity: 'secondary', summary: 'Success', detail: 'Address saved!', life: 5000});
       await router.push('/profile');
@@ -94,7 +94,7 @@ const deleteAddress = async addressObject => {
   try {
     const result = await apiFetch(`/users/delivery/${addressObject.id}/`, {
       method: 'DELETE'
-    });
+    }, true);
     if (result.ok) {
       toast.add({severity: 'secondary', summary: 'Success', detail: 'Address deleted!', life: 5000});
     }
@@ -104,7 +104,7 @@ const deleteAddress = async addressObject => {
 }
 
 onMounted(async () => {
-  userObject.value = await apiFetch('/users/me/');
+  userObject.value = await apiFetch('/users/me/', {}, true);
 })
 
 const scoreValue = 43;
