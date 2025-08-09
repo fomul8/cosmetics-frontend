@@ -63,18 +63,19 @@ const updateVolumes = item => {
 }
 
 const deleteItem = async (item) => {
-  console.log(item);
-  const idx = cartItems.value.findIndex(obj => obj.id === item.id);
-  if (idx !== -1) {
-    cartItems.value.splice(idx, 1);
-  }
+  if (window.confirm("Are you sure you want to delete this item?")) {
+    const idx = cartItems.value.findIndex(obj => obj.id === item.id);
+    if (idx !== -1) {
+      cartItems.value.splice(idx, 1);
+    }
 
-  try {
-    await apiFetch(`/cart-items/item/${item.id}/`, {
-      method: 'DELETE',
-    })
-  } catch (error) {
-    console.log(error);
+    try {
+      await apiFetch(`/cart-items/item/${item.id}/`, {
+        method: 'DELETE',
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

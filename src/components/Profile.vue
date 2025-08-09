@@ -44,7 +44,7 @@ const changePass =  async() => {
         'new_password2': changePasswordDialog.value.passwordRepeat
       }
     }, true);
-    if (result.ok) {
+    if (result.detail) {
       changePasswordDialog.value.visible = false;
       toast.add({severity: 'secondary', summary: 'Changed', detail: 'You changed your password', life: 5000});
     } else {
