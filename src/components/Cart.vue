@@ -101,7 +101,6 @@ onMounted(async () => {
 
 <div class="row">
   <div class="col-12 col-md-5">
-    <Slider v-model="valueX" :step="20" class="w-56" ariaLabel="lasdasd" ariaLabelledby="ofof" />
     <!--  Items -->
     <div class="row" v-for="item in cartItems">
       <div class="col-8">
