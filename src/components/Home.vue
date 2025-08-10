@@ -4,6 +4,7 @@ import 'primeicons/primeicons.css';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import Timeline from 'primevue/timeline';
+import Footer from "./parts/Footer.vue";
 import { ref } from 'vue';
 
 const events = ref([
@@ -18,11 +19,11 @@ const router = useRouter();
 </script>
 
 <template>
-  <h2 style="text-align: center">Make your own cosmetics from best ingredients you want throw away chemical</h2>
+  <h2 style="text-align: center">A robot from New York lab crafts <br> a one-of-kind cream <br> based on ingredients you chose here</h2>
 <div class="row">
   <div class="col-12">
     <div class="mix-container">
-      <img src="../assets/potion1.svg" width="50" class="rotate-30-deg" style="position: relative; top: 10svh; left: 30px;">
+      <img src="../assets/potion1.svg" width="50" class="rotate-30-deg" style="position: relative; top: 14svh; left: 30px;">
       <img src="../assets/potion2.svg" width="70" class="rotate-60-deg" style="position: relative; top: 10%; left: 70%;">
       <img src="../assets/potion3.svg" width="80" class="rotate-10-deg" style="position: relative; top: 20svh; left: 170px;">
       <Button @click="router.push({name: 'mix', params: {id: 1}})" label="MIX" class="mix-btn spring-button" variant="outlined" style="font-weight: 900"/>
@@ -59,6 +60,7 @@ const router = useRouter();
       </template>
     </Timeline>
   </div>
+  <Footer />
 </template>
 
 <style scoped>

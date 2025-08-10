@@ -20,8 +20,8 @@
 <style scoped>
 .glass-ai{
   z-index: 5;
-  width:80px;
-  height:80px;
+  width:100px;
+  height:100px;
   border-radius:50%;
   background:rgba(255,255,255,.08);border:2px solid transparent;
   box-shadow:0 0 0 2px rgba(255,255,255,.6),0 16px 32px rgba(0,0,0,.12);

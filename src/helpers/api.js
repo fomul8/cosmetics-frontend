@@ -1,7 +1,7 @@
 import {tryRefreshToken} from './auth.js';
 
 const API_BASE = '/api';
-const apiFetch = async (endpoint, options = {}, retry = false) => {
+const apiFetch = async (endpoint, options = {}, retry = true) => {
     const accessToken = sessionStorage.getItem('jwt');
     const config = {
         method: options.method || 'GET',

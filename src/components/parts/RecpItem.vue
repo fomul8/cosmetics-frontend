@@ -15,8 +15,8 @@ const addSuggestion = () => {
   <div class="r-item-card__plus-btn" @click="addSuggestion">
     <i class="pi pi-plus"></i>
   </div>
-  <div><b>{{suggest.label}}</b></div>
-  <div style="text-align: center"><i class="pi pi-box" style="font-size: 2.4rem"></i></div>
+  <div style="height: 2lh; overflow: hidden"><b>{{suggest.label}}</b></div>
+  <div style="text-align: center;"><i class="pi pi-box" style="font-size: 2.4rem"></i></div>
   <div><i>Moisturising creame</i></div>
 </div>
 </template>

@@ -7,6 +7,7 @@ import Select from 'primevue/select';
 import RecpItem from "./parts/RecpItem.vue";
 import Button from "primevue/button";
 import { apiFetch } from "../helpers/api.js";
+import Slider from 'primevue/slider';
 
 const route = useRoute();
 const router = useRouter();
@@ -51,8 +52,8 @@ const addSuggestion = async suggest => {
       });
     }
   }
-
   cartItems.value = await apiFetch('/cart-items/');
+  suggestRecipes.value = await apiFetch('/suggestions');
 }
 
 const updateVolumes = item => {
@@ -100,12 +101,14 @@ onMounted(async () => {
 
 <div class="row">
   <div class="col-12 col-md-5">
+    <Slider v-model="valueX" :step="20" class="w-56" ariaLabel="lasdasd" ariaLabelledby="ofof" />
     <!--  Items -->
     <div class="row" v-for="item in cartItems">
       <div class="col-8">
-        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>{{item.id}}</b></span>
+        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>{{item.recipe.label}}</b></span>
         <div style="display: flex;flex-direction: column; gap: 20px">
           <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
+
             <span>Volume</span>
             <Select @change="updateVolumes(item)" v-model="item['pack_volume']" size="small" :options="volumes" optionLabel="label" placeholder="pack vol" class="w-full md:w-56" />
           </div>
@@ -140,7 +143,9 @@ onMounted(async () => {
 
   <h3 style="margin-top: 50px">Add to order</h3>
   <div class="row" style="margin-bottom: 60px">
-    <div v-for="suggest in suggestRecipes" class="col-6 col-md-2"><recp-item @add-suggestion="addSuggestion" :suggest="suggest"/></div>
+    <div v-for="suggest in suggestRecipes" class="col-6 col-md-3">
+      <recp-item @add-suggestion="addSuggestion" :suggest="suggest"/>
+    </div>
   </div>
 
   <div class="buttons-container">
