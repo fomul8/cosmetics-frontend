@@ -8,6 +8,7 @@ import RecpItem from "./parts/RecpItem.vue";
 import Button from "primevue/button";
 import { apiFetch } from "../helpers/api.js";
 import Slider from 'primevue/slider';
+import Card from "primevue/card";
 
 const route = useRoute();
 const router = useRouter();
@@ -100,45 +101,55 @@ onMounted(async () => {
 </div>
 
 <div class="row">
-  <div class="col-12 col-md-5">
+  <div class="col-12 col-md-10">
     <!--  Items -->
-    <div class="row" v-for="item in cartItems">
-      <div class="col-8">
-        <span style="color: #aa3cc8; margin-bottom: 10px;"><b>{{item.recipe.label}}</b></span>
-        <div style="display: flex;flex-direction: column; gap: 20px">
-          <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
 
-            <span>Volume</span>
-            <Select @change="updateVolumes(item)" v-model="item['pack_volume']" size="small" :options="volumes" optionLabel="label" placeholder="pack vol" class="w-full md:w-56" />
-          </div>
-          <div style="display: flex; overflow: hidden; align-items: baseline;  justify-content: space-between;">
-            <span>Qty:</span>
-            <div style="display: flex; justify-content: space-around; align-items: baseline; gap: 20px">
-              <i class="pi pi-minus-circle" @click="decreaseVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
-              <div>{{ item.quantity }}</div>
-              <i class="pi pi-plus-circle" @click="addVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
+    <div class="cart-items-container">
+      <div v-for="item in cartItems">
+        <Card class="mt-4 glass-card cart-card-item">
+          <template #title>
+            <span style="overflow: hidden; white-space: nowrap;">
+              By recipe: <b>{{item.recipe.label}}</b>
+            </span>
+          </template>
+          <template #content>
+            <div style="display: flex;flex-direction: column; gap: 20px">
+              <div style="display: flex; overflow: hidden; align-items: baseline; justify-content: space-between;">
+                <span>Volume</span>
+                <Select @change="updateVolumes(item)" v-model="item['pack_volume']" size="small" :options="volumes" optionLabel="label" placeholder="pack vol" class="w-full md:w-56" />
+              </div>
+              <div style="display: flex; overflow: hidden; align-items: baseline;  justify-content: space-between;">
+                <span>Qty:</span>
+                <div style="display: flex; justify-content: space-around; align-items: baseline; gap: 20px">
+                  <i class="pi pi-minus-circle" @click="decreaseVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
+                  <div>{{ item.quantity }}</div>
+                  <i class="pi pi-plus-circle" @click="addVal(item)" style="font-size: 1.3rem; cursor: pointer"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-4">
-        <p style="font-size: 1.1rem; font-weight: bold">$ {{item.item_price}}/per can</p>
-        <p><i class="pi pi-trash" style="color: #ff6b5f" @click="deleteItem(item)"></i></p>
+            <div style="display: flex; overflow: hidden; align-items: center; justify-content: space-between;">
+              <p style="font-size: 1.1rem; font-weight: bold">$ {{item.item_price}}/per can</p>
+              <p><i class="pi pi-trash" style="color: #ff6b5f" @click="deleteItem(item)"></i></p>
+            </div>
+          </template>
+        </Card>
       </div>
-      <Divider/>
     </div>
 
-  </div>
-  <div class="col-12 col-md-7">
-    <div style="width: 100%; text-align: right">
-      <h3>Order summary:</h3>
-      <p>Subtotal: ${{priceTotal}}</p>
-      <p>Sales tax: ${{priceTotal * 0.19}}</p>
-    </div>
+
   </div>
 </div>
-
+  <Divider/>
+  <div class="row">
+    <div class="col-12">
+      <div style="width: 100%; text-align: right">
+        <h3>Order summary:</h3>
+        <p>Subtotal: ${{priceTotal}}</p>
+        <p>Sales tax: ${{priceTotal * 0.19}}</p>
+      </div>
+    </div>
+  </div>
 
   <h3 style="margin-top: 50px">Add to order</h3>
   <div class="row" style="margin-bottom: 60px">
@@ -149,11 +160,29 @@ onMounted(async () => {
 
   <div class="buttons-container">
     <Button label="Create more" @click="router.push('mix/1')" variant="outlined"></Button>
-    <Button label="Checkout"></Button>
+    <Button label="Checkout" @click="router.push('delivery')"></Button>
   </div>
 </template>
 
 <style scoped>
+
+.cart-card-item {
+  width: 350px;
+}
+
+.cart-items-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+@media (max-width: 768px) {
+  .cart-items-container {
+    gap: 5px;
+    justify-content: center;
+  }
+}
 
 .buttons-container {
   display: flex;
