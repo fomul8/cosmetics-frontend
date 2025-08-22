@@ -1,3 +1,4 @@
+import {INGREDIENT_PARTS_ALLOWED} from "../../constants/constants.js";
 
 
 const addValue = (ingredient) => {

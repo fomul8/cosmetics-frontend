@@ -3,7 +3,6 @@ import {defineModel, defineProps, onMounted, onUnmounted} from "vue";
 import Divider from "primevue/divider";
 
 const { steps } = defineProps(['steps']);
-import INGREDIENT_PARTS_ALLOWED from "../../constants/constants.js";
 
 // const calculateRelativePartsToPercent = (ingredient, allIngredients) => {
 //   let totalRelativeParts = 0;

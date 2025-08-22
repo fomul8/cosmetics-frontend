@@ -1,11 +1,13 @@
 <script setup>
 import {computed, defineEmits, onMounted, ref} from "vue";
+import { MAX_ADDRESSES_SAVED } from "../../constants/constants.js";
 import Select from 'primevue/select';
 import Button from "primevue/button";
 import {InputText} from "primevue";
 import {Message} from "primevue";
 import {apiFetch} from "../../helpers/api.js";
-const emit = defineEmits(['saveAddress', 'deleteAddress']);
+const emit = defineEmits(['saveAddress', 'deleteAddress', 'checkAddress']);
+const isDeliveryPage = defineProps(['deliveryPage']);
 
 const addresses = ref([]);
 
@@ -115,16 +117,33 @@ const deleteAddress = async () => {
   }
 }
 
+const checkAddress = async (adr) => {
+  currentAddressModification.value = adr;
+  emit('checkAddress', currentAddressModification.value);
+}
+
 onMounted(async () => {
   addresses.value = await apiFetch('/users/delivery');
-
+  if (isDeliveryPage && addresses.value.length > 0) {
+    currentAddressModification.value = addresses.value[0];
+  }
 })
 </script>
 
 <template>
   <h3 style="margin-top: 50px">Delivery:</h3>
   <div style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap">
-    <div v-for="address in addresses" class="delivery-card" style="min-width: 180px">
+    <div v-if="isDeliveryPage" v-for="address in addresses" @click="checkAddress(address)" class="delivery-card" style="min-width: 180px">
+      <div style="z-index: 10"><i class="pi pi-home"></i> <b>home</b></div>
+      <div style="z-index: 10">{{address.city}} {{address.address_string}}</div>
+      <div style="z-index: 10">ZIP {{address.post_code}}</div>
+      <div :class="`map-icon-box ${currentAddressModification.id === address.id ? '' : 'map-icon-box-gray'}`"></div>
+      <div v-if="currentAddressModification.id === address.id" class="checked-corner-btn">
+        <i class="pi pi-map-marker"></i>
+      </div>
+    </div>
+
+    <div v-if="!isDeliveryPage" v-for="address in addresses" class="delivery-card" style="min-width: 180px">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b>home</b></div>
       <div style="z-index: 10">{{address.city}} {{address.address_string}}</div>
       <div style="z-index: 10">ZIP {{address.post_code}}</div>
@@ -134,17 +153,17 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div v-if="!addresses.length"  class="delivery-card">
+    <div v-if="!addresses.length"  class="delivery-card" @click="openNewAddress">
       <div style="z-index: 10"><i class="pi pi-home"></i> <b></b></div>
       <div style="z-index: 10">No saved addresses yet</div>
       <div style="z-index: 10"></div>
       <div class="map-icon-box" style="filter: grayscale(100%) brightness(70%);"></div>
-      <div class="edit-corner-btn" @click="openNewAddress">
+      <div class="edit-corner-btn" style="filter: grayscale(100%) brightness(70%);">
         <i class="pi pi-cog"></i>
       </div>
     </div>
 
-    <div v-if="addresses.length < 2" class="delivery-card" @click="openNewAddress" style="justify-content: center">
+    <div v-if="addresses.length < MAX_ADDRESSES_SAVED" class="delivery-card" @click="openNewAddress" style="justify-content: center">
       <i class="pi pi-plus" v-if="!newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
       <i class="pi pi-minus" v-if="newAddress.visible" style="font-size: 1.2rem; color: #aa3cc8;"></i>
     </div>
@@ -247,6 +266,24 @@ onMounted(async () => {
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+
+.checked-corner-btn {
+  position: absolute;
+  top:0;
+  right: 0;
+  border-bottom-left-radius: 80%;
+  border-top-right-radius: 6px;
+  background-color: #42b998;
+  width: auto;
+  padding: 8px 10px 8px 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.map-icon-box-gray {
+  filter: grayscale(100%) brightness(70%);
 }
 
 .edit-corner-btn--danger {

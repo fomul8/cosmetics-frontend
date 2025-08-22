@@ -96,7 +96,7 @@ onMounted(async () => {
 </script>
 
 <template>
-<div class="row" style="margin-bottom: 30px">
+<div class="row">
   <div class="col-12"><h3>Order items:</h3></div>
 </div>
 

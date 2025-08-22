@@ -1,7 +1,7 @@
 <script setup>
 import {computed, defineModel} from 'vue';
 
-import INGREDIENT_PARTS_ALLOWED from '../../../constants/constants.js';
+import {INGREDIENT_PARTS_ALLOWED} from '../../../constants/constants.js';
 
 const ingredientsModel = defineModel('ingredients');
 

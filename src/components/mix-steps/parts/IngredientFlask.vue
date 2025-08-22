@@ -2,7 +2,7 @@
 import {defineModel, defineEmits, ref} from 'vue';
 import FlaskA from "../../active-icons/flaskA.vue";
 import FlaskB from "../../active-icons/flaskB.vue";
-import INGREDIENT_PARTS_ALLOWED from '../../../constants/constants.js';
+import {INGREDIENT_PARTS_ALLOWED} from '../../../constants/constants.js';
 import Toast from "primevue/toast";
 import {useToast} from "primevue/usetoast";
 import Button from "primevue/button";

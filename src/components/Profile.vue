@@ -74,6 +74,7 @@ const showErrors = attemptResult => {
   toast.add({severity: 'error', summary: 'Error', group: 'custom', detail: messageTemplate, life: 5000});
 }
 
+// TODO move to component?
 const saveAddress = async addressObject => {
   addressObject['country_id'] = 1;
   try {
