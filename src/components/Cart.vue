@@ -22,19 +22,27 @@ const priceTotal = computed(() => {
 });
 
 
-const addVal = (qtyVal) => {
+const addVal = async (qtyVal) => {
   console.log(qtyVal);
   if (qtyVal.quantity  < 10) {
     qtyVal.quantity  += 1;
     qtyVal['total_price'] = qtyVal.quantity * qtyVal['item_price'];
   }
+  await apiFetch(`/cart-items/item/${qtyVal.id}/`, {
+    method: 'PATCH',
+    body: {quantity: qtyVal.quantity},
+  })
 }
 
-const decreaseVal = (qtyVal) => {
+const decreaseVal = async (qtyVal) => {
   if (qtyVal.quantity  >=2) {
     qtyVal.quantity  = qtyVal.quantity  - 1;
     qtyVal['total_price'] = qtyVal.quantity * qtyVal['item_price'];
   }
+  await apiFetch(`/cart-items/item/${qtyVal.id}/`, {
+    method: 'PATCH',
+    body: {quantity: qtyVal.quantity},
+  })
 }
 
 const addSuggestion = async suggest => {
@@ -57,11 +65,17 @@ const addSuggestion = async suggest => {
   suggestRecipes.value = await apiFetch('/suggestions');
 }
 
-const updateVolumes = item => {
+const updateVolumes = async (item) => {
   cartItems.value.forEach(itemF => {
     itemF.item_price = itemF.pack_volume.price;
     itemF.total_price = itemF.item_price * itemF.quantity;
   })
+
+  await apiFetch(`/cart-items/item/${item.id}/`, {
+    method: 'PATCH',
+    body: {'pack_volume_id': item.pack_volume.id},
+  });
+
 }
 
 const deleteItem = async (item) => {

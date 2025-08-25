@@ -49,6 +49,10 @@ const deleteAddress = async addressObject => {
   }
 }
 
+const selectAddress = (addressObject) => {
+
+}
+
 //TODO refactor replace to module for global use
 const showErrors = attemptResult => {
   const errorsFields = Object.keys(attemptResult);
@@ -77,7 +81,7 @@ onMounted(async () => {
 <h3>Chose or create delivery</h3>
   <div class="row">
     <div class="col-12">
-      <DeliveryAddress @saveAddress="saveAddress" @deleteAddress="deleteAddress" :delivery-page="true" />
+      <DeliveryAddress @saveAddress="saveAddress" @check-address="selectAddress" @deleteAddress="deleteAddress" :delivery-page="true" />
     </div>
   </div>
   <div class="row">
